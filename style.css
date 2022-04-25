@@ -1,0 +1,13 @@
+.film_list {
+   
+   min-width: 100px;
+   min-height: 100px;
+
+}
+.film{
+    background-color: white;
+    margin:10px;
+}
+#film_list {
+    background-color: red;
+}
