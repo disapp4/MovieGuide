@@ -1,13 +1,13 @@
-.film_list {
+.film_list_class {
    
    min-width: 100px;
    min-height: 100px;
 
 }
 .film{
-    background-color: white;
+    background-color: pink;
     margin:10px;
 }
 #film_list {
-    background-color: red;
+    
 }

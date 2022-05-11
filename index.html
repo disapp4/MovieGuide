@@ -2,13 +2,27 @@
 <html>
 
 <head>
+    <script src="jq.js"></script>
+    <script src="jquery-ui.js"></script>
+    <link rel="stylesheet" href="jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <title> GuideMovie</title>
 </head>
 
 <body>
-    <div id="film_list" class="film_list">  
-    </div>
+    <form>
+        <input id="id_input" type="number"  placeholder="id" >
+        <input id="title_input" type="text" placeholder ="title"> 
+        <input id="description_input" type="text" placeholder ="description">
+        <button type="button" onclick="addMovieThroughForm()"> Отправить </button> 
+    </form>
 
+    <hr>
+    
+    <div id="film_list" class="film_list_class">
+    
+    </div>
+    
     <script src="index.js">
     </script>
 </body>
