@@ -1,13 +1,21 @@
-.film_list_class {
+.movie_list_class {
    
    min-width: 100px;
    min-height: 100px;
 
 }
-.film{
+.movie{
     background-color: pink;
     margin:10px;
+    display:flex;
+    justify-content: space-between;
 }
-#film_list {
+#movie_list {
     
+}
+.movie_title{
+
+}
+.movie_delete_button{
+
 }

@@ -1,16 +1,19 @@
-let film_list = [];
+let movie_list = [];
 
 
-function ViewFilms() {
-  $("#film_list").children().remove();
-  for (let i = 0; i < film_list.length; i++) {
+function ViewMovies() {
+  $("#movie_list").children().remove();
+  for (let i = 0; i < movie_list.length; i++) {
 
-    let divClass = `<div class="film">
-    <p> ` + film_list[i].title +`</p> </div > `;
-    
-    $("#film_list").append(divClass);
+    let divClass = ` <div class="movie">
+    <p class="movie_title">`  + movie_list[i].title + `</p> 
+    <button type="button" onclick="deleteMovie(`+ movie_list[i].id + `)" class="movie_delete_button"> X </button>
+</div >`;
+
+    $("#movie_list").append(divClass);
   }
 }
+
 
 function addMovieThroughForm() {
   let idValue = $("#id_input").val();
@@ -18,9 +21,19 @@ function addMovieThroughForm() {
   let descriptionValue = $("#description_input").val();
 
   let objMovie = { id: Number(idValue), title: titleValue, decription: descriptionValue };
-  film_list.push(objMovie);
+  movie_list.push(objMovie);
 
   $("#id_input,#title_input,#description_input").val(null);
-  ViewFilms();
+  ViewMovies();
 }
-ViewFilms();
+
+
+function deleteMovie(id) {
+  movie_list = movie_list.filter(function (movie) {
+    return id != movie.id
+  })
+  console.log(movie_list);
+  ViewMovies();
+}
+
+ViewMovies()
