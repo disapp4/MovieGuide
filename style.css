@@ -1,21 +1,65 @@
 .movie_list_class {
-   
-   min-width: 100px;
-   min-height: 100px;
+
+    min-width: 100px;
+    min-height: 100px;
 
 }
-.movie{
+
+.movie {
     background-color: pink;
-    margin:10px;
-    display:flex;
-    justify-content: space-between;
+    margin: 10px;
+    display: flex;
+    justify-content: stretch;
 }
-#movie_list {
-    
-}
-.movie_title{
 
-}
-.movie_delete_button{
+#movie_list {}
 
+.movie_delete_button {
+    background-color: black;
+    border: none;
+    /*без границ */
+    color: white;
+    /* белая иконка */
+    padding: 14px 14px;
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+
+.movie_delete_button:hover {
+    background-color: rgb(74, 78, 87)
+        /* при наведении мышкой */
+}
+
+.movie_change_button {
+    background-color: black;
+    border: none;
+    /*без границ */
+    color: white;
+    /* белая иконка */
+    padding: 14px 14px;
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+
+.movie_change_button:hover {
+    background-color: rgb(74, 78, 87);
+    /* при наведении мышкой */
+}
+
+
+#forms {
+    display: none;
+    background: rgb(255, 255, 255);
+}
+
+form.active {
+    display: block;
+}
+
+form.add_movie {
+    width: 700px;
+}
+
+form.change_movie {
+    width: 700px;
 }

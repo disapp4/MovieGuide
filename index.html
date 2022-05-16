@@ -3,26 +3,34 @@
 
 <head>
     <script src="jq.js"></script>
-    <script src="jquery-ui.js"></script>
-    <link rel="stylesheet" href="jquery-ui.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title> GuideMovie</title>
 </head>
 
 <body>
-    <form>
-        <input id="id_input" type="number"  placeholder="id" >
-        <input id="title_input" type="text" placeholder ="title"> 
-        <input id="description_input" type="text" placeholder ="description">
-        <button type="button" onclick="addMovieThroughForm()"> Отправить </button> 
+
+    <form id="add_movie_form">
+        <input id="id_input" type="number" placeholder="id">
+        <input id="title_input" type="text" placeholder="title">
+        <input id="description_input" type="text" placeholder="description">
+        <button id="add" type="button" onclick="addMovieThroughForm()"> Отправить </button>
     </form>
 
+
+    <form id="change_movie_form">
+        <input id="id_input1" type="number" placeholder="id" disabled>
+        <input id="title_input1" type="text" placeholder="title">
+        <input id="description_input1" type="text" placeholder="description">
+        <button id="change" type="button" onclick="changeMovieThroughForm()"> Изменить </button>
+        <button id="change" type="button" onclick="showAddMovieForm()"> Отмена </button>
+    </form>
     <hr>
-    
-    <div id="movie_list"  class="movie_list_class">
-        
+
+    <div id="movie_list">
+
     </div>
-    <button type="button" onclick="console.log(movie_list)"> Debug </button>
+
     <script src="index.js">
     </script>
 </body>
