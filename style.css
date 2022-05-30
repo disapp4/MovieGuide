@@ -6,16 +6,14 @@
 }
 
 .movie {
-    background-color: pink;
+    background-color: rgb(161, 165, 206);
     margin: 10px;
     display: flex;
     justify-content: stretch;
 }
 
-#movie_list {}
-
 .movie_delete_button {
-    background-color: black;
+    background-color: rgb(73, 76, 252);
     border: none;
     /*без границ */
     color: white;
@@ -26,12 +24,12 @@
 }
 
 .movie_delete_button:hover {
-    background-color: rgb(74, 78, 87)
-        /* при наведении мышкой */
+    background-color: rgb(83, 101, 141);
+    /* при наведении мышкой */
 }
 
 .movie_change_button {
-    background-color: black;
+    background-color: rgb(73, 76, 252);
     border: none;
     /*без границ */
     color: white;
@@ -42,10 +40,188 @@
 }
 
 .movie_change_button:hover {
-    background-color: rgb(74, 78, 87);
+    background-color: rgb(83, 101, 141);
     /* при наведении мышкой */
 }
 
+.favorite_movie {
+    background-color: rgb(73, 76, 252);
+    border: none;
+    /*без границ */
+    color: white;
+    /* белая иконка */
+    padding: 14px 14px;
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+
+.favorite_movie:hover {
+    background-color: rgb(83, 101, 141);
+    /* при наведении мышкой */
+}
+
+.favorite_movie_2 {
+    background-color: rgb(73, 76, 252);
+    border: none;
+    color: red;
+    padding: 14px 14px;
+    cursor: pointer;
+    /* при нажатии мышкой */
+}
+
+.favorite_movie_2:hover {
+    background-color: rgb(83, 101, 141);
+    /* при наведении мышкой */
+}
+
+#movie_list_form {
+    background-color: cornflowerblue;
+
+}
+
+#movie__list_button {
+    text-decoration: none;
+    display: inline-block;
+    width: 180px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: #000000;
+    background: rgb(255, 255, 255);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .1);
+    transition: .3s;
+}
+
+#movie__list_button:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+
+#favorite_movie__list_button {
+    text-decoration: none;
+    display: inline-block;
+    width: 180px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: #000000;
+    background: rgb(255, 255, 255);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .1);
+    transition: .3s;
+}
+
+#favorite_movie__list_button:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+
+
+#add {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 110px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#add:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+
+#id_input {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#description_input {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 110px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#title_input {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#add_movie_form {
+    background-color: cornflowerblue;
+
+}
 
 #forms {
     display: none;

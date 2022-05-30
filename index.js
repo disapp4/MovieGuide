@@ -1,16 +1,32 @@
 let movie_list = [];
+let viewMode = "all";
+
 function ViewMovies() {
   $("#movie_list").children().remove();
   for (let i = 0; i < movie_list.length; i++) {
+    
+    if (viewMode == "all"){
+      drawMovie(movie_list[i])
+    }
+    if (viewMode == "favorites") {
+      if (movie_list[i].favorite){
+        drawMovie(movie_list[i])
+      }
+    }
+  }
+}
 
-    let divClass = ` <div class="movie">
-<p class="movie_title">` + movie_list[i].title + `</p>
-<button type="button" onclick="deleteMovie(`+ movie_list[i].id + `)" class="movie_delete_button"> <i class="fa fa-trash"></i> </button>
-<button type="button" onclick="showEditMovieForm(`+ movie_list[i].id + `)" class="movie_change_button"> <i class="fa fa-pencil"></i> </button> 
+function drawMovie(currentMovie) {
+  let likeButtonClass = (currentMovie.favorite) ? "favorite_movie_2" : "favorite_movie";
+  let divClass = ` <div class="movie">
+<p class="movie_title">` + currentMovie.title + `</p>
+<button type="button" onclick="switchMovieFavorite(`+ currentMovie.id + `)" class="` + likeButtonClass + `" id="favorite_movie"> <i class="fa fa-heart"></i> </button>
+<button type="button" onclick="deleteMovie(`+ currentMovie.id + `)" class="movie_delete_button"> <i class="fa fa-trash"></i> </button>
+<button type="button" onclick="showEditMovieForm(`+ currentMovie.id + `)" class="movie_change_button"> <i class="fa fa-pencil"></i> </button>
+
 </div >`;
 
-    $("#movie_list").append(divClass);
-  }
+  $("#movie_list").append(divClass);
 }
 
 function addMovieThroughForm() {
@@ -18,7 +34,7 @@ function addMovieThroughForm() {
   let titleValue = $("#title_input").val();
   let descriptionValue = $("#description_input").val();
 
-  let objMovie = { id: Number(idValue), title: titleValue, description: descriptionValue };
+  let objMovie = { id: Number(idValue), title: titleValue, description: descriptionValue, favorite: false };
   movie_list.push(objMovie);
 
   $("#id_input,#title_input,#description_input").val(null);
@@ -64,5 +80,27 @@ function showAddMovieForm() {
   $("#add_movie_form").css("display", "block");
 }
 
+
+function switchMovieFavorite(id) {
+  for (let i = 0; i < movie_list.length; i++) {
+    if (id == movie_list[i].id) {
+      movie_list[i].favorite = !movie_list[i].favorite
+    }
+
+  }
+  ViewMovies();
+}
+
+
+
+function movieListButton() {
+  viewMode = "all";
+  ViewMovies();
+}
+
+function favoriteMovieListButton(){
+  viewMode = "favorites";
+  ViewMovies();
+}
 showAddMovieForm()
 ViewMovies();
