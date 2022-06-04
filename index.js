@@ -1,19 +1,26 @@
 let movie_list = [];
 let viewMode = "all";
+const moviesPerPage = 2;
+let currentPageNumber = 0;
 
 function ViewMovies() {
   $("#movie_list").children().remove();
+  let view_movie_list;
   if (viewMode == "all") {
-    DrawMovies(movie_list)
+    view_movie_list = movie_list;
   }
   if (viewMode == "favorites") {
-    new_movie_list = movie_list.filter((movie) =>  movie.favorite)
-    DrawMovies(new_movie_list)
+    view_movie_list = movie_list.filter((movie) => movie.favorite)
   }
+  let from = currentPageNumber * moviesPerPage;
+  let to = from + moviesPerPage;
+  let paged_movie_list = view_movie_list.slice(from,to);
+  DrawMovies(paged_movie_list);
 }
 
+
 function DrawMovies(movies) {
-  movies.forEach((movie) => 
+  movies.forEach((movie) =>
     drawMovie(movie)
   )
 }
@@ -27,10 +34,6 @@ function drawMovie(currentMovie) {
 <button type="button" onclick="showEditMovieForm(`+ currentMovie.id + `)" class="movie_change_button"> <i class="fa fa-pencil"></i> </button>
 
 </div >`;
-
-
-
-
   $("#movie_list").append(divClass);
 }
 
@@ -40,11 +43,17 @@ function addMovieThroughForm() {
   let titleValue = $("#title_input").val();
   let descriptionValue = $("#description_input").val();
 
-  let objMovie = { id: Number(idValue), title: titleValue, description: descriptionValue, favorite: false };
-  movie_list.push(objMovie);
+  if (idValue == null || idValue == undefined || idValue == "") {
+    alert("Введите id")
+  }
+  else {
+    let objMovie = { id: Number(idValue), title: titleValue, description: descriptionValue, favorite: false };
+    movie_list.push(objMovie);
+    $("#id_input,#title_input,#description_input").val(null);
 
-  $("#id_input,#title_input,#description_input").val(null);
-  ViewMovies();
+    ViewMovies();
+  }
+
 }
 
 function deleteMovie(id) {
@@ -101,12 +110,40 @@ function switchMovieFavorite(id) {
 
 function movieListButton() {
   viewMode = "all";
+  currentPageNumber = 0;
   ViewMovies();
 }
 
 function favoriteMovieListButton() {
   viewMode = "favorites";
+  currentPageNumber = 0;
   ViewMovies();
 }
-showAddMovieForm()
+
+function previousPage() {
+  if (currentPageNumber > 0) {
+    currentPageNumber -= 1
+  }
+  ViewMovies()
+}
+
+function nextPage() {
+  let movies_length;
+  if (viewMode == "all") {
+    movies_length = movie_list.length
+  }
+  else {
+    movies_length = movie_list.filter((movie) => movie.favorite).length
+  }
+  let maxPageNumber = Math.ceil(movies_length / moviesPerPage) - 1;
+  if (maxPageNumber == -1) {
+    currentPageNumber = 0;
+  }
+  if (currentPageNumber < maxPageNumber) {
+    currentPageNumber += 1;
+  }
+  ViewMovies()
+}
+
+showAddMovieForm();
 ViewMovies();
