@@ -1,19 +1,37 @@
 let movie_list = [];
 let viewMode = "all";
 
-function ViewMovies() {
+function ViewMovies() {/*
   $("#movie_list").children().remove();
   for (let i = 0; i < movie_list.length; i++) {
-    
-    if (viewMode == "all"){
+
+    if (viewMode == "all") {
       drawMovie(movie_list[i])
     }
     if (viewMode == "favorites") {
-      if (movie_list[i].favorite){
+      if (movie_list[i].favorite) {
         drawMovie(movie_list[i])
+        
+
       }
     }
   }
+  */
+  $("#movie_list").children().remove();
+  if (viewMode == "all") {
+    DrawMovies(movie_list)
+  }
+  if (viewMode == "favorites") {
+    new_movie_list = movie_list.filter((movie) =>  movie.favorite)
+    DrawMovies(new_movie_list)
+  }
+
+}
+
+function DrawMovies(movies) {
+  movies.forEach((movie) => 
+    drawMovie(movie)
+  )
 }
 
 function drawMovie(currentMovie) {
@@ -26,8 +44,12 @@ function drawMovie(currentMovie) {
 
 </div >`;
 
+
+
+
   $("#movie_list").append(divClass);
 }
+
 
 function addMovieThroughForm() {
   let idValue = $("#id_input").val();
@@ -98,7 +120,7 @@ function movieListButton() {
   ViewMovies();
 }
 
-function favoriteMovieListButton(){
+function favoriteMovieListButton() {
   viewMode = "favorites";
   ViewMovies();
 }
