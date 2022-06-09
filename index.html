@@ -8,7 +8,7 @@
     <title> GuideMovie</title>
 </head>
 
-<body>
+<body style=background-color:rgb(211,241,255);>
     <form id="movie_list_form">
         <button id="movie__list_button" type="button" onclick="movieListButton()"> Все фильмы </button>
         <button id="favorite_movie__list_button" type="button" onclick="favoriteMovieListButton()"> Любимые фильмы </button>
@@ -35,10 +35,14 @@
         
     </div>
     <div class="pages">
+    <button class="current_page" type="button">  </button>
     <a href="#" class="previous_page" onclick="previousPage()"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>
     <a href="#" class="next_page" onclick="nextPage()"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
     </div>
+    
     <script src="index.js">
+    </script>
+    <script src="index2.js">
     </script>
 </body>
 

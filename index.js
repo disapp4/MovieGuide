@@ -3,6 +3,8 @@ let viewMode = "all";
 const moviesPerPage = 2;
 let currentPageNumber = 0;
 
+currentPage();
+
 function ViewMovies() {
   $("#movie_list").children().remove();
   let view_movie_list;
@@ -35,6 +37,7 @@ function drawMovie(currentMovie) {
 
 </div >`;
   $("#movie_list").append(divClass);
+ 
 }
 
 
@@ -125,9 +128,12 @@ function previousPage() {
     currentPageNumber -= 1
   }
   ViewMovies()
+  currentPage();
+  
 }
 
 function nextPage() {
+ 
   let movies_length;
   if (viewMode == "all") {
     movies_length = movie_list.length
@@ -142,7 +148,14 @@ function nextPage() {
   if (currentPageNumber < maxPageNumber) {
     currentPageNumber += 1;
   }
+   
+  currentPage();
+  
   ViewMovies()
+}
+
+function currentPage(){
+  $(".current_page").text(currentPageNumber);
 }
 
 showAddMovieForm();

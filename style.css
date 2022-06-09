@@ -14,7 +14,7 @@
 
 .movie_delete_button {
     background-color: rgb(52, 174, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     /*без границ */
     color: white;
     /* белая иконка */
@@ -30,7 +30,7 @@
 
 .movie_change_button {
     background-color: rgb(52, 174, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     /*без границ */
     color: white;
     /* белая иконка */
@@ -46,7 +46,7 @@
 
 .favorite_movie {
     background-color: rgb(52, 174, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     /*без границ */
     color: white;
     /* белая иконка */
@@ -62,7 +62,7 @@
 
 .favorite_movie_2 {
     background-color: rgb(52, 174, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     color: red;
     padding: 14px 14px;
     cursor: pointer;
@@ -342,7 +342,7 @@ a:hover {
 .previous_page {
     background-color: rgb(52, 174, 255);
     color: rgb(255, 255, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     padding: 14px 14px;
     cursor: pointer;
 }
@@ -350,7 +350,7 @@ a:hover {
 .next_page {
     background-color: rgb(52, 174, 255);
     color: rgb(255, 255, 255);
-    border: none;
+    border:  2px solid cornflowerblue;
     padding: 14px 14px;
     cursor: pointer;
 }
@@ -364,3 +364,16 @@ a:hover {
     align-items: center;
     justify-content: right;
   }
+  .current_page {
+    background-color: rgb(52, 174, 255);
+    color: rgb(255, 255, 255);
+    border:  2px solid cornflowerblue;
+    padding: 15.5px 15px;
+    display: flex;	 	
+  }
+
+
+.current_page:hover {
+    background-color: cornflowerblue;
+    color: rgb(255, 255, 255);
+}
