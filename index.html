@@ -8,14 +8,9 @@
     <title> GuideMovie</title>
 </head>
 
-<body style=background-color:rgb(211,241,255);>
-    <form id="movie_list_form">
-        <button id="movie__list_button" type="button" onclick="movieListButton()"> Все фильмы </button>
-        <button id="favorite_movie__list_button" type="button" onclick="favoriteMovieListButton()"> Любимые фильмы </button>
-    </form>
+
 
     <form id="add_movie_form">
-        <input id="id_input" type="number" placeholder="id">
         <input id="title_input" type="text" placeholder="title">
         <input id="description_input" type="text" placeholder="description">
         <button id="add" type="button" onclick="addMovieThroughForm()"> Отправить </button>
@@ -23,23 +18,18 @@
 
 
     <form id="change_movie_form">
-        <input id="id_input1" type="number" placeholder="id" disabled>
+        <input id="id_input1" type="string" placeholder="id" disabled>
         <input id="title_input1" type="text" placeholder="title">
         <input id="description_input1" type="text" placeholder="description">
         <button id="change" type="button" onclick="changeMovieThroughForm()"> Изменить </button>
-        <button id="change" type="button" onclick="showAddMovieForm()"> Отмена </button>
+        <button id="change" type="button" onclick="cancelEditingMovie()"> Отмена </button>
     </form>
     <hr>
 
     <div id="movie_list">
-        
-    </div>
-    <div class="pages">
-    <button class="current_page" type="button">  </button>
-    <a href="#" class="previous_page" onclick="previousPage()"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>
-    <a href="#" class="next_page" onclick="nextPage()"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
-    </div>
-    
+            
+    <script src="utils.js">
+    </script>
     <script src="movieGuideClient.js">
     </script>
     <script src="index.js">

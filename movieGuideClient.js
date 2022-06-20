@@ -1,15 +1,15 @@
-const host = "https://movie-guide-backend.ntrubkin.tk/";
+const host = "https://movie-guide-backend.ntrubkin.ru/";
 const moviesUrl = host + "movies/";
-function getAllMovies(onSuccess) {
+function callGetAllMovies(onSuccess) {
     $.ajax({
-        url: moviesUrl,         /* Куда пойдет запрос */
-        method: 'get',             /* Метод передачи (post или get) */
+        url: moviesUrl,         
+        method: 'get',           
         success: onSuccess,
         error: onRequestError
     });
 }
 
-function postMovie(createMovieRequest,onSuccess) {
+function callPostMovie(createMovieRequest,onSuccess) {
     $.ajax({
         url: moviesUrl,
         method: 'post',
@@ -23,7 +23,7 @@ function postMovie(createMovieRequest,onSuccess) {
 
 }
 
-function getMovie(movieId,onSuccess) {
+function callGetMovie(movieId,onSuccess) {
     $.ajax({
         url: moviesUrl + movieId,
         method: 'get',
@@ -34,7 +34,7 @@ function getMovie(movieId,onSuccess) {
     });
 }
 
-function putMovie(movie,onSuccess) {
+function callPutMovie(movie,onSuccess) {
     $.ajax({
         url: moviesUrl + movie.id,
         method: 'put',
@@ -46,7 +46,7 @@ function putMovie(movie,onSuccess) {
     });
 }
 
-function deleteMovie(movieId,onSuccess) {
+function callDeleteMovie(movieId,onSuccess) {
     $.ajax({
         url: moviesUrl + movieId,
         method: 'delete',
@@ -56,7 +56,7 @@ function deleteMovie(movieId,onSuccess) {
     });
 }
 
-function healthCheck(onSuccess) {
+function callHealthCheck(onSuccess) {
     $.ajax({
         url: host + "health-check",
         method: 'get',
@@ -69,7 +69,7 @@ function healthCheck(onSuccess) {
 
 function onRequestError(error) {
     console.error(error);
-    alert("Произошла ошибка, смотри в консоль")
+    alert("Произошла ошибка вызова, смотри в консоль")
 }
 
 
