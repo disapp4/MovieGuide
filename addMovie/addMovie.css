@@ -62,6 +62,7 @@
     color: rgb(0, 0, 0);
     transform: translateY(-7px);
 }
+
 #cancel {
     color: #000000;
     background: white;
@@ -87,6 +88,7 @@
     color: rgb(0, 0, 0);
     transform: translateY(-7px);
 }
+
 
 #add_movie_form {
     background-color: cornflowerblue;
