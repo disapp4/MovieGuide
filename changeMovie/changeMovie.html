@@ -2,32 +2,37 @@
 <html>
 
 <head>
-    <script src="jq.js"></script>
-    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="../jq.js"></script>
+    <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="changeMovie.css" />
     <title> GuideMovie</title>
 </head>
 
 
 
-  
+<h1> Редактирование фильма </h1>
 
     <form id="change_movie_form">
         <input id="id_input1" type="string" placeholder="id" disabled>
+        <br>
         <input id="title_input1" type="text" placeholder="title">
+        <br>
         <input id="description_input1" type="text" placeholder="description">
+        <br>
         <button id="change" type="button" onclick="changeMovieThroughForm()"> Изменить </button>
-        <button id="change" type="button" onclick="cancelEditingMovie()"> Отмена </button>
+        <button id="change" type="button" onclick="window.location.href = '../index.html'"> Отмена </button>
+        <br>
+        
     </form>
     <hr>
 
     <div id="movie_list">
             
-    <script src="utils.js">
+    <script src="../utils.js">
     </script>
-    <script src="movieGuideClient.js">
+    <script src="../movieGuideClient.js">
     </script>
-    <script src="index.js">
+    <script src="changeMovie.js">
     </script>
     
 </body>
