@@ -1,5 +1,5 @@
 const moviesItemTemplate = ` <div class="movie">
-<p class="movie_title">  {1}  </p>
+<button type="button" onclick="window.location.href = 'moviePage/moviePage.html?movieId={0}' " class="movie_title"> {1} </button>
 <button type="button" onclick="deleteMovie('{0}')" class="movie_delete_button"> <i class="fa fa-trash"></i> </button>
 <button type="button" onclick="window.location.href = 'changeMovie/changeMovie.html?movieId={0}' " class="movie_change_button"> <i class="fa fa-pencil"></i> </button>
 </div >`;
