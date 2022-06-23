@@ -139,7 +139,7 @@
     transition: .3s;
     text-decoration: none;
     display: inline-block;
-    width: 110px;
+    width: 200px;
     height: 30px;
     line-height: 20px;
     border-radius: 45px;
@@ -219,35 +219,7 @@
 }
 
 
-#change {
-    color: #000000;
-    background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
-    width: 110px;
-    height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
-}
 
-#change:hover {
-    background: rgb(52, 174, 255);
-    color: rgb(0, 0, 0);
-    transform: translateY(-7px);
-}
-#change_movie_form {
-    background-color: cornflowerblue;
-
-}
 #add_movie_form {
     background-color: cornflowerblue;
 
