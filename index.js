@@ -52,4 +52,9 @@ function showEditMovieForm(id) {
     $("#description_input1").val(movie.description)
   })
 }
+
+function logOut() {
+  callLogOut(() => window.location.href = '/authorization/authorization.html')
+}
+
 viewMovies();

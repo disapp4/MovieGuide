@@ -1,16 +1,25 @@
 const host = "https://movie-guide-backend.ntrubkin.ru/";
 const moviesUrl = host + "movies/";
-const usersUrl= host + "users/";
+const usersUrl = host + "users/";
+
+$.ajaxSetup({
+    xhrFields: {
+        withCredentials: true
+    },
+    crossDomain: true,
+});
+
 function callGetAllMovies(onSuccess) {
     $.ajax({
-        url: moviesUrl,         
-        method: 'get',           
+        url: moviesUrl,
+        method: 'get',
         success: onSuccess,
-        error: onRequestError
+        error: onRequestError,
+        crossDomain: true,
     });
 }
 
-function callPostMovie(createMovieRequest,onSuccess) {
+function callPostMovie(createMovieRequest, onSuccess) {
     $.ajax({
         url: moviesUrl,
         method: 'post',
@@ -22,7 +31,7 @@ function callPostMovie(createMovieRequest,onSuccess) {
     });
 }
 
-function callGetMovie(movieId,onSuccess) {
+function callGetMovie(movieId, onSuccess) {
     $.ajax({
         url: moviesUrl + movieId,
         method: 'get',
@@ -33,7 +42,7 @@ function callGetMovie(movieId,onSuccess) {
     });
 }
 
-function callPutMovie(movie,onSuccess) {
+function callPutMovie(movie, onSuccess) {
     $.ajax({
         url: moviesUrl + movie.id,
         method: 'put',
@@ -44,7 +53,7 @@ function callPutMovie(movie,onSuccess) {
     });
 }
 
-function callDeleteMovie(movieId,onSuccess) {
+function callDeleteMovie(movieId, onSuccess) {
     $.ajax({
         url: moviesUrl + movieId,
         method: 'delete',
@@ -78,18 +87,14 @@ function callGetCurrentUser(onSuccess) {
         error: onRequestError
     });
 }
-function callLogIn(username,password,onSuccess, onError) {
+function callLogIn(username, password, onSuccess, onError) {
     $.ajax({
         url: usersUrl + "me",
         method: 'get',
         success: onSuccess,
         error: onError,
-        headers: {"Authorization": "Basic bnRydWJraW46bnRydWJraW4=", "Origin":"http://localhost:5601", "Host":"localhost:5601"},
-        xhrFields: {
-            withCredentials: true
-         },
-         
-    });
+        headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) },
+        });
 }
 
 function callPostUsers(onSuccess) {
