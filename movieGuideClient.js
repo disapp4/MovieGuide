@@ -1,5 +1,6 @@
 const host = "https://movie-guide-backend.ntrubkin.ru/";
 const moviesUrl = host + "movies/";
+const usersUrl= host + "users/";
 function callGetAllMovies(onSuccess) {
     $.ajax({
         url: moviesUrl,         
@@ -18,9 +19,7 @@ function callPostMovie(createMovieRequest,onSuccess) {
         data: JSON.stringify(createMovieRequest),
         success: onSuccess,
         error: onRequestError
-
     });
-
 }
 
 function callGetMovie(movieId,onSuccess) {
@@ -42,7 +41,6 @@ function callPutMovie(movie,onSuccess) {
         data: JSON.stringify({ title: movie.title, description: movie.description }),
         success: onSuccess,
         error: onRequestError
-
     });
 }
 
@@ -52,7 +50,6 @@ function callDeleteMovie(movieId,onSuccess) {
         method: 'delete',
         success: onSuccess,
         error: onRequestError
-
     });
 }
 
@@ -62,11 +59,50 @@ function callHealthCheck(onSuccess) {
         method: 'get',
         success: onSuccess,
         error: onRequestError
-
     });
 }
 
+function callLogOut(onSuccess) {
+    $.ajax({
+        url: host + "logout",
+        method: 'get',
+        success: onSuccess,
+        error: onRequestError
+    });
+}
+function callGetCurrentUser(onSuccess) {
+    $.ajax({
+        url: usersUrl + "me",
+        method: 'get',
+        success: onSuccess,
+        error: onRequestError
+    });
+}
+function callLogIn(username,password,onSuccess, onError) {
+    $.ajax({
+        url: usersUrl + "me",
+        method: 'get',
+        success: onSuccess,
+        error: onError,
+        headers: {"Authorization": "Basic bnRydWJraW46bnRydWJraW4=", "Origin":"http://localhost:5601", "Host":"localhost:5601"},
+        xhrFields: {
+            withCredentials: true
+         },
+         
+    });
+}
 
+function callPostUsers(onSuccess) {
+    $.ajax({
+        url: usersUrl,
+        method: 'post',
+        contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify(),
+        success: onSuccess,
+        error: onRequestError
+    });
+}
 function onRequestError(error) {
     console.error(error);
     alert("Произошла ошибка вызова, смотри в консоль")

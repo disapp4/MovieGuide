@@ -9,16 +9,19 @@
 </head>
 
 <h1> Список фильмов </h1>
-<button id="add" type="button" onclick="window.location.href = 'addMovie/addMovie.html'"> Создать фильм </button>
+<form id="main_page">
+    <button id="add" type="button" onclick="window.location.href = 'addMovie/addMovie.html'"> Создать фильм </button>
+    <button id="add" type="button" onclick="callGetUsersLogout"> Выйти из аккаунта </button>
     <div id="movie_list">
-            
-    <script src="utils.js">
-    </script>
-    <script src="movieGuideClient.js">
-    </script>
-    <script src="index.js">
-    </script>
-    
+</form>
+
+<script src="utils.js">
+</script>
+<script src="movieGuideClient.js">
+</script>
+<script src="index.js">
+</script>
+
 </body>
 
 </html>
