@@ -97,7 +97,7 @@ function callLogIn(username, password, onSuccess, onError) {
         });
 }
 
-function callPostUsers(onSuccess) {
+function callPostUsers(username,password,onSuccess, onError) {
     $.ajax({
         url: usersUrl,
         method: 'post',
@@ -105,7 +105,7 @@ function callPostUsers(onSuccess) {
         dataType: 'json',
         data: JSON.stringify(),
         success: onSuccess,
-        error: onRequestError
+        error: onError
     });
 }
 function onRequestError(error) {
