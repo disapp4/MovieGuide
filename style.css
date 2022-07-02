@@ -4,7 +4,9 @@
     min-height: 100px;
 
 }
-
+#main_page {
+    background-color: cornflowerblue;
+}
 .movie {
     background-color: rgb(161, 165, 206);
     margin: 10px;

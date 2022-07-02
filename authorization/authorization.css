@@ -1,0 +1,86 @@
+#log_in {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 110px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#log_in:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+#authorization {
+    background-color: cornflowerblue;
+
+}
+
+
+#username {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+#password {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+.movie_change_button {
+    background-color: rgb(52, 174, 255);
+    border:  2px solid cornflowerblue;
+    /*без границ */
+    color: white;
+    /* белая иконка */
+    padding: 14px 14px;
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+
+.movie_change_button:hover {
+    background-color: cornflowerblue;
+    /* при наведении мышкой */
+}
