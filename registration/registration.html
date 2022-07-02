@@ -2,20 +2,21 @@
 <html>
 
 <head>
+
     <script src="../jq.js"></script>
     <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="authorization.css" />
+    <link rel="stylesheet" type="text/css" href="registration.css" />
     <link rel="shortcut icon" href="../movie_guide1.png" type="image/png">
 
-    <title> Авторизация </title>
+    <title> Регистрация </title>
 </head>
 
-<h1> Авторизация </h1>
-<form id="authorization">
+<h1> Регистрация </h1>
+<form id="registration">
     <p> <label for="name"> Username: </label><input id="username" type="string" placeholder="логин" ></p>
     <p> <label for="name"> Password: </label><input id="password" type="password" placeholder="пароль"></p>
     <br>
-    <button id="log_in" type="button" onclick="login()"> Войти </button>
+    <button id="post_users" type="button" onclick="postUsers()"> Зарегистрироваться </button>
     <br>
     
 </form>
@@ -26,7 +27,7 @@
     </script>
     <script src="../movieGuideClient.js">
     </script>
-    <script src="authorization.js">
+    <script src="registration.js">
     </script>
     
     
