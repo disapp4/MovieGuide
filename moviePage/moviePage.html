@@ -10,12 +10,13 @@
     
     <title> MovieGuide </title>
 </head>
-
+<body>
 <h1> Информация о фильме </h1>
-<form id="change_movie_form">
-    <p> <label for="name"> id: </label><input id="id_input1" type="string" placeholder="id" ></p>
-    <p> <label for="name"> title: </label><input id="title_input1" type="text" placeholder="title"></p>
-    <p> <label for="name"> description: </label><input id="description_input1" type="text" placeholder="description"></p>
+<form id="information_movie_form">
+    <img alt="poster" id="poster" src="../loading.gif"> 
+    <p> <label for="name"> id: </label><input id="id_input1" type="string" placeholder="id" disabled></p>
+    <p> <label for="name"> title: </label><input id="title_input1" type="text" placeholder="title" disabled></p>
+    <p> <label for="name"> description: </label><input id="description_input1" type="text" placeholder="description" disabled></p>
     <br>
     <button id="cancel" type="button" onclick="window.location.href = '../index.html'"> Список фильмов </button>
     <br>
@@ -24,12 +25,12 @@
 
     <div id="movie_list">
             
-    <script src="../utils.js">
-    </script>
-    <script src="../movieGuideClient.js">
-    </script>
-    <script src="moviePage.js">
-    </script>
+        <script src="../utils.js">
+        </script>
+        <script src="../movieGuideClient.js">
+        </script>
+        <script src="moviePage.js">
+        </script>
     
 </body>
 

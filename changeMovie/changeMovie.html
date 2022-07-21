@@ -15,6 +15,7 @@
 <h1> Редактирование фильма </h1>
 
     <form id="change_movie_form">
+       
         <input id="id_input1" type="string" placeholder="id" disabled>
         <br>
         <input id="title_input1" type="text" placeholder="title">
@@ -23,6 +24,9 @@
         <br>
         <button id="change" type="button" onclick="changeMovieThroughForm()"> Изменить </button>
         <button id="change" type="button" onclick="window.location.href = '../index.html'"> Отмена </button>
+        <label for="image_to_save" class="image_to_save"> Изменить постер </label>
+        <input id="image_to_save"  style="visibility:hidden;" type="file" accept="image/jpeg"  >  
+            
         <br>
         
     </form>

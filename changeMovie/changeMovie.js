@@ -1,7 +1,7 @@
 
 const params = new URLSearchParams(window.location.search);
 let movieId = params.get('movieId');
-
+$("#image_to_save").on('change', putMoviePoster);
 function showEditMovieForm(id) {
   callGetMovie(id, (movie) => {
     $("#id_input1").val(id);
@@ -25,3 +25,10 @@ function changeMovieThroughForm() {
 
 
 showEditMovieForm(movieId)
+
+
+function putMoviePoster(event){
+  let idValue = $("#id_input1").val();
+  let file = event.target.files[0];
+  callPutMoviePoster(file,idValue, () => window.location.href = "../index.html")
+}

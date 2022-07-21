@@ -94,7 +94,7 @@ function callLogIn(username, password, onSuccess, onError) {
         success: onSuccess,
         error: onError,
         headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) },
-        });
+    });
 }
 
 function callPostUsers(username,password,onSuccess, onError) {
@@ -108,9 +108,32 @@ function callPostUsers(username,password,onSuccess, onError) {
         error: onError
     });
 }
+
+function callPutMoviePoster(imageFile, movieId, onSuccess) {
+
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+    $.ajax({
+        url: moviesUrl + movieId + "/poster",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: 'PUT',
+        success: onSuccess,
+        error: onRequestError
+    })
+}
+
 function onRequestError(error) {
-    console.error(error);
-    alert("Произошла ошибка вызова, смотри в консоль")
+    
+    if (error.status == 401) {
+        window.location.href = '/authorization/authorization.html'
+    }
+    else {
+        console.error(error);
+        alert("Произошла ошибка вызова, смотри в консоль")
+    }
 }
 
 
