@@ -5,7 +5,7 @@
     transition: .3s;
     text-decoration: none;
     display: inline-block;
-    width: 110px;
+    width: 200px;
     height: 30px;
     line-height: 20px;
     border-radius: 45px;
@@ -23,7 +23,10 @@
     color: rgb(0, 0, 0);
     transform: translateY(-7px);
 }
+#information_movie_form {
+    background-color: cornflowerblue;
 
+}
 #id_input1 {
     color: #000000;
     background: white;
@@ -38,7 +41,6 @@
     margin: 10px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    text-transform: uppercase;
     text-align: center;
     letter-spacing: 3px;
     font-weight: 600;
@@ -58,7 +60,6 @@
     margin: 10px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    text-transform: uppercase;
     text-align: center;
     letter-spacing: 3px;
     font-weight: 600;
@@ -78,8 +79,21 @@
     margin: 10px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    text-transform: uppercase;
     text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+#poster {
+    
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 250px;
+    height: 200px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
     letter-spacing: 3px;
     font-weight: 600;
 }
