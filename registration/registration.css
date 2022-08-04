@@ -1,10 +1,7 @@
 #post_users {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
-    display: inline-block;
     width: 250px;
     height: 30px;
     line-height: 20px;
@@ -12,7 +9,7 @@
     margin: 10px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    text-transform: uppercase;
+    text-transform: uppercase; 
     text-align: center;
     letter-spacing: 3px;
     font-weight: 600;
@@ -26,10 +23,7 @@
 #log_in {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
-    display: inline-block;
     width: 250px;
     height: 30px;
     line-height: 20px;
@@ -57,10 +51,7 @@
 #username {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
-    display: inline-block;
     width: 150px;
     height: 30px;
     line-height: 20px;
@@ -76,10 +67,7 @@
 #password {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
-    display: inline-block;
     width: 150px;
     height: 30px;
     line-height: 20px;

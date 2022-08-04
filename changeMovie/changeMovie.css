@@ -1,40 +1,13 @@
-#change {
-    color: #000000;
-    background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
-    width: 110px;
-    height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
-}
-
-#change:hover {
-    background: rgb(52, 174, 255);
-    color: rgb(0, 0, 0);
-    transform: translateY(-7px);
-}
 #change_movie_form {
     background-color: cornflowerblue;
-
 }
+
 #id_input1 {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
     display: inline-block;
-    width: 100px;
+    width: 50px;
     height: 30px;
     line-height: 20px;
     border-radius: 45px;
@@ -44,17 +17,16 @@
     text-transform: uppercase;
     text-align: center;
     letter-spacing: 3px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 #description_input1 {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
-    width: 500px;
+    width: 700px;
     height: 30px;
     line-height: 20px;
     border-radius: 45px;
@@ -70,12 +42,53 @@
 #title_input1 {
     color: #000000;
     background: white;
+    transition: .3s;
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+#change {
+    color: #000000;
+    background: white;
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+    width: 180px;
+    height: 30px;
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертание шрифта*/
+}
+
+#change:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+
+.images_to_save {
+    color: #000000;
+    background: white;
     box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
-    width: 100px;
-    height: 30px;
+    width: 180px;
+    height: 50px;
     line-height: 20px;
     border-radius: 45px;
     margin: 10px 20px;
@@ -87,22 +100,95 @@
     font-weight: 600;
 }
 
-.movie_change_button {
-    background-color: rgb(52, 174, 255);
-    border:  2px solid cornflowerblue;
-    /*без границ */
-    color: white;
-    /* белая иконка */
-    padding: 14px 14px;
-    cursor: pointer;
-    /* Mouse pointer on hover */
+.images_to_save:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
 }
 
-.movie_change_button:hover {
-    background-color: cornflowerblue;
-    /* при наведении мышкой */
+
+#images_to_delete {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 180px;
+    height: 50px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
 }
-.image_to_save {
+
+#images_to_delete:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+
+#poster {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    
+}
+#poster:hover {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    cursor: pointer;
+    opacity: 0.25;
+    
+}
+#images1 {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    
+}
+#images {
+    flex-direction: row;/* слева направо */
+    flex-wrap: wrap; /* перенос на новую строку */
+    justify-content:  flex-start;/* картинки равномерно с расстоянием между ними */
+    width: 90%;
+    display: flex;
+    border-radius: 45px;
+}
+.image {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    
+}
+.image:hover {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    cursor: pointer;
+    opacity: 0.25;
+    
+}
+
+#image_preview {
+    width: 300px;
+    height: 300px;
+    color: #000000;
+    background: cornflowerblue;
+    
+  }
+  #image_to_save2 {
     color: #000000;
     background: white;
     box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
@@ -122,7 +208,7 @@
     font-weight: 600;
 }
 
-.image_to_save:hover {
+#image_to_save2:hover {
     background: rgb(52, 174, 255);
     color: rgb(0, 0, 0);
     transform: translateY(-7px);

@@ -121,10 +121,47 @@ function callPutMoviePoster(imageFile, movieId, onSuccess) {
         processData: false,
         method: 'PUT',
         success: onSuccess,
-        error: onRequestError
+        error: onRequestError,
+        async: false
     })
 }
 
+function callPostMovieImage(imageFile, movieId, onSuccess) {
+
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+    $.ajax({
+        url: moviesUrl + movieId + "/images",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: 'POST',
+        success: onSuccess,
+        error: onRequestError,
+        async: false
+    })
+}
+
+function callGetImage(movieId, onSuccess) {
+    $.ajax({
+        url: moviesUrl + movieId,
+        method: 'get',
+        dataType: 'json',
+        success: onSuccess,
+        error: onRequestError
+
+    });
+}
+
+function callDeletePoster(movieId, onSuccess) {
+    $.ajax({
+        url: moviesUrl + movieId + "/poster",
+        method: 'delete',
+        success: onSuccess,
+        error: onRequestError
+    });
+}
 function onRequestError(error) {
     
     if (error.status == 401) {

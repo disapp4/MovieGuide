@@ -3,6 +3,8 @@
 
 <head>
     <script src="../jq.js"></script>
+    <script src="../jq_preview.js"></script>
+
     <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="addMovie.css" />
     <link rel="shortcut icon" href="../movie_guide1.png" type="image/png">
@@ -17,11 +19,22 @@
         <br>
         <input id="description_input" type="text" placeholder="description">
         <br>
-        <label for="image_to_save" class="image_to_save"> Добавить постер </label>
-        <input id="image_to_save"  style="visibility:hidden;" type="file" accept="image/jpeg"  >  
+        <div id="image_preview">
+        <label for="image_to_save" id="image_to_save2"> Добавить постер </label>
+        <input id="image_to_save"   style="visibility:hidden;" type="file" accept="image/jpeg" > 
+        <br>
+        <img id ="poster" src="../no_poster.jpg" >
+        </div>
+        <br>
+        <div id="images_preview">
+        <label for="images_to_save"  id="images_to_save2"> Добавить изображения </label>
+        <input id="images_to_save"  style="visibility:hidden;" type="file" multiple accept="image/jpeg"  >  
+        <br>
+        <img id ="images"  >
+        </div>
         <br>
         <button id="add" type="button" onclick="addMovieThroughForm()"> Отправить </button>
-        <br>
+        
         <button id="cancel" type="button" onclick="window.location.href = '../index.html'"> Отмена </button>
 
 
