@@ -1,12 +1,14 @@
-#cancel {
+
+#edit:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);
+}
+#edit {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
     width: 200px;
-    height: 30px;
+    height: 50px;
     line-height: 20px;
     border-radius: 45px;
     margin: 10px 20px;
@@ -18,11 +20,7 @@
     font-weight: 600;
 }
 
-#cancel:hover {
-    background: rgb(52, 174, 255);
-    color: rgb(0, 0, 0);
-    transform: translateY(-7px);
-}
+
 #information_movie_form {
     background-color: cornflowerblue;
 
@@ -30,7 +28,6 @@
 #id_input1 {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
@@ -49,7 +46,6 @@
 #description_input1 {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
@@ -68,7 +64,6 @@
 #title_input1 {
     color: #000000;
     background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
@@ -85,15 +80,36 @@
 }
 #poster {
     
+    transition: .3s;
+    text-decoration: none;
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    line-height: 20px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+.image {
+    
     box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
     text-decoration: none;
     display: inline-block;
-    width: 250px;
+    width: 200px;
     height: 200px;
     line-height: 20px;
     border-radius: 45px;
     margin: 10px 20px;
     letter-spacing: 3px;
     font-weight: 600;
+}
+#images{
+    flex-direction: row;/* слева направо */
+    flex-wrap: wrap; /* перенос на новую строку */
+    justify-content:  flex-start;/* картинки равномерно с расстоянием между ними */
+    width: 90%;
+    display: flex;
+    border-radius: 45px;
 }

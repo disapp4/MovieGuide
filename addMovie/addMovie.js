@@ -1,5 +1,10 @@
 $("#image_to_save").on('change', putMoviePoster);
+$("#images_to_save").on('change', putMovieImages);
+let imageFiles = [];
 let posterFile;
+var reader = new FileReader();
+
+
 function addMovieThroughForm() {
   let titleValue = $("#title_input").val();
   let descriptionValue = $("#description_input").val();
@@ -16,18 +21,44 @@ function addMovieThroughForm() {
         let movieId = response.id;
         $("#title_input,#description_input").val(null);
         if (posterFile != null) {
-          callPutMoviePoster(posterFile, movieId, () => window.location.href = "/index.html")
+          callPutMoviePoster(posterFile, movieId)
         }
-        else {
-          window.location.href = "/index.html"
+        for (let i = 0; i < imageFiles.length; i++) {
+          callPostMovieImage(imageFiles[i], movieId)
         }
-
+        window.location.href = "../index.html"
       });
+
   }
 }
 
 
-
 function putMoviePoster(event) {
-  posterFile = event.target.files[0];
+  let selectedFile = event.target.files[0];
+  posterFile = selectedFile;
+  showPosterPreview();
+}
+
+function putMovieImages(event) {
+  let selectedFiles = event.target.files;
+  imageFiles.push(...selectedFiles);
+  showImagesPreview();
+}
+
+function showPosterPreview() {
+  if (posterFile != null) {
+    reader.onload = function () {
+      $("#poster").attr("src", reader.result);
+    }
+    reader.readAsDataURL(posterFile);
+
+  }
+}
+function showImagesPreview() {
+  if (imageFiles != null) {
+    reader.onload = function () {
+      $("#images").attr("src", reader.result);
+    }
+    reader.readAsDataURL(imageFiles[imageFiles.length - 1]);
+  }
 }

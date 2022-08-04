@@ -1,21 +1,20 @@
 #description_input {
-    color: #000000;
-    background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
-    width: 700px;
-    height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
+  color: #000000;
+  background: white;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+  transition: .3s;
+  display: inline-block;
+  width: 700px;
+  height: 30px;
+  line-height: 20px;
+  border-radius: 45px;
+  margin: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 3px;
+  font-weight: bold;
 }
 
 #title_input {
@@ -23,9 +22,8 @@
     background: white;
     box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
     transition: .3s;
-    text-decoration: none;
     display: inline-block;
-    width: 100px;
+    width: 200px;
     height: 30px;
     line-height: 20px;
     border-radius: 45px;
@@ -35,26 +33,25 @@
     text-transform: uppercase;
     text-align: center;
     letter-spacing: 3px;
-    font-weight: 600;
+    font-weight: bold;
 }
 #add {
-    color: #000000;
-    background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
-    width: 110px;
-    height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
+  color: #000000;
+  background: white;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+  transition: .3s;/* анимация   */
+  display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+  width: 150px;
+  height: 30px;
+  line-height: 20px;/* межстрочный интервал  */
+  border-radius: 45px;/* скругленные углы */
+  margin: 20px 20px; /* внешний отступ  */
+  font-family: 'Montserrat', sans-serif;/* шрифт  */
+  font-size: 11px;/* размер шрифта  */
+  text-transform: uppercase;/* верхний регистр  */
+  text-align: center; /*расположение текста*/
+  letter-spacing: 3px; /*  расстояние между буквами*/
+  font-weight: bold; /* начертание шрифта*/
 }
 
 #add:hover {
@@ -64,23 +61,22 @@
 }
 
 #cancel {
-    color: #000000;
-    background: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
-    width: 110px;
-    height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
+  color: #000000;
+  background: white;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+  transition: .3s;/* анимация   */
+  display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+  width: 150px;
+  height: 30px;
+  line-height: 20px;/* межстрочный интервал  */
+  border-radius: 45px;/* скругленные углы */
+  margin: 20px 20px; /* внешний отступ  */
+  font-family: 'Montserrat', sans-serif;/* шрифт  */
+  font-size: 11px;/* размер шрифта  */
+  text-transform: uppercase;/* верхний регистр  */
+  text-align: center; /*расположение текста*/
+  letter-spacing: 3px; /*  расстояние между буквами*/
+  font-weight: bold; /* начертание шрифта*/
 }
 
 #cancel:hover {
@@ -88,34 +84,79 @@
     color: rgb(0, 0, 0);
     transform: translateY(-7px);
 }
-
-
 #add_movie_form {
     background-color: cornflowerblue;
-
 }
-.image_to_save {
+
+
+#image_preview {
+    color: #000000;
+    background: cornflowerblue;
+}
+#image_to_save2 {
     color: #000000;
     background: white;
     box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
-    transition: .3s;
-    text-decoration: none;
-    display: inline-block;
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
     width: 180px;
     height: 30px;
-    line-height: 20px;
-    border-radius: 45px;
-    margin: 10px 20px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 3px;
-    font-weight: 600;
-}
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертание шрифта*/
+  }
 
-.image_to_save:hover {
+#image_to_save2:hover {
     background: rgb(52, 174, 255);
     color: rgb(0, 0, 0);
-    transform: translateY(-7px);
+    transform: translateY(-7px); /*  движение кнопки */
+  }
+  
+
+  #images_preview {
+    color: #000000;
+    background: cornflowerblue;
+    
+  }
+  #images_to_save2 {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+    width: 180px;
+    height: 50px;
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертание шрифта*/
 }
+
+#images_to_save2:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+    transform: translateY(-7px);/*  движение кнопки */
+}
+  #poster {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+  }
+  #images {
+    width: 180px;
+    height: 180px;
+    border-radius: 45px;
+    margin: 10px 20px;
+  }

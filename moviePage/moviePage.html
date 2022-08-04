@@ -3,6 +3,7 @@
 
 <head>
     <script src="../jq.js"></script>
+ 
     <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="moviePage.css" />
     <link rel="shortcut icon" href="../movie_guide1.png" type="image/png">
@@ -13,12 +14,17 @@
 <body>
 <h1> Информация о фильме </h1>
 <form id="information_movie_form">
-    <img alt="poster" id="poster" src="../loading.gif"> 
+    <img alt="poster" id="poster" onclick="window.open ('../openPoster/openPoster.html?movieId='+ movieId)" src="../loading.gif"> 
+    <br>
+    <div id="images" >       
+    </div>
     <p> <label for="name"> id: </label><input id="id_input1" type="string" placeholder="id" disabled></p>
     <p> <label for="name"> title: </label><input id="title_input1" type="text" placeholder="title" disabled></p>
     <p> <label for="name"> description: </label><input id="description_input1" type="text" placeholder="description" disabled></p>
     <br>
-    <button id="cancel" type="button" onclick="window.location.href = '../index.html'"> Список фильмов </button>
+    <button id="edit" type="button" onclick= "goToEdit()"> Редактирование фильма </button>
+    <br>
+    <button id="edit" type="button" onclick="window.location.href = '../index.html'"> Список фильмов </button>
     <br>
     
 </form>

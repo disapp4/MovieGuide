@@ -7,11 +7,12 @@ let movieId = params.get('movieId');
     $("#id_input1").val(movieId);
     $("#title_input1").val(movie.title);
     $("#description_input1").val(movie.description)
-    setPoster(movie);
+    showPoster(movie);
+    showImages(movie);
   })
 }
 
-function setPoster(movie){
+function showPoster(movie){
   let posterId = movie.posterId;
     if (posterId !== null) {
       $("#poster").attr("src", "https://movie-guide-backend.ntrubkin.ru/movies/" + movieId + "/poster");
@@ -21,4 +22,20 @@ function setPoster(movie){
     }
 }
 
+function showImages(movie){
+  for (let i=0; i<movie.imageIds.length; i++){
+    let one=`<img class="image" src="https://movie-guide-backend.ntrubkin.ru/images/`;
+    let two = movie.imageIds[i];
+    let three = `">`
+    let imageHTML = one +two+three;
+    $("#images").append(imageHTML);
+    }
+    
+  }
+  
 getMovie();
+
+function goToEdit(){
+  window.location.href = "../changeMovie/changeMovie.html?movieId="+ movieId;
+ 
+}
