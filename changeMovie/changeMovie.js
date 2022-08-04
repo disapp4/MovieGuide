@@ -86,8 +86,3 @@ function postMovieImages(event) {
 
 showEditMovieForm(movieId);
 
-/*function deletePoster(movieId) {
-  callDeletePoster(movieId, () => window.location.href = "../index.html")
-}
-
-$("#poster").click(function(movieId){callDeletePoster(movieId,)})*/

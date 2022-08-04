@@ -30,12 +30,7 @@ function showImages(movie){
     let imageHTML = one +two+three;
     $("#images").append(imageHTML);
     }
-      /*$(".image").click(function(){
     
-    window.open ('../openImages/openImages.html?movieId='+ imageId);
-    alert("hello")
-
-  })*/
   }
   
 getMovie();
