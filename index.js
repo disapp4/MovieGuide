@@ -3,6 +3,10 @@ const moviesItemTemplate = ` <div class="movie">
 <button type="button" onclick="deleteMovie('{0}')" class="movie_delete_button"> <i class="fa fa-trash"></i> </button>
 <button type="button" onclick="window.location.href = 'changeMovie/changeMovie.html?movieId={0}' " class="movie_change_button"> <i class="fa fa-pencil"></i> </button>
 </div >`;
+let roles = [];
+
+
+
 let pageRequest = { number: 0, size: 2, field: "title", order: "asc" }
 $("#pageSize").on('change', function () {
   pageRequest.size = this.value;
@@ -23,10 +27,17 @@ $("#pageSortOrder").on('change', function () {
 });
 
 function viewMovies() {
+
   $("#pageNumber").text("***");
   $("#movie_list").children().remove();
   callGetMovies(
     (moviesPage) => {
+      if (roles.includes("ROLE_ADMIN")) {
+
+        $(".movie_delete_button").css("display", "block");
+        $(".movie_change_button").css("display", "block")
+      }
+
       drawMovies(moviesPage);
       $("#pageNumber").text(pageRequest.number);
     },
@@ -92,6 +103,13 @@ function goToPreviousPage() {
     $("#pageNumber").text(pageRequest.number);
     viewMovies()
   }
-
 }
-viewMovies();
+
+
+callGetCurrentUser((user) => {
+  roles = user.roles;
+  viewMovies();
+  if (roles.includes("ROLE_ADMIN")) {
+    $("#add").css("display", "block")
+  }
+});
