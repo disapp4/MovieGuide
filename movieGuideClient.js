@@ -1,5 +1,5 @@
 const host = "https://movie-guide-backend.ntrubkin.ru/";
-const moviesUrl = host + "movies/";
+const moviesUrl = host + "movies";
 const usersUrl = host + "users/";
 
 $.ajaxSetup({
@@ -9,9 +9,9 @@ $.ajaxSetup({
     crossDomain: true,
 });
 
-function callGetAllMovies(onSuccess) {
+function callGetMovies(onSuccess, pageRequest) {
     $.ajax({
-        url: moviesUrl,
+        url: moviesUrl +`?page=`+pageRequest.number+`&size=`+pageRequest.size+`&sort=`+pageRequest.field+`,`+pageRequest.order,
         method: 'get',
         success: onSuccess,
         error: onRequestError,
@@ -33,7 +33,7 @@ function callPostMovie(createMovieRequest, onSuccess) {
 
 function callGetMovie(movieId, onSuccess) {
     $.ajax({
-        url: moviesUrl + movieId,
+        url: moviesUrl + `/`+ movieId,
         method: 'get',
         dataType: 'json',
         success: onSuccess,
@@ -44,7 +44,7 @@ function callGetMovie(movieId, onSuccess) {
 
 function callPutMovie(movie, onSuccess) {
     $.ajax({
-        url: moviesUrl + movie.id,
+        url: moviesUrl + `/`+ movie.id,
         method: 'put',
         contentType: "application/json",
         data: JSON.stringify({ title: movie.title, description: movie.description }),
@@ -55,7 +55,7 @@ function callPutMovie(movie, onSuccess) {
 
 function callDeleteMovie(movieId, onSuccess) {
     $.ajax({
-        url: moviesUrl + movieId,
+        url: moviesUrl + `/`+ movieId,
         method: 'delete',
         success: onSuccess,
         error: onRequestError
@@ -114,7 +114,7 @@ function callPutMoviePoster(imageFile, movieId, onSuccess) {
     const formData = new FormData();
     formData.append('imageFile', imageFile);
     $.ajax({
-        url: moviesUrl + movieId + "/poster",
+        url: moviesUrl + `/`+ movieId + "/poster",
         data: formData,
         cache: false,
         contentType: false,
@@ -131,7 +131,7 @@ function callPostMovieImage(imageFile, movieId, onSuccess) {
     const formData = new FormData();
     formData.append('imageFile', imageFile);
     $.ajax({
-        url: moviesUrl + movieId + "/images",
+        url: moviesUrl + `/`+ movieId + "/images",
         data: formData,
         cache: false,
         contentType: false,
@@ -145,7 +145,7 @@ function callPostMovieImage(imageFile, movieId, onSuccess) {
 
 function callGetImage(movieId, onSuccess) {
     $.ajax({
-        url: moviesUrl + movieId,
+        url: moviesUrl + `/`+ movieId,
         method: 'get',
         dataType: 'json',
         success: onSuccess,
@@ -154,14 +154,8 @@ function callGetImage(movieId, onSuccess) {
     });
 }
 
-function callDeletePoster(movieId, onSuccess) {
-    $.ajax({
-        url: moviesUrl + movieId + "/poster",
-        method: 'delete',
-        success: onSuccess,
-        error: onRequestError
-    });
-}
+
+
 function onRequestError(error) {
     
     if (error.status == 401) {

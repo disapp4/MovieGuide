@@ -268,24 +268,10 @@ a:hover {
     color: rgb(255, 255, 255);
 }
 
-.previous_page {
-    background-color: rgb(52, 174, 255);
-    color: rgb(255, 255, 255);
-    border:  2px solid cornflowerblue;
-    padding: 14px 14px;
-    cursor: pointer;
-}
 
-.next_page {
-    background-color: rgb(52, 174, 255);
-    color: rgb(255, 255, 255);
-    border:  2px solid cornflowerblue;
-    padding: 14px 14px;
-    cursor: pointer;
-}
 .pages {
     width: 100%;
-    height: 30px;
+    height: 40px;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -293,16 +279,112 @@ a:hover {
     align-items: center;
     justify-content: right;
   }
-  .current_page {
-    background-color: rgb(52, 174, 255);
-    color: rgb(255, 255, 255);
-    border:  2px solid cornflowerblue;
-    padding: 15.5px 15px;
-    display: flex;	 	
-  }
-
 
 .current_page:hover {
     background-color: cornflowerblue;
     color: rgb(255, 255, 255);
 }
+
+.button{
+    color: #ffffff;
+    background-color: rgb(52, 174, 255);
+    width: 50px;
+    height: 30px;
+    border-radius: 45px;
+    margin: 10px 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+    #pageNumber{
+        color: #ffffff;
+        background: rgb(52, 174, 255);
+        width: 50px;
+        height: 30px;
+        line-height: 20px;
+        border-radius: 45px;
+        margin: 10px 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+}
+.button:hover {
+    background: rgb(52, 174, 255);
+    color: #ffffff;
+    transform: translateY(-7px);
+}
+#pageSize {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+    width: 40px;
+    height: 30px;
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертан*/
+}
+#pageSize:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+ 
+  }
+  #pageSortField {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+    width: 100px;
+    height: 30px;
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертан*/
+}
+#pageSortField:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+ 
+  }
+  #pageSortOrder {
+    color: #000000;
+    background: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .1);
+    transition: .3s;/* анимация   */
+    display: inline-block;/*  позволяет задать размеры и нет разрыва строки после элемента */
+    width: 100px;
+    height: 30px;
+    line-height: 20px;/* межстрочный интервал  */
+    border-radius: 45px;/* скругленные углы */
+    margin: 20px 20px; /* внешний отступ  */
+    font-family: 'Montserrat', sans-serif;/* шрифт  */
+    font-size: 11px;/* размер шрифта  */
+    text-transform: uppercase;/* верхний регистр  */
+    text-align: center; /*расположение текста*/
+    letter-spacing: 3px; /*  расстояние между буквами*/
+    font-weight: bold; /* начертан*/
+}
+#pageSortOrder:hover {
+    background: rgb(52, 174, 255);
+    color: rgb(0, 0, 0);
+ 
+  }
