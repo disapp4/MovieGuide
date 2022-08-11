@@ -97,13 +97,13 @@ function callLogIn(username, password, onSuccess, onError) {
     });
 }
 
-function callPostUsers(username,password,onSuccess, onError) {
+function callPostUsers(createUserRequest,onSuccess, onError) {
     $.ajax({
         url: usersUrl,
         method: 'post',
         contentType: "application/json",
         dataType: 'json',
-        data: JSON.stringify(),
+        data: JSON.stringify(createUserRequest),
         success: onSuccess,
         error: onError
     });
