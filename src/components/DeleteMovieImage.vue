@@ -30,20 +30,17 @@ export default {
         },
         backToEditMoviePage() {
             router.push({ name: 'editMovie' })
-
         },
         backToMainPage() {
             router.push({ name: 'mainPage' })
         },
         deleteMoviePoster() {
-            if (this.movie.posterId == null) { console.log('сделать кнопку неактивной') }
+            if (this.movie.posterId == null) {}
             else { this.moviePoster = 'delete' }
         },
         deleteMovieImage(url) {
             this.movieImageIds.push(url.imageId)
-            console.log('картинка удалена')
-
-        }
+            }
 
     },
     computed: {
@@ -85,14 +82,14 @@ export default {
     <input type="text" v-model="movie.description" placeholder="description" disabled>
     <br>
     <div class="container">
-        <img class="preview" :src='newPosterURL' />
-        <button class="delete" v-on:click="deleteMoviePoster"> Х </button>
+        <img class="preview" :src='newPosterURL'   v-on:click="deleteMoviePoster"/>
+      
     </div>
 
 
     <div class="files">
         <div v-for="url in filesUrls">
-            <img class="preview" :src='url.url' v-on:click="() => deleteMovieImage(url)" />
+            <img  class="preview" :src='url.url' v-on:click="() => deleteMovieImage(url)" />
         </div>
     </div>
 
@@ -116,8 +113,9 @@ export default {
     height: 250px
 }
 
-.preview:hover {
-    opacity: 0.7
+
+.preview:hover{
+    opacity: 0.5
 }
 
 .container {
