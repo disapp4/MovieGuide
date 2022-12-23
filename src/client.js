@@ -99,9 +99,9 @@ export default {
             error: onError
         });
     },
-    
+
     putMoviePosterSync: function (imageFile, movieId) {
-console.log(imageFile);
+        console.log(imageFile);
         const formData = new FormData();
         formData.append('imageFile', imageFile);
         $.ajax({
@@ -120,7 +120,7 @@ console.log(imageFile);
         const formData = new FormData();
         formData.append('imageFile', imageFile);
         $.ajax({
-            url: "https://movie-guide-backend.ntrubkin.ru/movies/"+ movieId + "/images",
+            url: "https://movie-guide-backend.ntrubkin.ru/movies/" + movieId + "/images",
             data: formData,
             cache: false,
             contentType: false,
@@ -139,19 +139,19 @@ console.log(imageFile);
             error: this.onRequestError
         });
     },
-    deletePoster: function(movieId, onSuccess){
+    deletePoster: function (movieId, onSuccess) {
         $.ajax({
-            url: "https://movie-guide-backend.ntrubkin.ru/movies/" + movieId + "/poster" ,
-            method:'delete',
+            url: "https://movie-guide-backend.ntrubkin.ru/movies/" + movieId + "/poster",
+            method: 'delete',
             success: onSuccess,
             error: this.onRequestError
 
         })
     },
-    deleteImage: function (movieId, imageId, onSuccess){
+    deleteImage: function (movieId, imageId, onSuccess) {
         $.ajax({
             url: "https://movie-guide-backend.ntrubkin.ru/movies/" + movieId + "/images/" + imageId,
-            method:'delete',
+            method: 'delete',
             success: onSuccess,
             error: this.onRequestError
 

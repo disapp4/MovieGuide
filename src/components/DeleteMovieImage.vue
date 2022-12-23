@@ -39,6 +39,7 @@ export default {
             else { this.moviePoster = 'delete' }
         },
         deleteMovieImage(url) {
+            console.log('удален')
             this.movieImageIds.push(url.imageId)
             }
 
@@ -94,9 +95,9 @@ export default {
     </div>
 
 
-    <button v-on:click="deleteMovieImageThroughForm"> Сохранить </button>
-    <button v-on:click="backToEditMoviePage"> Отмена </button>
-    <button v-on:click="backToMainPage"> Список фильмов </button>
+    <v-btn v-on:click="deleteMovieImageThroughForm"> Сохранить </v-btn>
+    <v-btn v-on:click="backToEditMoviePage"> Отмена </v-btn>
+    <v-btn v-on:click="backToMainPage"> Список фильмов </v-btn>
 </template>
 <style scoped>
 .files {

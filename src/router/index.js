@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from "../components/MainPage.vue";
 import AddMovie from "../components/AddMovie.vue";
 import EditMovie from "../components/EditMovie.vue";
@@ -7,6 +7,7 @@ import Authorization from "../components/Authorization.vue";
 import FavouriteMovies from "../components/FavouriteMovies.vue";
 import InformationAboutMovie from "../components/InformationAboutMovie.vue";
 import DeleteMovieImage from "../components/DeleteMovieImage.vue";
+
 
 
 const router = createRouter({
@@ -20,8 +21,7 @@ const router = createRouter({
     { path: '/information/:id',  component: InformationAboutMovie, name: "informationAboutMovie" },
     { path: '/registration',  component: Registration, name: "registration" },
     { path: '/',  component: Authorization, name: "authorization" },
-  
-  
+    
   ],
 });
 

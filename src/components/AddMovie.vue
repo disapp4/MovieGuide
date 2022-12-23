@@ -81,8 +81,8 @@ export default {
             </div>
         </div>
         <br>
-        <button id="add" type="button" v-on:click="addMovieThroughForm"> Отправить </button>
-        <button v-on:click="backToMainPage"> Отмена</button>
+        <v-btn id="add" type="button" v-on:click="addMovieThroughForm"> Отправить </v-btn>
+        <v-btn v-on:click="backToMainPage"> Отмена</v-btn>
         <br>
     </form>
 </template>

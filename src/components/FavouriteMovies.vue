@@ -26,6 +26,6 @@ methods: {
 <template>
 <h1> Список любимых фильмов </h1>
 
-<button v-on:click="backToMainPage"> Назад </button>
+<v-btn v-on:click="backToMainPage"> Назад </v-btn>
 
 </template>
