@@ -3,9 +3,13 @@
 export default {
     data() {
         return {
+            sizeValues: [2, 5, 10],
+            sortFieldValues: ['id', 'title'],
+            sortOrderValues: ['asc', 'desc'],
             pageSize: 5,
             pageSortField: 'title',
-            pageSortOrder: 'asc'
+            pageSortOrder: 'asc',
+
         }
     },
     props: {
@@ -18,16 +22,13 @@ export default {
     },
     emits: ['changePageSortField', 'changePageSortOrder', 'changePageSize'],
     methods: {
-        changePageSize(event) {
-            this.pageSize = event.target.value;
+        changePageSize() {
             this.$emit('changePageSize', this.pageSize)
         },
-        changePageSortField(event) {
-            this.pageSortField = event.target.value
+        changePageSortField() {
             this.$emit('changePageSortField', this.pageSortField)
         },
-        changePageSortOrder(event) {
-            this.pageSortOrder = event.target.value
+        changePageSortOrder() {
             this.$emit('changePageSortOrder', this.pageSortOrder)
         }
     }
@@ -35,25 +36,19 @@ export default {
 </script>
 <template>
 
-    <p>
-        <span> Сортировать: </span>
-        <label> pageSize</label>
-        <select v-model="pageSize" v-on:change="(event) => changePageSize(event)">
-            <option value="2">2</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-        </select>
+    <h4> Сортировать: </h4>
+    <v-col class="d-flex" cols="12" sm="7" >
+        <v-select label="pageSize" :items="sizeValues" v-model="pageSize"
+            v-on:update:modelValue="changePageSize">
+        </v-select>
 
-        <label> pageSortField</label>
-        <select v-model="pageSortField" v-on:change="(event) => changePageSortField(event)">
-            <option value="id">Id</option>
-            <option value="title">Title</option>
+        <v-select label="pageSortField" :items="sortFieldValues" v-model="pageSortField"
+            v-on:update:modelValue="changePageSortField">
+        </v-select>
 
-        </select>
-        <label> pageSortOrder</label>
-        <select v-model="pageSortOrder" v-on:change="(event) => changePageSortOrder(event)">
-            <option value="asc">По возрастанию</option>
-            <option value="desc">По убыванию</option>
-        </select>
-    </p>
+        <v-select label="pageSortOrder" v-model="pageSortOrder" :items="sortOrderValues"
+            v-on:update:modelValue="changePageSortOrder">
+
+        </v-select></v-col>
+
 </template>

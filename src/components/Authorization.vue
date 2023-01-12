@@ -4,15 +4,11 @@ import client from "../client";
 export default {
     data() {
         return {
-
             username: '',
             password: ''
-
         }
     },
-    props: {
-
-    },
+    
     methods: {
         logIn() {
 
@@ -26,13 +22,28 @@ export default {
 }
 </script> 
 <template>
+  
 
-    <p> <label for="name"> Username: </label><input id="username" v-model="username" type="string" placeholder="логин">
-    </p>
-    <p> <label for="name"> Password: </label><input id="password" v-model="password" type="password"
-            placeholder="пароль"></p>
-    <br>
-    <button id="log_in" type="button" v-on:click="logIn"> Войти </button>
-    <br>
-    <button id="registration" type="button" v-on:click="goToRegistration"> Регистрация </button>
+    <v-card>
+        <v-card-text>
+            <v-form>
+                <v-toolbar  color="black">
+                        <v-toolbar-title>Авторизация</v-toolbar-title></v-toolbar>
+                <v-col cols="12" sm="6"> Username:
+                    <v-text-field label="Enter your username" v-model="username" name="username"
+                        prepend-inner-icon="mdi-mail" type="string" clearable filled ></v-text-field></v-col>
+                        <v-col cols="12" sm="6"> Password:
+                    <v-text-field label="Enter your password" v-model="password" name="password"
+                        prepend-inner-icon="mdi-lock" type="password" clearable filled ></v-text-field></v-col>
+                        <v-btn id="log_in" v-on:click="logIn" color="black"  > Войти </v-btn> 
+                        <v-card-actions>
+                            Нет аккаунта? <v-btn id="registration" v-on:click="goToRegistration"  color="black" > Регистрация </v-btn>
+                        </v-card-actions>
+            </v-form>
+        </v-card-text>
+    </v-card>
+   
+    
+    
+  
 </template>

@@ -42,19 +42,19 @@ export default {
             router.push({ name: 'mainPage' })
 
         },
-        putMoviePoster(event) {
+        putMoviePoster() {
             this.visible = false;
             this.posterFile = event.target.files[0];
             this.changedPosterURL = this.posterFile ? URL.createObjectURL(this.posterFile) : null;
         },
-        putMovieImages(event) {
+        putMovieImages() {
             this.visible = false;
             let uploadedFiles = event.target.files;
             for (var i = 0; i < uploadedFiles.length; i++) {
                 this.imageFiles.push(uploadedFiles[i]);
             }
         },
-        
+
         deleteMovieImage() {
             router.push({ name: 'deleteMovieImage', params: { id: this.movie.id } })
         },
@@ -94,41 +94,50 @@ export default {
 }
 </script>
 <template>
-    <input type="text" v-model="movie.title" placeholder="title">
-    <br>
-    <input type="text" v-model="movie.description" placeholder="description">
-    <br>
-    <button id="disabled" v-on:click="(movie) => deleteMovieImage(movie)" v-show="visible"> Режим удаления </button>
-    <br>
-    <label for="image_to_save" id="image_to_save2"> Изменить постер </label>
-    <input id="image_to_save" type="file" accept="image/jpeg" v-on:change="(event) => putMoviePoster(event)" />
-    <br>
-    <img class="preview" :src='newPosterURL' />
-    <br>
-    
 
-    <br>
-    <label for="images_to_save" id="images_to_save2"> Добавить изображения </label>
-    <input id="images_to_save" type="file" multiple accept="image/jpeg"
-        v-on:change="(event) => putMovieImages(event)" />
-    <br>
-
-    <div class="files">
-        <div v-for="url in filesUrls">
-            <img class="preview" :src='url' />
-        </div>
-        <div v-for="url in addedFilesUrls">
-            <img class="preview" :src='url' />
-        </div>
+  
 
 
-    </div>
+    <v-card>
+        <v-card-text>
+            <v-form>
+                <v-toolbar color="black">
+                    <v-toolbar-title>Редактировать</v-toolbar-title></v-toolbar>
+                <br>
+                <v-col cols="12" sm="6"> Title:
+                    <v-text-field v-model="movie.title" placeholder="title" prepend-inner-icon="mdi-mail"
+                        type="text"></v-text-field></v-col>
+                <v-col cols="12" sm="6"> Description:
+                    <v-text-field v-model="movie.description" placeholder="description" prepend-inner-icon="mdi-mail"
+                        type="text"></v-text-field></v-col>
+                <v-col cols="12" sm="4"> <v-file-input label="Добавить постер" v-on:update:modelValue="putMoviePoster"
+                        variant="filled" prepend-icon="mdi-camera"></v-file-input></v-col>
+                <v-col cols="12" sm="4"> <v-file-input label="Добавить изображения"
+                        v-on:update:modelValue="putMovieImages" multiple variant="filled"
+                        prepend-icon="mdi-camera"></v-file-input></v-col>
+                <v-img class="preview" :src="newPosterURL"></v-img>
 
-    <br>
-    <button v-on:click="editMovieThroughForm"> Сохранить </button>
-    <button v-on:click="backToMainPage"> Отмена </button>
+                <br>
+                <div class="files">
+                    <div v-for="url in filesUrls">
+                        <img class="preview" :src='url' />
+                    </div>
 
+                    <div v-for="url in addedFilesUrls">
+                        <img class="preview" :src='url' />
+                    </div>
+                </div>
 
+                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
+                    Сохранить </v-btn> <v-btn id="registration" prepend-icon="mdi-delete" v-on:click="deleteMovieImage"
+                    color="black" v-show="visible"> Режим удаления</v-btn>
+                <v-card-actions>
+                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
+                        color="black"> Назад </v-btn>
+                </v-card-actions>
+            </v-form>
+        </v-card-text>
+    </v-card>
 </template>
 
 <style scoped>
