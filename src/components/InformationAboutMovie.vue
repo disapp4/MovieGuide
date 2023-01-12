@@ -74,7 +74,7 @@ export default {
                     <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
                         type="text" class="text-right"></v-text-field></v-col>
                 <v-col cols="12" sm="6"> Title:
-                    <v-text-field v-model="movie.title" placeholder="title" disabled prepend-inner-icon="mdi-lock"
+                    <v-text-field v-model="movie.title" placeholder="title" disabled prepend-inner-icon="mdi-mail"
                         type="text"></v-text-field></v-col>
                 <v-col cols="12" sm="6"> Description:
                     <v-text-field v-model="movie.description" placeholder="description" disabled

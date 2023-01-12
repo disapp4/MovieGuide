@@ -1,12 +1,12 @@
 <script>
 import Movies from "./Movies.vue";
- import Paginator from "./Paginator.vue";
- import Sorting from "./Sorting.vue";
- import client from "../client"
- import router from "../router";
+import Paginator from "./Paginator.vue";
+import Sorting from "./Sorting.vue";
+import client from "../client"
+import router from "../router";
 
 export default {
-     components: { Movies, Paginator, Sorting },
+    components: { Movies, Paginator, Sorting },
     data() {
         return {
             currentPage: null,
@@ -17,7 +17,7 @@ export default {
     },
     methods: {
         logOut() {
-           
+
             client.logOut(router.push({ name: 'authorization' }))
         },
         deleteMovieFromList(movie) {
@@ -81,7 +81,7 @@ export default {
                 }
             )
         },
-       
+
     },
 };
 
@@ -89,35 +89,39 @@ export default {
 
 
 <template>
-    <v-toolbar color="black" title="Movie Guide"
-    
-    >  <v-btn prepend-icon="mdi-export" v-on:click="logOut">
-        Выйти
-      </v-btn></v-toolbar>
+    <v-toolbar color="black" title="Movie Guide"> <v-btn prepend-icon="mdi-export" v-on:click="logOut">
+            Выйти
+        </v-btn></v-toolbar>
 
     <h1> Список фильмов </h1>
-    <v-btn v-on:click="addMovieOnPage">Добавить фильм </v-btn>
-    <v-btn v-on:click="favouriteMoviesPage"> Список любимых фильмов </v-btn>
-   
+
+    <v-card><v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
+            Добавить фильм </v-btn> <v-btn id="log_in" prepend-icon="mdi-book-heart" v-on:click="favouriteMoviesPage" color="black">
+            Любимые фильмы </v-btn></v-card>
+        
+        
+        
+
+
 
     <v-main>
-      <Sorting :page="currentPage" v-on:changePageSortField='onPageSortField' v-on:changePageSortOrder='onPageSortOrder'
-        v-on:changePageSize='onPageSize' ref="sorting"/>
-    </v-main> 
-
-        <v-main>
-      <Movies :movieList="currentPage?.content" v-on:deleteMovie="(movie) => deleteMovieFromList(movie)"
-        v-on:editMovie="(movie) => editMovieFromList(movie)"
-        v-on:addMovieToFavouriteList="(movie) => addMovieToFavouriteList(movie)"
-        v-on:informationAboutMovie="(movie) => informationAboutMovie(movie)" />
+        <Sorting :page="currentPage" v-on:changePageSortField='onPageSortField'
+            v-on:changePageSortOrder='onPageSortOrder' v-on:changePageSize='onPageSize' ref="sorting" />
     </v-main>
 
-    
     <v-main>
-      <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
+        <Movies :movieList="currentPage?.content" v-on:deleteMovie="(movie) => deleteMovieFromList(movie)"
+            v-on:editMovie="(movie) => editMovieFromList(movie)"
+            v-on:addMovieToFavouriteList="(movie) => addMovieToFavouriteList(movie)"
+            v-on:informationAboutMovie="(movie) => informationAboutMovie(movie)" />
     </v-main>
-   
-    
+
+
+    <v-main>
+        <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
+    </v-main>
+
+
 
 
 </template>
@@ -125,7 +129,7 @@ export default {
 <style scoped>
 .paginator {
     position: absolute;
-     }
+}
 </style>
 
 

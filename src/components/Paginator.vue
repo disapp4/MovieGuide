@@ -5,6 +5,7 @@ export default {
             pageNumber: 0,
             pageNumberView: 1,
             totalPagesView: 5,
+           
         }
     },
     props: {
@@ -16,7 +17,7 @@ export default {
             this.pageNumber = this.page.number
             this.pageNumberView = this.pageNumber + 1
             this.totalPagesView = this.page.totalPages
-            console.log(this.totalPagesView)
+        
         }
     },
     methods: {
@@ -29,6 +30,7 @@ export default {
             this.$emit("changePageNumber", this.pageNumber)
 
         },
+        
     }
 
 }
@@ -38,8 +40,8 @@ export default {
 <template>
     <p>
     <div class="text-center">
-        <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="3" v-on:next="goToNextPage"
-            v-on:prev="goToPreviousPage" ></v-pagination>
+        <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4" v-on:next="goToNextPage"
+            v-on:prev="goToPreviousPage"  ></v-pagination>
     </div>
 
     </p>

@@ -78,26 +78,46 @@ export default {
 </script>
 
 <template>
-    <input type="text" v-model="movie.title" placeholder="title" disabled>
-    <br>
-    <input type="text" v-model="movie.description" placeholder="description" disabled>
-    <br>
-    <div class="container">
-        <img class="preview" :src='newPosterURL'   v-on:click="deleteMoviePoster"/>
-      
-    </div>
+    
+  
 
 
-    <div class="files">
-        <div v-for="url in filesUrls">
-            <img  class="preview" :src='url.url' v-on:click="() => deleteMovieImage(url)" />
-        </div>
-    </div>
 
 
-    <v-btn v-on:click="deleteMovieImageThroughForm"> Сохранить </v-btn>
-    <v-btn v-on:click="backToEditMoviePage"> Отмена </v-btn>
-    <v-btn v-on:click="backToMainPage"> Список фильмов </v-btn>
+    <v-card>
+        <v-card-text>
+            <v-form>
+                <v-toolbar color="black">
+                    <v-toolbar-title>Режим удаления</v-toolbar-title></v-toolbar>
+                <br>
+                <v-col cols="12" sm="6"> Title:
+                    <v-text-field v-model="movie.title" placeholder="title" prepend-inner-icon="mdi-mail"
+                        type="text"></v-text-field></v-col>
+                <v-col cols="12" sm="6"> Description:
+                    <v-text-field v-model="movie.description" placeholder="description" prepend-inner-icon="mdi-mail"
+                        type="text"></v-text-field></v-col>
+                
+                <v-img class="preview" :src="newPosterURL" v-on:click="deleteMoviePoster"></v-img>
+
+                <br>
+                <div class="files">
+                    <div v-for="url in filesUrls">
+                        <img class="preview" :src='url.url' v-on:click="deleteMovieImage(url)"/>
+                    </div>
+
+             
+                </div>
+
+                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="deleteMovieImageThroughForm" color="black">
+                    Сохранить </v-btn> <v-btn id="registration" prepend-icon="mdi-list-box-outline" v-on:click="backToMainPage"
+                    color="black" > Список фильмов </v-btn>
+                <v-card-actions>
+                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToEditMoviePage"
+                        color="black"> Назад </v-btn>
+                </v-card-actions>
+            </v-form>
+        </v-card-text>
+    </v-card>
 </template>
 <style scoped>
 .files {
