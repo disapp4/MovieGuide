@@ -1,6 +1,6 @@
 <script lang="ts">
 import router from "../router/index.js";
-import { client } from "../AxiosClient";
+import { client } from "../Client";
 import { defineComponent, ref } from "vue";
 
 type Data = {

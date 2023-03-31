@@ -1,6 +1,6 @@
 <script lang="ts">
 import router from "../router/index.js"
-import { client } from "../AxiosClient"
+import { client } from "../Client"
 import { defineComponent} from "vue"
 import { CreateUserRequest} from "../models/CreateUserRequest"
 import { CreateUserResponse} from "../models/CreateUserResponse"

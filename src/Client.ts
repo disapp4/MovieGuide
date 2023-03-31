@@ -9,7 +9,7 @@ import { CreateMovieResponse } from "./models/CreateMovieResponse";
 import { User } from "./models/User";
 
 
-export class AxiosClient {
+export class Client {
 
     private axiosInstance = axios.create({
         withCredentials: true,
@@ -94,6 +94,6 @@ export class AxiosClient {
 }
 
 
-export const client: AxiosClient = new AxiosClient();
+export const client: Client = new Client();
 
 

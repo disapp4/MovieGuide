@@ -7,7 +7,7 @@ import { Page } from "../models/Page";
 import router from "../router";
 import { defineComponent } from "vue";
 import {  AxiosResponse } from "axios";
-import { client } from "../AxiosClient";
+import { client } from "../Client";
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
