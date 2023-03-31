@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from 'jquery'
 $.ajaxSetup({
     xhrFields: {
         withCredentials: true
@@ -6,7 +6,7 @@ $.ajaxSetup({
     crossDomain: true,
 });
 export default {
-    getMovies: function (onSuccess, pageRequest) {
+    getMovies: function (onSuccess:Function, pageRequest:Any) {
         $.ajax({
             url: "https://movie-guide-backend.ntrubkin.ru/movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order,
             method: 'get',

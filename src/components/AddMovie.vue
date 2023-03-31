@@ -1,13 +1,25 @@
-<script>
+<script lang="ts">
+import router from "../router/index.js";
+import { client } from "../AxiosClient";
+import { defineComponent, ref } from "vue";
+import { CreateMovieRequest } from "../models/CreateMovieRequest";
+import { CreateMovieResponse } from "../models/CreateMovieResponse";
+import { AxiosResponse } from "axios";
 
-import router from "../router";
-import client from "../client";
+type Data = {
+    title: string
+    description: string ,
+    imageFiles: Array<File> | null,
+    posterFile: File | null,
+    posterURL: string,
+    imagesURL: string
+}
 
-export default {
-    data() {
+export default defineComponent({
+    data(): Data {
         return {
-            movie: {},
-            movieList: [],
+            title: "",
+            description: "",
             imageFiles: [],
             posterFile: null,
             posterURL: "no_poster.jpg",
@@ -15,43 +27,50 @@ export default {
         };
     },
     computed: {
-        filesUrls() {
-            return this.imageFiles.map(item => URL.createObjectURL(item))
-        }
-    },
+        addedFilesUrls() {
+            if (this.imageFiles) {
+                return this.imageFiles.map(item => URL.createObjectURL(item))
+            }
+    }},
     methods: {
         addMovieThroughForm() {
-            client.postMovie(this.movie,
-                (movieId) => {
+            let createMovieRequest = new CreateMovieRequest();
+            createMovieRequest.title = this.title;
+            createMovieRequest.description = this.description;
+            client.postMovie(createMovieRequest)
+                .then((response: AxiosResponse<CreateMovieResponse>) => {
+                    let imagePromises = [];
                     if (this.posterFile) {
-                        client.putMoviePosterSync(this.posterFile, movieId.id)
+                        imagePromises.push(client.putMoviePoster(this.posterFile, response.data.id));
                     }
-
+                    if (this.imageFiles)
                     for (let i = 0; i < this.imageFiles.length; i++) {
-                        client.postMovieImageSync(this.imageFiles[i], movieId.id)
-                    };
-                    router.push({ name: 'mainPage' })
-                })
+                        imagePromises.push(client.postMovieImage(this.imageFiles[i], response.data.id));
+                    }
+                    Promise.all(imagePromises)
+                        .then(() => router.push({ name: "mainPage" }));
+                });
         },
         backToMainPage() {
-            router.push({ name: 'mainPage' })
+            router.push({ name: "mainPage" });
         },
-        putMoviePoster() {
-            this.posterFile = event.target.files[0];
-            if (this.posterFile != null) {
-                this.posterURL = URL.createObjectURL(this.posterFile)
-            }
-            else { this.posterURL = "no_poster.jpg" }
-        },
-        putMovieImages() {
-            let uploadedFiles = event.target.files;
-            for (var i = 0; i < uploadedFiles.length; i++) {
-                this.imageFiles.push(uploadedFiles[i]);
+        putMoviePoster(files: Array<File>) {
+            this.posterFile = files[0];
+                     if (this.posterFile != null) {
+                this.posterURL = URL.createObjectURL(this.posterFile);
+            } else {
+                this.posterURL = "no_poster.jpg";
             }
         },
+        putMovieImages(files: Array<File>) {
+              let uploadedFiles: Array<File> = files;
+                          if (this.imageFiles)
+               for (let i = 0; i < uploadedFiles.length; i++) {
+                   this.imageFiles.push(uploadedFiles[i]);
+               }
+        }
     }
-};
-
+});
 </script>
 <template>
 
@@ -59,51 +78,62 @@ export default {
         <v-card-text>
             <v-form>
                 <v-toolbar color="black">
-                    <v-toolbar-title>Создание фильма</v-toolbar-title></v-toolbar>
-                
-                <v-col cols="12" sm="6"> Title:
-                    <v-text-field v-model="movie.title" placeholder="title" prepend-inner-icon="mdi-mail"
-                        type="text"></v-text-field></v-col>
-                <v-col cols="12" sm="6"> Description:
-                    <v-text-field v-model="movie.description" placeholder="description" prepend-inner-icon="mdi-mail"
-                        type="text"></v-text-field></v-col>
-                        <v-col cols="12" sm="4"> <v-file-input label="Добавить постер" v-on:update:modelValue="putMoviePoster" variant="filled" prepend-icon="mdi-camera"></v-file-input></v-col>
-                        <v-col cols="12" sm="4"> <v-file-input label="Добавить изображения" v-on:update:modelValue="putMovieImages" multiple variant="filled" prepend-icon="mdi-camera"></v-file-input></v-col>
-                        <v-img class="preview"  :src="posterURL">
-                </v-img>
+                    <v-toolbar-title>Создание фильма</v-toolbar-title>
+                </v-toolbar>
 
+                <v-col cols="12" sm="6"> Title:
+                    <v-text-field v-model="title" placeholder="title" prepend-inner-icon="mdi-mail"
+                                  type="text"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6"> Description:
+                    <v-text-field v-model="description" placeholder="description" prepend-inner-icon="mdi-mail"
+                                  type="text"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                    <v-file-input label="Добавить постер" v-on:update:modelValue="putMoviePoster" variant="filled"
+                                  prepend-icon="mdi-camera"></v-file-input>
+                </v-col>
+                <v-col cols="12" sm="4">
+                    <v-file-input label="Добавить изображения" v-on:update:modelValue="putMovieImages" multiple
+                                  variant="filled" prepend-icon="mdi-camera"></v-file-input>
+                </v-col>
+
+                <img   class="preview2" :src="posterURL"/>
                 <br>
                 <div class="files2">
-                    <div v-for="url in filesUrls">
-                        <img class="preview" :src='url' />
+                    <div v-for="url in addedFilesUrls">
+                        <img class="preview" :src="url" />
                     </div>
                 </div>
-                <v-btn id="log_in" prepend-icon="mdi-pencil" v-on:click="addMovieThroughForm" color="black">
-                    Сохранить </v-btn>
+                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="addMovieThroughForm" color="black">
+                    Сохранить
+                </v-btn>
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
-                        color="black"> Назад </v-btn>
+                           color="black"> Назад
+                    </v-btn>
                 </v-card-actions>
             </v-form>
         </v-card-text>
     </v-card>
-
- 
 </template>
+
 <style scoped>
 .files2 {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
-
-
-
 }
-
 .preview {
     border-radius: 10px;
     margin: 10px 20px;
+    width: 200px;
+    height: 250px
+}
+.preview2 {
+    margin: 10px 20px;
+        border-radius: 10px;
     width: 200px;
     height: 250px
 }

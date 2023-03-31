@@ -1,34 +1,42 @@
-<script >
-import router from "../router";
-import client from "../client";
+<script lang="ts">
+import router from "../router/index.js"
+import { client } from "../AxiosClient"
+import { defineComponent} from "vue"
+import { CreateUserRequest} from "../models/CreateUserRequest"
+import { CreateUserResponse} from "../models/CreateUserResponse"
+import { AxiosResponse } from "axios"
 
-export default {
-    data() {
+type Data = {
+    username:  string,
+    password: string
+}
+export default defineComponent({
+    data(): Data {
         return {
             username: '',
             password: ''
         }
     },
-
     methods: {
         logIn() {
 
             router.push({ name: 'authorization' })
         },
-
         postUsers() {
-            client.postUsers({ username: this.username, password: this.password }, () => {
+            let createUserRequest = new CreateUserRequest();
+            createUserRequest.username = this.username;
+            createUserRequest.password = this.password;
+            client.postUsers(createUserRequest).then( (response: AxiosResponse<CreateUserResponse>) => {
                 router.push({ name: 'authorization' }),
-                alert('Регистрация прошла успешна')},
-                 () => alert("Ошибка при регистрации"))
+                alert('Регистрация прошла успешна')}).
+                catch(() => alert("Ошибка при регистрации"))
         }
     }
-}
-
-</script> 
+})
+</script>
 <template>
 
-    <v-card>
+<v-card>
         <v-card-text>
             <v-form>
                 <v-toolbar color="black">
@@ -46,4 +54,6 @@ export default {
             </v-form>
         </v-card-text>
     </v-card>
+
 </template>
+

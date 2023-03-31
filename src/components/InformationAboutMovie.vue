@@ -1,14 +1,25 @@
-<script >
-import router from "../router";
-import client from "../client";
+<script lang="ts">
+import router from "../router/index.js";
+import { client } from "../AxiosClient";
+import { defineComponent, ref } from "vue";
+import { CreateMovieRequest } from "../models/CreateMovieRequest";
+import { CreateMovieResponse } from "../models/CreateMovieResponse";
+import { AxiosResponse } from "axios";
+import { Movie } from "../models/Movie";
 
+type Data = {
+    movie: Movie,
+    movieIsLoaded: boolean,
+    width:number
 
-export default {
+}
 
-    data() {
+export default defineComponent({
+    data(): Data {
         return {
-            movie: {},
-            movieIsLoaded: false
+            movie: new Movie(),
+            movieIsLoaded: false,
+            width:200
         };
     },
 
@@ -16,75 +27,69 @@ export default {
         this.refreshMovie();
 
     },
-
-
     methods: {
 
         refreshMovie() {
-            client.getMovie(this.$route.params.id, (movie) => { this.movie = movie; this.movieIsLoaded = true; })
+            let movieId: string = (this.$route.params.id as string);
+            client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
+                this.movie = response.data;
+                this.movieIsLoaded = true;
+            });
         },
         editMovieThroughForm() {
-            router.push({ name: 'editMovie' })
+            router.push({ name: "editMovie" });
         },
         backToMainPage() {
-            router.push({ name: 'mainPage' })
-
-        },
-
+            router.push({ name: "mainPage" });
+        }
     },
     computed: {
-        newPosterURL:
-            function () {
-                if (!this.movieIsLoaded) {
-                    return "http://127.0.0.1:5173/loading.jpg"
+            newPosterURL:
+                function () {
+                    if (!this.movieIsLoaded) {
+                        return window.location.origin + "/loading.jpg"
+                    }
+                    if (this.movie.posterId == null) {
+                        return window.location.origin + "/no_poster.jpg"
+                    }
+                    return "https://movie-guide-backend.ntrubkin.ru/movies/" + this.movie.id + "/poster"
+                },
+            movieImageDatas:
+                function () {
+                    if (!this.movieIsLoaded) {
+                        return [window.location.origin + "/loading.jpg"]
+                    }
+                    let imagesUrls = []
+                    for (let i = 0; i < this.movie.imageIds.length; i++) {
+                        imagesUrls.push("https://movie-guide-backend.ntrubkin.ru/images/" + this.movie.imageIds[i])
+                    }
+                    return imagesUrls
                 }
-                if (this.movie.posterId == null) {
-                    return "http://127.0.0.1:5173/no_poster.jpg"
-                }
-                return "https://movie-guide-backend.ntrubkin.ru/movies/" + this.movie.id + "/poster"
-            },
-        filesUrls:
-            function () {
-                if (!this.movieIsLoaded) {
-                    return ["http://127.0.0.1:5173/loading.jpg"]
-                }
+        }
 
-                let imagesUrls = []
-                for (var i = 0; i < this.movie.imageIds.length; i++) {
-                    imagesUrls.push("https://movie-guide-backend.ntrubkin.ru/images/" + this.movie.imageIds[i])
-                }
-                return imagesUrls
-
-
-            }
-    }
-}
+    })
 </script>
 <template>
-
-
     <v-card>
         <v-card-text>
             <v-form>
                 <v-toolbar color="black">
                     <v-toolbar-title>Информация о фильме</v-toolbar-title></v-toolbar>
-                <v-img class="preview" height="200" :src="newPosterURL" cover>
+                <v-img class="preview" height="200"  :src="newPosterURL" cover>
                 </v-img>
+
                 <v-col cols="12" sm="6"> Id:
                     <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
-                        type="text" class="text-right"></v-text-field></v-col>
+                                  type="text" class="text-right"></v-text-field></v-col>
                 <v-col cols="12" sm="6"> Title:
                     <v-text-field v-model="movie.title" placeholder="title" disabled prepend-inner-icon="mdi-mail"
-                        type="text"></v-text-field></v-col>
+                                  type="text"></v-text-field></v-col>
                 <v-col cols="12" sm="6"> Description:
                     <v-text-field v-model="movie.description" placeholder="description" disabled
-                        prepend-inner-icon="mdi-mail" type="text"></v-text-field></v-col>
-
-
-
-                        <br>
+                                  prepend-inner-icon="mdi-mail" type="text"></v-text-field></v-col>
+                <br>
                 <div class="files2">
-                    <div v-for="url in filesUrls">
+                    <div v-for="url in movieImageDatas">
                         <img class="preview" :src='url' />
                     </div>
                 </div>
@@ -92,17 +97,11 @@ export default {
                     Редактировать </v-btn>
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
-                        color="black"> Назад </v-btn>
+                           color="black"> Назад </v-btn>
                 </v-card-actions>
             </v-form>
         </v-card-text>
     </v-card>
-
-
-
-
-
-
 </template>
 <style scoped>
 .files2 {
@@ -110,11 +109,7 @@ export default {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
-
-
-
 }
-
 .preview {
     border-radius: 10px;
     margin: 10px 20px;

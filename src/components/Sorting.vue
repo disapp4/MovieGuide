@@ -1,54 +1,53 @@
-<script>
+<script lang="ts">
+import { Page } from "../models/Page";
+import { defineComponent, PropType } from "vue";
+import { Movie } from "../models/Movie";
 
-export default {
+export default defineComponent({
     data() {
         return {
             sizeValues: [2, 5, 10],
-            sortFieldValues: ['id', 'title'],
-            sortOrderValues: ['asc', 'desc'],
+            sortFieldValues: ["id", "title"],
+            sortOrderValues: ["asc", "desc"],
             pageSize: 5,
-            pageSortField: 'title',
-            pageSortOrder: 'asc',
-
-        }
+            pageSortField: "title",
+            pageSortOrder: "asc"
+        };
     },
     props: {
-        page: Object
+        page: { type: Object as PropType<Page<Movie>> }
     },
     watch: {
-        page: function () {
-            this.pageSize = this.page.size;
+        page: function(newVal, oldVal) {
+            this.pageSize = newVal.size;
         }
     },
-    emits: ['changePageSortField', 'changePageSortOrder', 'changePageSize'],
+    emits: ["changePageSortField", "changePageSortOrder", "changePageSize"],
     methods: {
         changePageSize() {
-            this.$emit('changePageSize', this.pageSize)
+            this.$emit("changePageSize", this.pageSize);
         },
         changePageSortField() {
-            this.$emit('changePageSortField', this.pageSortField)
+            this.$emit("changePageSortField", this.pageSortField);
         },
         changePageSortOrder() {
-            this.$emit('changePageSortOrder', this.pageSortOrder)
+            this.$emit("changePageSortOrder", this.pageSortOrder);
         }
     }
-}
+});
 </script>
 <template>
-
     <h4> Сортировать: </h4>
-    <v-col class="d-flex" cols="12" sm="7" >
+    <v-col class="d-flex" cols="12" sm="7">
         <v-select label="pageSize" :items="sizeValues" v-model="pageSize"
-            v-on:update:modelValue="changePageSize">
+                  v-on:update:modelValue="changePageSize">
         </v-select>
-
         <v-select label="pageSortField" :items="sortFieldValues" v-model="pageSortField"
-            v-on:update:modelValue="changePageSortField">
+                  v-on:update:modelValue="changePageSortField">
         </v-select>
-
         <v-select label="pageSortOrder" v-model="pageSortOrder" :items="sortOrderValues"
-            v-on:update:modelValue="changePageSortOrder">
-
-        </v-select></v-col>
+                  v-on:update:modelValue="changePageSortOrder">
+        </v-select>
+    </v-col>
 
 </template>

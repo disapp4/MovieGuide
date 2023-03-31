@@ -1,31 +1,16 @@
-<script >
-import router from "../router";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
 
-data() {
-    return {
-        movie: { }
+})
 
-    };
-},
-
-methods: {
-    
-   
-    backToMainPage(){
-        router.push({name:'mainPage'})
-
-    }
-}
-
-};
+ 
 </script>
 
-
-
 <template>
-<h1> Список любимых фильмов </h1>
 
-<v-btn v-on:click="backToMainPage"> Назад </v-btn>
+    <h1>
+        favouriteMovies
 
+    </h1>
 </template>

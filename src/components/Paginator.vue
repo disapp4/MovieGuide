@@ -1,48 +1,57 @@
-<script>
-export default {
+<script lang="ts">
+import { Page } from "../models/Page";
+import { defineComponent, PropType } from "vue";
+
+import { Movie } from "../models/Movie";
+
+
+export default defineComponent({
     data() {
         return {
             pageNumber: 0,
             pageNumberView: 1,
-            totalPagesView: 5,
-           
-        }
+            totalPagesView: 5
+
+        };
     },
     props: {
-        page: Object
+        page: { type: Object as PropType<Page<Movie>> }
     },
-
     watch: {
-        page: function () {
-            this.pageNumber = this.page.number
-            this.pageNumberView = this.pageNumber + 1
-            this.totalPagesView = this.page.totalPages
-        
+        page: function (newVal, oldVal) {
+
+            this.pageNumber = newVal.number;
+            this.pageNumberView = this.pageNumber + 1;
+            this.totalPagesView = newVal.totalPages;
+
         }
     },
+    emits: ["changePageNumber"],
+    // setup(_, {emit}){
+    //     const goToNextPage = ()=>{
+    //         this.pageNumber = this.pageNumber + 1;
+    //         emit("changePageNumber", this.pageNumber)
+    //     }
+    // },
     methods: {
         goToNextPage() {
-            this.pageNumber = this.pageNumber + 1
-            this.$emit("changePageNumber", this.pageNumber)
+            this.pageNumber = this.pageNumber + 1;
+            this.$emit("changePageNumber", this.pageNumber);
         },
         goToPreviousPage() {
-            this.pageNumber = this.pageNumber - 1
-            this.$emit("changePageNumber", this.pageNumber)
+            this.pageNumber = this.pageNumber - 1;
+            this.$emit("changePageNumber", this.pageNumber);
 
-        },
-        
+        }
+
     }
-
-}
-
-
+});
 </script>
-<template>
-    <p>
-    <div class="text-center">
-        <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4" v-on:next="goToNextPage"
-            v-on:prev="goToPreviousPage"  ></v-pagination>
-    </div>
 
-    </p>
+<template>
+
+    <div class="text-center">
+        <p> <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4"
+            v-on:next="goToNextPage" v-on:prev="goToPreviousPage"></v-pagination></p>
+    </div>
 </template>
