@@ -13,7 +13,7 @@ export class Client {
 
     private axiosInstance = axios.create({
         withCredentials: true,
-        baseURL: "https://movie-guide-backend.ntrubkin.ru/"
+        baseURL: import.meta.env.VITE_BACKEND_BASE_URL
     });
 
     public async getMovie(movieId: string) {

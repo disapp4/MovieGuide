@@ -1,12 +1,13 @@
 <script lang="ts">
 
 import { defineComponent, PropType } from "vue";
-import { ImageData } from "../models/ImageData";
+import { ImageData } from "@/models/ImageData";
 
 export default defineComponent({
     data() {
         return {
-        isSelected:false}
+            isSelected: false
+        };
     },
     props: {
         imageData: { type: Object as PropType<ImageData>, default: new ImageData() }
@@ -23,9 +24,11 @@ export default defineComponent({
 .selected {
     opacity: 0.5;
 }
+
 .previewDelete:hover {
     opacity: 0.5
 }
+
 .previewDelete {
     border-radius: 10px;
     margin: 10px 20px;

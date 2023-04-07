@@ -87,7 +87,7 @@ export default defineComponent({
                     if (this.movie.posterId == null) {
                         return window.location.origin + "/no_poster.jpg";
                     }
-                    return "https://movie-guide-backend.ntrubkin.ru/movies/" + this.movie.id + "/poster";
+                    return import.meta.env.VITE_BACKEND_BASE_URL + "movies/" + this.movie.id + "/poster";
                 },
             movieImageDatas:
                 function() {
@@ -96,7 +96,7 @@ export default defineComponent({
                     }
                     let imagesUrls = [];
                     for (let i = 0; i < this.movie.imageIds.length; i++) {
-                        imagesUrls.push("https://movie-guide-backend.ntrubkin.ru/images/" + this.movie.imageIds[i]);
+                        imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.imageIds[i]);
                     }
                     return imagesUrls;
                 },

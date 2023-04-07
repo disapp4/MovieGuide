@@ -86,13 +86,13 @@ export default defineComponent({
                 if (this.movie.posterId == null || this.moviePoster == "delete") {
                     return window.location.origin + "/no_poster.jpg";
                 }
-                return "https://movie-guide-backend.ntrubkin.ru/movies/" + this.movie.id + "/poster";
+                return import.meta.env.VITE_BACKEND_BASE_URL + "movies/" + this.movie.id + "/poster";
             },
         movieImageDatas:
             function(): ImageData[] {
                 let imagesData = [];
                 for (let i = 0; i < this.movie.imageIds.length; i++) {
-                    let url = "https://movie-guide-backend.ntrubkin.ru/images/" + this.movie.imageIds[i];
+                    let url = import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.imageIds[i];
                     let imageId = this.movie.imageIds[i];
                     let imageData: ImageData = { url: url, imageId: imageId };
                     imagesData.push(imageData);
