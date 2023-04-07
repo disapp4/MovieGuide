@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import { defineComponent, PropType } from "vue";
-import { ImageData } from "@/models/ImageData";
+import { ImageData } from "../models/ImageData";
 
 export default defineComponent({
     data() {

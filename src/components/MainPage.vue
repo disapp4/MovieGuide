@@ -2,12 +2,12 @@
 import Movies from "./Movies.vue";
 import Paginator from "./Paginator.vue";
 import Sorting from "./Sorting.vue";
-import { Movie } from "@/models/Movie";
-import { Page } from "@/models/Page";
+import { Movie } from "../models/Movie";
+import { Page } from "../models/Page";
 import router from "../router";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
-import { client } from "@/Client";
+import { client } from "../Client";
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
