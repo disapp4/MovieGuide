@@ -38,16 +38,29 @@ export default defineComponent({
 </script>
 <template>
     <h4> Сортировать: </h4>
-    <v-col class="d-flex" cols="12" sm="7">
-        <v-select label="pageSize" :items="sizeValues" v-model="pageSize"
-                  v-on:update:modelValue="changePageSize">
-        </v-select>
-        <v-select label="pageSortField" :items="sortFieldValues" v-model="pageSortField"
-                  v-on:update:modelValue="changePageSortField">
-        </v-select>
-        <v-select label="pageSortOrder" v-model="pageSortOrder" :items="sortOrderValues"
-                  v-on:update:modelValue="changePageSortOrder">
-        </v-select>
-    </v-col>
+    <div class="sorting">
+        <v-col class="d-flex" cols="12" sm="7" color="black">
+            <v-select label="pageSize" :items="sizeValues" v-model="pageSize"
+                      v-on:update:modelValue="changePageSize">
+            </v-select>
+            <v-select label="pageSortField" :items="sortFieldValues" v-model="pageSortField"
+                      v-on:update:modelValue="changePageSortField">
+            </v-select>
+            <v-select label="pageSortOrder" v-model="pageSortOrder" :items="sortOrderValues"
+                      v-on:update:modelValue="changePageSortOrder">
+            </v-select>
+        </v-col>
+    </div>
+
 
 </template>
+<style scoped>
+.sorting{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+    background-color:#F5F5F5
+}
+</style>

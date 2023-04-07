@@ -6,7 +6,7 @@ import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
 import { defineComponent } from "vue";
-import {  AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { client } from "../Client";
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
@@ -15,6 +15,7 @@ export type SortingRef = InstanceType<typeof Sorting>;
 type Data = {
     currentPage: Page<Movie>
 }
+
 export function forceCast<T>(input: any): T {
 
     // ... do runtime checks here
@@ -22,6 +23,7 @@ export function forceCast<T>(input: any): T {
     // @ts-ignore <-- forces TS compiler to compile this as-is
     return input;
 }
+
 export default defineComponent({
     computed: {
         Movie() {
@@ -37,7 +39,7 @@ export default defineComponent({
     mounted() {
         this.refreshMoviePage();
     },
-    
+
     methods: {
         logOut() {
             client.logOut()
@@ -59,9 +61,9 @@ export default defineComponent({
         favouriteMoviesPage() {
             router.push({ name: "favouriteMovies" });
         },
-         addMovieToFavouriteList(movie: Movie) {
-                           },
-                refreshMoviePage() {
+        addMovieToFavouriteList(movie: Movie) {
+        },
+        refreshMoviePage() {
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
@@ -111,7 +113,7 @@ export default defineComponent({
         </v-btn>
     </v-toolbar>
     <h1> Список фильмов </h1>
-    <v-card>
+    <v-card class="header-buttons" color="#F5F5F5">
         <v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
             Добавить фильм
         </v-btn>
@@ -133,7 +135,6 @@ export default defineComponent({
 
     </v-main>
 </template>
-
 
 
       
