@@ -13,7 +13,7 @@ export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
 
 type Data = {
-    currentPage: Page<Movie>
+    currentPage: Page<Movie>,
 }
 
 export function forceCast<T>(input: any): T {
@@ -41,11 +41,6 @@ export default defineComponent({
     },
 
     methods: {
-        logOut() {
-            client.logOut()
-                .then(() => router.push({ name: "authorization" }))
-                .catch(error => console.log("error", error));
-        },
         deleteMovieFromList(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
         },
@@ -62,6 +57,7 @@ export default defineComponent({
             router.push({ name: "favouriteMovies" });
         },
         addMovieToFavouriteList(movie: Movie) {
+
         },
         refreshMoviePage() {
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
@@ -99,28 +95,29 @@ export default defineComponent({
                     field: pageSortField,
                     order: pageSortOrder
                 }
-            ).then((response: AxiosResponse<Page<Movie>>) => this.currentPage = response.data).catch(error => {
-                console.log("error", error);
+            ).then((response: AxiosResponse<Page<Movie>>) => this.currentPage = response.data).catch((err) => {
+                {
+                    console.log(err),
+                        client.onRequestError;
+                }
+                ;
             });
         }
     }
 });
 </script>
 <template>
-    <v-toolbar color="black" title="Movie Guide">
-        <v-btn prepend-icon="mdi-export" v-on:click="logOut">
-            Выйти
-        </v-btn>
-    </v-toolbar>
-    <h1> Список фильмов </h1>
-    <v-card class="header-buttons" color="#F5F5F5">
-        <v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
-            Добавить фильм
-        </v-btn>
-        <v-btn id="log_in" prepend-icon="mdi-book-heart" v-on:click="favouriteMoviesPage" color="black">
-            Любимые фильмы
-        </v-btn>
-    </v-card>
+    <div class="mainPage">
+        <h1> {{ $t("mainPage.movieList.title") }} </h1>
+        <v-card class="header-buttons" color="#F5F5F5">
+            <v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
+                {{ $t("mainPage.movieList.buttons.addMovie") }}
+            </v-btn>
+            <v-btn id="log_in" prepend-icon="mdi-book-heart" v-on:click="favouriteMoviesPage" color="black">
+                {{ $t("mainPage.movieList.buttons.favouriteMovies") }}
+            </v-btn>
+        </v-card>
+    </div>
     <v-main>
         <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
                  v-on:changePageSortOrder="onPageSortOrder"
@@ -134,7 +131,13 @@ export default defineComponent({
         <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 
     </v-main>
+
 </template>
+<style>
+.mainPage {
+    background-color: #F5F5F5
+}
+</style>
 
 
       

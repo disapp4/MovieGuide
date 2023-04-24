@@ -1,0 +1,93 @@
+{
+  "buttons": {
+    "back": "Назад",
+    "save": "Сохранить"
+  },
+  "placeholders": {
+    "id": "Id:",
+    "title": "Название:",
+    "description": "Описание:",
+    "username": "Имя пользователя:",
+    "password": "Пароль:",
+    "enterUsername": "Введите ваше имя пользователя",
+    "enterPassword": "Введите ваш пароль",
+    "addPoster": "Добавить постер",
+    "addImages": "Добавить изображения"
+  },
+  "authorizationPage": {
+    "authorization": "Авторизация",
+    "noAccount": "Нет аккаунта?",
+    "signUp": "Регистрация",
+    "buttons": {
+      "logIn": "Войти"
+    }
+  },
+  "mainPage": {
+    "toolbar": {
+      "language": "Язык",
+      "title": "Movie Guide",
+      "logOut": "Выйти"
+    },
+    "movieList": {
+      "title": "Список фильмов",
+      "buttons": {
+        "addMovie": "Добавить фильм",
+        "favouriteMovies": "Любимые фильмы"
+      }
+    }
+  },
+  "sortingPage": {
+    "title": "Сортировать:",
+    "pageSize": "Размер страницы",
+    "pageSortField": {
+      "id": "id",
+      "title": "названию",
+      "pageSortField": "Сортировать по"
+    },
+    "pageSortOrder": {
+      "asc": "возрастанию",
+      "desc": "убыванию",
+      "pageSortOrder": "Порядок сортировки"
+    }
+  },
+  "movieComponentPage": {
+    "more": "Подробнее"
+  },
+  "registrationPage": {
+    "registration": "Регистрация",
+    "account": "Есть аккаунт?",
+    "logIn": "Войти",
+    "buttons": {
+      "signUp": "Зарегистрироваться"
+    }
+  },
+  "informationAboutMoviePage": {
+    "title": "Информация о фильме",
+    "buttons": {
+      "edit": "Редактировать"
+    }
+  },
+  "addMoviePage": {
+    "title": "Добавить фильм",
+    "placeholders": {
+      "enterTitle": "Введите название",
+      "enterDescription": "Введите описание"
+    }
+  },
+  "editMoviePage": {
+    "title": "Редактировать фильм",
+    "placeholders": {
+      "editTitle": "Редактировать название",
+      "editDescription": "Редактировать описание"
+    },
+    "buttons": {
+      "delete": "Режим удаления"
+    }
+  },
+  "deleteMovieImage": {
+    "title": "Режим удаления",
+    "movieList": "Список фильмов"
+  }
+}
+
+

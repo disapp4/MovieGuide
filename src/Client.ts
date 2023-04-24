@@ -7,10 +7,9 @@ import { CreateUserResponse } from "./models/CreateUserResponse";
 import { PageRequest } from "./models/PageRequest";
 import { CreateMovieResponse } from "./models/CreateMovieResponse";
 import { User } from "./models/User";
-
+import router from "./router";
 
 export class Client {
-
     private axiosInstance = axios.create({
         withCredentials: true,
         baseURL: import.meta.env.VITE_BACKEND_BASE_URL
@@ -19,8 +18,6 @@ export class Client {
     public async getMovie(movieId: string) {
         return this.axiosInstance.get<Movie>("movies/" + movieId);
     }
-
-
 
     public async getMovies(pageRequest: PageRequest) {
         return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order);
@@ -49,7 +46,8 @@ export class Client {
 
     public logOut() {
         return this.axiosInstance.get("logout", {
-            headers:{ Accept: "*/*"}});
+            headers: { Accept: "*/*" }
+        });
     }
 
     public logIn(username: string, password: string) {
@@ -65,24 +63,23 @@ export class Client {
     public putMoviePoster(imageFile: File, movieId: string) {
         let formData = new FormData();
         formData.append("imageFile", imageFile);
-        return this.axiosInstance.put("movies/" + movieId + "/poster", formData ,{
-            headers: { "Content-Type": "multipart/form-data"},
-
+        return this.axiosInstance.put("movies/" + movieId + "/poster", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
         });
     }
 
-    public postMovieImage(imageFile: File , movieId: string) {
-        let formData  = new FormData();
+    public postMovieImage(imageFile: File, movieId: string) {
+        let formData = new FormData();
         formData.append("imageFile", imageFile);
-        return this.axiosInstance.post("movies/" + movieId + "/images", formData,{
+        return this.axiosInstance.post("movies/" + movieId + "/images", formData, {
 
             headers: { "Content-Type": "multipart/form-data" }
         });
     }
 
-     public getImage(movieId: string){
-         return this.axiosInstance.get("images/" + movieId)
-     }
+    public getImage(movieId: string) {
+        return this.axiosInstance.get("images/" + movieId);
+    }
 
     public deletePoster(movieId: string) {
         return this.axiosInstance.delete("movies/" + movieId + "/poster");
@@ -91,8 +88,16 @@ export class Client {
     public deleteImage(movieId: string, imageId: string) {
         return this.axiosInstance.delete("movies/" + movieId + "/images/" + imageId);
     }
-}
 
+    public onRequestError(error: any) {
+        if (error.response.status == 401) {
+            router.push({ name: "authorization" }).then(err => console.error(err));
+        } else {
+            console.error(error);
+            alert("Произошла ошибка вызова, смотри в консоль");
+        }
+    }
+}
 
 export const client: Client = new Client();
 
