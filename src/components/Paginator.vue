@@ -18,21 +18,13 @@ export default defineComponent({
         page: { type: Object as PropType<Page<Movie>> }
     },
     watch: {
-        page: function (newVal, oldVal) {
-
+        page: function(newVal, oldVal) {
             this.pageNumber = newVal.number;
             this.pageNumberView = this.pageNumber + 1;
             this.totalPagesView = newVal.totalPages;
-
         }
     },
     emits: ["changePageNumber"],
-    // setup(_, {emit}){
-    //     const goToNextPage = ()=>{
-    //         this.pageNumber = this.pageNumber + 1;
-    //         emit("changePageNumber", this.pageNumber)
-    //     }
-    // },
     methods: {
         goToNextPage() {
             this.pageNumber = this.pageNumber + 1;
@@ -41,17 +33,16 @@ export default defineComponent({
         goToPreviousPage() {
             this.pageNumber = this.pageNumber - 1;
             this.$emit("changePageNumber", this.pageNumber);
-
         }
-
     }
 });
 </script>
 
 <template>
-
     <div class="text-center">
-        <p> <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4"
-            v-on:next="goToNextPage" v-on:prev="goToPreviousPage"></v-pagination></p>
+        <p>
+            <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4"
+                          v-on:next="goToNextPage" v-on:prev="goToPreviousPage"></v-pagination>
+        </p>
     </div>
 </template>

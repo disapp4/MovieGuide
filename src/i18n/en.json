@@ -1,0 +1,92 @@
+{
+  "buttons": {
+    "back": "Back",
+    "save": "Save"
+  },
+  "placeholders": {
+    "id": "Id:",
+    "title": "Title:",
+    "description": "Description:",
+    "username": "Username:",
+    "password": "Password:",
+    "addPoster": "Add a poster",
+    "addImages": "Add images",
+    "enterUsername": "Enter your username",
+    "enterPassword": "Enter your password"
+  },
+  "authorizationPage": {
+    "authorization": "Authorization",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "buttons": {
+      "logIn": "Log In"
+    }
+  },
+  "mainPage": {
+    "toolbar": {
+      "language": "Language",
+      "title": "Movie Guide",
+      "logOut": "Log Out"
+    },
+    "movieList": {
+      "title": "Movie list",
+      "buttons": {
+        "addMovie": "Add Movie",
+        "favouriteMovies": "Favourite Movies"
+      }
+    }
+  },
+  "sortingPage": {
+    "title": "Sorting:",
+    "pageSize": "Size",
+    "pageSortField": {
+      "id": "id",
+      "title": "title",
+      "pageSortField": "Sort by"
+    },
+    "pageSortOrder": {
+      "asc": "asc",
+      "desc": "desc",
+      "pageSortOrder": "Sort order"
+    }
+  },
+  "movieComponentPage": {
+    "more": "More"
+  },
+  "registrationPage": {
+    "registration": "Registration",
+    "account": "Do have an account?",
+    "logIn": "Log In",
+    "buttons": {
+      "signUp": "Sign up"
+    }
+  },
+  "informationAboutMoviePage": {
+    "title": "Information about movie",
+    "buttons": {
+      "edit": "Edit"
+    }
+  },
+  "addMoviePage": {
+    "title": "Add movie",
+    "placeholders": {
+      "enterTitle": "Enter title",
+      "enterDescription": "Enter description"
+    }
+  },
+  "editMoviePage": {
+    "title": "Edit movie",
+    "placeholders": {
+      "editTitle": "Edit title",
+      "editDescription": "Edit description"
+    },
+    "buttons": {
+      "delete": "Delete mode"
+    }
+  },
+  "deleteMovieImage": {
+    "title": "Delete mode",
+    "movieList": "Movie list"
+  }
+}
+

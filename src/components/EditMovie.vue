@@ -106,7 +106,6 @@ export default defineComponent({
                         return this.imageFiles.map(item => URL.createObjectURL(item));
                     }
                 }
-
         }
     }
 );
@@ -115,24 +114,26 @@ export default defineComponent({
     <v-card>
         <v-card-text>
             <v-form>
-                <v-toolbar color="black">
-                    <v-toolbar-title>Редактировать</v-toolbar-title>
-                </v-toolbar>
+                <h1> {{ $t("editMoviePage.title") }} </h1>
+
                 <br>
-                <v-col cols="12" sm="6"> Title:
-                    <v-text-field v-model="movie.title" placeholder="title" prepend-inner-icon="mdi-mail"
+                <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                    <v-text-field v-model="movie.title" :placeholder="$t('editMoviePage.placeholders.editTitle')"
+                                  prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"> Description:
-                    <v-text-field v-model="movie.description" placeholder="description" prepend-inner-icon="mdi-mail"
+                <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
+                    <v-text-field v-model="movie.description"
+                                  :placeholder="$t('editMoviePage.placeholders.editDescription')"
+                                  prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4">
-                    <v-file-input label="Добавить постер" v-on:update:modelValue="putMoviePoster"
+                    <v-file-input :label="$t('placeholders.addPoster')" v-on:update:modelValue="putMoviePoster"
                                   variant="filled" prepend-icon="mdi-camera"></v-file-input>
                 </v-col>
                 <v-col cols="12" sm="4">
-                    <v-file-input label="Добавить изображения" v-on:update:modelValue="putMovieImages"
+                    <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages"
                                   multiple variant="filled" prepend-icon="mdi-camera"></v-file-input>
                 </v-col>
                 <img class="preview" :src="newPosterURL" />
@@ -149,14 +150,14 @@ export default defineComponent({
                 </div>
 
                 <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
-                    Сохранить
+                    {{ $t("buttons.save") }}
                 </v-btn>
                 <v-btn id="registration" prepend-icon="mdi-delete" v-on:click="deleteMovieImage"
-                       color="black" v-show="visible"> Режим удаления
+                       color="black" v-show="visible"> {{ $t("editMoviePage.buttons.delete") }}
                 </v-btn>
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
-                           color="black"> Назад
+                           color="black"> {{ $t("buttons.back") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>

@@ -1,14 +1,53 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView } from "vue-router";
+import { client } from "./Client";
+import router from "./router";
+import { useI18n } from "vue-i18n";
+// @ts-ignore
+import { defaultLocale, languages } from "./i18n";
 
+ const { t, locale } = useI18n({ useScope: "global" });
+const logOut = () => {
+    client.logOut()
+        .then(() => router.push({ name: "authorization" }))
+        .catch(error => console.log("error", error));
+};
+const mainPage = () => {
+    router.push({ name: "mainPage" });
+};
+
+const language = () => {
+    locale.value === "en" ? locale.value="ru" : locale.value="en"
+   }
 </script>
 
 <template>
+
     <v-app>
-    <RouterView />
-  </v-app>
+        <v-toolbar color="black">
+            <v-btn prepend-icon="mdi-web" v-on:click="language">
+                {{ $t("mainPage.toolbar.language") }}
+            </v-btn>
+            <v-spacer>
+                <v-btn v-on:click="mainPage">
+                    <strong>{{ $t("mainPage.toolbar.title") }}</strong>
+                </v-btn>
+            </v-spacer>
+
+            <v-btn prepend-icon="mdi-export" v-on:click="logOut">
+                {{ $t("mainPage.toolbar.logOut") }}
+            </v-btn>
+
+        </v-toolbar>
+        <RouterView />
+
+        <v-footer class="d-flex flex-column">
+            <v-spacer></v-spacer>
+            <div class="  bg-black text-center w-100">
+                <strong>movie guide</strong>
+            </div>
+        </v-footer>
+    </v-app>
 </template>
 
-<style scoped>
 
-</style>

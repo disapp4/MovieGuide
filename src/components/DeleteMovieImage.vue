@@ -107,16 +107,15 @@ export default defineComponent({
     <v-card>
         <v-card-text>
             <v-form>
-                <v-toolbar color="black">
-                    <v-toolbar-title>Режим удаления</v-toolbar-title>
-                </v-toolbar>
+                <h1> {{ $t("deleteMovieImage.title") }} </h1>
+
                 <br>
-                <v-col cols="12" sm="6"> Title:
-                    <v-text-field v-model="movie.title" placeholder="title" prepend-inner-icon="mdi-mail"
+                <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                    <v-text-field v-model="movie.title" disabled prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"> Description:
-                    <v-text-field v-model="movie.description" placeholder="description" prepend-inner-icon="mdi-mail"
+                <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
+                    <v-text-field v-model="movie.description" disabled prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
                 </v-col>
                 <img class="previewDelete" :src="newPosterURL" v-on:click="deleteMoviePoster" />
@@ -131,14 +130,14 @@ export default defineComponent({
                     <img :src="windowLocationOrigin('/loading.jpg')">
                 </div>
                 <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="deleteMovieImageThroughForm" color="black">
-                    Сохранить
+                    {{ $t("buttons.save") }}
                 </v-btn>
                 <v-btn id="registration" prepend-icon="mdi-list-box-outline" v-on:click="backToMainPage" color="black">
-                    Список фильмов
+                    {{ $t("deleteMovieImage.movieList") }}
                 </v-btn>
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToEditMoviePage"
-                           color="black"> Назад
+                           color="black">{{ $t("buttons.back") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -152,6 +151,7 @@ export default defineComponent({
     flex-direction: row;
     justify-content: flex-start;
 }
+
 .previewDelete:hover {
     border-radius: 10px;
     margin: 10px 20px;
@@ -159,6 +159,7 @@ export default defineComponent({
     height: 250px;
     opacity: 0.5
 }
+
 .previewDelete {
     border-radius: 10px;
     margin: 10px 20px;

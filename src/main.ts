@@ -1,19 +1,22 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
-import router from './router'
-import './assets/main.css'
+import { createApp } from "vue";
+import { createI18n, useI18n } from "vue-i18n";
+import "./style.css";
+import App from "./App.vue";
+import router from "./router";
+import "./assets/main.css";
+// @ts-ignore
+import { languages } from "./i18n";
+// @ts-ignore
+import { defaultLocale } from "./i18n";
+import "@mdi/font/css/materialdesignicons.css";
+import "vuetify/styles";
 
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
 
-
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
 const customTheme1 = {
-
     colors: {
         background: "#F5F5F5",
         surface: "#FFFFFF",
@@ -22,30 +25,42 @@ const customTheme1 = {
         error: "#f44336",
         info: "#2196F3",
         success: "#4caf50",
-        warning: "#fb8c00",
-    },
+        warning: "#fb8c00"
+    }
 };
+const messages = Object.assign(languages);
+const i18n = createI18n({
+    legacy: false,
+    locale: defaultLocale,
+    fallbackLocale: "en",
+    messages
 
- const vuetify = createVuetify({
-     components,
+});
+const vuetify = createVuetify({
+    components,
     directives,
-     theme: {
-         defaultTheme: "customTheme1",
-         themes: {
-             customTheme1,
-         },
-
-     },
+    theme: {
+        defaultTheme: "customTheme1",
+        themes: {
+            customTheme1
+        }
+    },
     icons: {
-         defaultSet: 'mdi',
-         aliases,
-         sets: {
-             mdi,
-         }
-     }
- })
+        defaultSet: "mdi",
+        aliases,
+        sets: {
+            mdi
+        }
+    }
+});
 
-createApp(App)
+createApp(App, {
+    setup() {
+        const { t } = useI18n();
+        return { t };
+    }
+})
     .use(router)
     .use(vuetify)
-    .mount('#app')
+    .use(i18n)
+    .mount("#app");
