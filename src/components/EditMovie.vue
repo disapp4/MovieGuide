@@ -21,10 +21,7 @@ type Data = {
     deletedRuImageId: string | null,
     deletedEnImageId: string | null,
     deletedImages: Array<String>,
-    restoreImages: Array<String>,
-    test: string | null
-
-
+    restoreImages: Array<String>
 }
 let nullMovie = new Movie();
 nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
@@ -43,10 +40,7 @@ export default defineComponent({
                 deletedRuImageId: "",
                 deletedEnImageId: "",
                 deletedImages: [],
-                restoreImages: [],
-                test: "asw"
-
-
+                restoreImages: []
             };
         },
         components: { DeleteImgComponent },
@@ -67,12 +61,10 @@ export default defineComponent({
                 this.deletedEnImageId = "restore";
             },
             deleteImage(imageId: string) {
-                this.deletedImages.push(imageId),
-                    console.log(this.deletedImages);
+                this.deletedImages.push(imageId);
             },
             restoreImage(imageId: string) {
                 this.restoreImages.push(imageId);
-                console.log(this.restoreImages);
             },
             refreshMovie() {
                 let movieId: string = (this.$route.params.id as string);
@@ -131,9 +123,7 @@ export default defineComponent({
         },
 
         computed: {
-            I18nMovieRu(): I18nMovie {
-                return this.movie.i18n?.Russian || new I18nMovie();
-            },
+
             ruTitle() {
                 return this.movie.i18n[Language.fromCode("ru")]!.title;
             },
@@ -159,14 +149,10 @@ export default defineComponent({
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
                 <br>
-                <v-text-field v-bind:modelValue="test" v-on:update:modelValue="test=$event"></v-text-field>
 
                 <div class="languages">
-
                     <div class="ru">
                         <h3> Русская версия</h3>
-
-
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
 
                         </v-col>

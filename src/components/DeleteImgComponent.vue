@@ -12,7 +12,7 @@ export default defineComponent({
         };
     },
     props: {
-        imageId: { type: Object as PropType<string | null> },
+        imageId: { type:null as unknown as PropType<string | null>,  required: false },
             },
     computed: {
         imageUrl() {
