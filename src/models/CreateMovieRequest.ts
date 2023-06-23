@@ -1,4 +1,7 @@
+import { Language } from "./Language";
+import { I18nCreateMovieRequest } from "./I18nCreateMovieRequest";
+
 export class CreateMovieRequest {
-    title!: string;
-    description!: string;
+    imageIds!: Array<String> | null;
+    i18n!: { [key in Language]?: I18nCreateMovieRequest };
 }

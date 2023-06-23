@@ -33,9 +33,11 @@ const i18n = createI18n({
     legacy: false,
     locale: defaultLocale,
     fallbackLocale: "en",
+    
     messages
 
 });
+
 const vuetify = createVuetify({
     components,
     directives,
@@ -54,6 +56,7 @@ const vuetify = createVuetify({
     }
 });
 
+export default i18n;
 createApp(App, {
     setup() {
         const { t } = useI18n();

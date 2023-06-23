@@ -8,18 +8,19 @@ import router from "../router";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../Client";
-
+import { Language } from "../models/Language";
+import i18n from "../main";
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
 
 type Data = {
     currentPage: Page<Movie>,
+    loading: boolean,
+    language: Language
 }
 
 export function forceCast<T>(input: any): T {
-
     // ... do runtime checks here
-
     // @ts-ignore <-- forces TS compiler to compile this as-is
     return input;
 }
@@ -33,13 +34,23 @@ export default defineComponent({
     components: { Movies, Paginator, Sorting },
     data(): Data {
         return {
-            currentPage: new Page()
+            currentPage: new Page(),
+            loading: true,
+            language: Language.Russian
         };
     },
     mounted() {
+
         this.refreshMoviePage();
     },
+    watch: {
+        "$i18n.locale": function(newVal, oldVal) {
 
+            console.log(newVal + " mp  " + oldVal)
+
+             this.refreshMoviePage();
+        }
+    },
     methods: {
         deleteMovieFromList(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
@@ -60,11 +71,13 @@ export default defineComponent({
 
         },
         refreshMoviePage() {
+            console.log(i18n.global.locale.value)
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-            this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
+            this.loading = true;
+           this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
         },
         changePageNumber() {
             this.refreshMoviePage();
@@ -88,17 +101,23 @@ export default defineComponent({
             this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
         },
         loadMoviePage(pageNumber: number, pageSize: number, pageSortField: string, pageSortOrder: string) {
+            let language = (this.$i18n.locale == "ru") ? Language.Russian : Language.English;
+
             client.getMovies(
                 {
                     number: pageNumber,
                     size: pageSize,
                     field: pageSortField,
                     order: pageSortOrder
-                }
-            ).then((response: AxiosResponse<Page<Movie>>) => this.currentPage = response.data).catch((err) => {
+                }, language
+            ).then((response: AxiosResponse<Page<Movie>>) => {
+
+                this.currentPage = response.data;
+                this.loading = false;
+
+            }).catch((err) => {
                 {
-                    console.log(err),
-                        client.onRequestError;
+                    console.log(err);
                 }
                 ;
             });
@@ -118,20 +137,21 @@ export default defineComponent({
             </v-btn>
         </v-card>
     </div>
-    <v-main>
-        <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
-                 v-on:changePageSortOrder="onPageSortOrder"
-                 v-on:changePageSize="onPageSize" ref="sorting" />
+    <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
+             v-on:changePageSortOrder="onPageSortOrder"
+             v-on:changePageSize="onPageSize" ref="sorting" />
 
+    <div v-if="!loading">
         <Movies :movieList="currentPage?.content" v-on:deleteMovie="(movie: Movie) => deleteMovieFromList(movie)"
                 v-on:editMovie="(movie: Movie) => editMovieFromList(movie)"
                 v-on:informationAboutMovie="(movie: Movie) => informationAboutMovie(movie)"
                 v-on:addMovieToFavouriteList="(movie: Movie) => addMovieToFavouriteList(movie)" />
+    </div>
+    <div v-else>
 
-        <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
-
-    </v-main>
-
+        <img src="loading.jpg" width="400">
+    </div>
+    <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>
 <style>
 .mainPage {

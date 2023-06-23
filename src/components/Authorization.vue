@@ -16,7 +16,6 @@ export default defineComponent({
     },
     methods: {
         logIn() {
-
             client.logIn(this.username, this.password).then(() => router.push({ name: "mainPage" }));
         },
         goToRegistration() {
@@ -29,7 +28,6 @@ export default defineComponent({
     <v-card>
         <v-card-text>
             <v-form><h1> {{ $t("authorizationPage.authorization") }} </h1>
-
                 <v-col cols="12" sm="6"> {{ $t("placeholders.username") }}
                     <v-text-field :label="$t('placeholders.enterUsername')" v-model="username" name="username"
                                   prepend-inner-icon="mdi-mail" type="string" clearable filled></v-text-field>

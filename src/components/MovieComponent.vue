@@ -2,40 +2,170 @@
 import { defineComponent } from "vue";
 import { Movie } from "../models/Movie";
 import { PropType } from "vue";
+import { Language } from "../models/Language";
 
+
+
+// type Data = {
+//     show: boolean,
+//     isFavourite: boolean,
+//     language: Language,
+// }
 export default defineComponent({
-    data() {
-        return {
-            show: false,
-            isFavourite: false
-        };
+    // methods: {
+    //     truncate(text: string, stop: number, clamp: string = "...") {
+    //         return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
+    //     }
+    // },
+    // data(): Data {
+    //     return {
+    //         show: false,
+    //         isFavourite: false,
+    //         language: Language.Russian
+    //     };
+    // },
+    watch: {
+        "$i18n.locale": function(newVal, oldVal) {
+               console.log(newVal + " mc " + oldVal);
+        }
     },
-    props: {
-        movie: { type: Object as PropType<Movie>, default: new Movie() }
-    },
-    emits: ["deleteMovie", "editMovie", "addMovieToFavouriteList", "informationAboutMovie"]
+    //  props: {
+    //     movie: { type: Object as PropType<Movie>, default: new Movie() }
+    // },
+    // emits: ["deleteMovie", "editMovie", "addMovieToFavouriteList", "informationAboutMovie"],
+    // computed: {
+    //
+    //     loading: function(): boolean {
+    //
+    //         return true
+    //     },
+    //     movieTitle: function() {
+    //
+    //         return this.movie.i18n[this.language]!.title;
+    //     },
+    //     moviePoster: function() {
+    //         if (this.movie.i18n[this.language]?.posterId == null) {
+    //             return window.location.origin + "/no_poster.jpg";
+    //         }
+    //         return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[this.language]?.posterId;
+    //     }
+    // }
 });
 </script>
 
 <template>
-    <v-card
-        width="400" class="mx-auto" id="movieCard" :title="movie.title">
-        <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
-               append-icon="mdi-chevron-triple-right" variant="text" color="black">
-            {{ $t("movieComponentPage.more") }}
-        </v-btn>
-        <br>
-        <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="small" icon="mdi-delete" variant="text"
-               color="black"></v-btn>
-        <v-btn v-on:click="() => $emit('editMovie', movie)" size="small" icon="mdi-pencil" variant="text"
-               color="black"></v-btn>
-        <v-btn v-on:click="() => {isFavourite=!isFavourite,$emit('addMovieToFavouriteList', movie)}" size="small"
-               variant="text"
-               :class={favourite:isFavourite} class="isFavourite" icon="mdi-heart"></v-btn>
-    </v-card>
+    <p> MovieComp</p>
+<!--    <div v-if="!loading">-->
+<!--        <v-card color="white" width="400"-->
+<!--                class="mx-auto" id="movieCard">-->
+<!--            <div class="container">-->
+<!--                <v-avatar-->
+<!--                    class="ma-3"-->
+<!--                    size="120"-->
+<!--                    rounded="0"-->
+<!--                >-->
+<!--                    <v-img class="miniPoster" :src="moviePoster"></v-img>-->
+<!--                </v-avatar>-->
+<!--                <div>-->
+<!--                    <v-card-title>-->
+<!--                        <p class="title"> {{ truncate(movieTitle, 13) }} </p>-->
+<!--                    </v-card-title>-->
+<!--                    <div class="container1">-->
+<!--                        <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"-->
+<!--                               append-icon="mdi-chevron-triple-right" variant="text" color="black"-->
+<!--                               class="buttonInformation">-->
+<!--                            {{ $t("movieComponentPage.more") }}-->
+<!--                        </v-btn>-->
+<!--                    </div>-->
+<!--                    <br>-->
+<!--                    <div class="ms-2">-->
+<!--                        <v-card-actions>-->
+<!--                            <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="small" icon="mdi-delete"-->
+<!--                                   variant="text"-->
+<!--                                   color="black"></v-btn>-->
+<!--                            <v-btn v-on:click="() => $emit('editMovie', movie)" size="small" icon="mdi-pencil"-->
+<!--                                   variant="text"-->
+<!--                                   color="black"></v-btn>-->
+<!--                            <v-btn v-on:click="() => {isFavourite=!isFavourite,$emit('addMovieToFavouriteList', movie)}"-->
+<!--                                   size="small"-->
+<!--                                   variant="text"-->
+<!--                                   :class={favourite:isFavourite} class="isFavourite" icon="mdi-heart"></v-btn>-->
+<!--                        </v-card-actions>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </v-card>-->
+<!--    </div>-->
 
+<!--    <div v-else>-->
+<!--        <v-card color="white" width="400"-->
+<!--                class="mx-auto" id="movieCard">-->
+<!--            <div class="container">-->
+<!--                <v-avatar-->
+<!--                    class="ma-3"-->
+<!--                    size="120"-->
+<!--                    rounded="0"-->
+<!--                >-->
+<!--                    <v-img class="miniPoster" src="poster_loading.jpg"></v-img>-->
+<!--                </v-avatar>-->
+<!--                <div>-->
+<!--                    <v-card-title>-->
+<!--                        <p class="title"> Movie </p>-->
+<!--                    </v-card-title>-->
+<!--                    <div class="container1">-->
+<!--                        <v-btn size="small"-->
+<!--                               append-icon="mdi-chevron-triple-right" variant="text" color="grey"-->
+<!--                               class="buttonInformation2">-->
+<!--                        </v-btn>-->
+<!--                    </div>-->
+<!--                    <br>-->
+<!--                    <div class="ms-2">-->
+<!--                        <v-card-actions>-->
+<!--                            <v-btn size="small" icon="mdi-delete"-->
+<!--                                   variant="text"-->
+<!--                                   color="grey"></v-btn>-->
+<!--                            <v-btn size="small" icon="mdi-pencil"-->
+<!--                                   variant="text"-->
+<!--                                   color="grey"></v-btn>-->
+<!--                            <v-btn-->
+<!--                                size="small"-->
+<!--                                variant="text"-->
+<!--                                color="grey"-->
+<!--                                class="isFavourite" icon="mdi-heart"></v-btn>-->
+<!--                        </v-card-actions>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </v-card>-->
+<!--    </div>-->
 </template>
 <style scoped>
+.buttonInformation {
+    display: flex;
+    right: -20px
+}
+
+.buttonInformation2 {
+    display: flex;
+    right: -60px
+}
+
+.container {
+    display: flex; /* or inline-flex */
+    flex-wrap: nowrap;
+}
+
+.title {
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.title:hover {
+    white-space: normal;
+}
+
 #movieCard {
     margin: 10px
 }
@@ -46,6 +176,12 @@ export default defineComponent({
 
 .favourite {
     color: red;
+}
 
+.miniPoster {
+    height: 100px;
+    width: 70px;
+    margin: 10px;
+    border-radius: 10px;
 }
 </style>
