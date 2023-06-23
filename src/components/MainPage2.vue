@@ -47,25 +47,24 @@ export default defineComponent({
         },
         changePageNumber() {
             console.log('пагинатор')
-            // this.refreshMoviePage();
         },
         onPageSortField() {
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-            // this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
+
         },
         onPageSortOrder() {
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-            // this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
+
         },
         onPageSize() {
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-            // this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
+
         },
 
 
