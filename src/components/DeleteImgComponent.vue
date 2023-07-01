@@ -20,7 +20,6 @@ export default defineComponent({
             if (this.imageId == null) {
                 return window.location.origin + "/no_poster.jpg";
             }
-            console.log(this.loadingImg);
             return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.imageId;
         }
     },

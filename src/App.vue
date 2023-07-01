@@ -24,37 +24,6 @@ const changeLanguage = () => {
 
    };
 
-watch (locale, (newVal, oldVal) => {
-    console.log(newVal + " app " + oldVal)
-
-
-})
-// export default defineComponent({
-//     data(){
-//         return {}
-//     },
-//     watch: {
-//         "$18n.locale": function(newVal, oldVal) {
-//             console.log(newVal + " app " + oldVal);
-//         }
-//     },
-//     methods: {
-//         logOut() {
-//             client.logOut()
-//                 .then(() => router.push({ name: "authorization" }))
-//                 .catch(error => console.log("error", error));
-//         },
-//         mainPage() {
-//             router.push({ name: "mainPage" });
-//         },
-//
-//         changeLanguage() {
-//             locale.value === "en" ? locale.value = "ru" : locale.value = "en";
-//
-//         }
-//     }
-// });
-
 </script>
 
 <template>

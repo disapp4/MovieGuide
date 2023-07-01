@@ -9,14 +9,13 @@ import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../Client";
 import { Language } from "../models/Language";
-import i18n from "../main";
+
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
 
 type Data = {
     currentPage: Page<Movie>,
     loading: boolean,
-    language: Language
 }
 
 export function forceCast<T>(input: any): T {
@@ -35,20 +34,15 @@ export default defineComponent({
     data(): Data {
         return {
             currentPage: new Page(),
-            loading: true,
-            language: Language.Russian
+            loading: true
         };
     },
     mounted() {
-
         this.refreshMoviePage();
     },
     watch: {
-        "$i18n.locale": function(newVal, oldVal) {
-
-            console.log(newVal + " mp  " + oldVal)
-
-             this.refreshMoviePage();
+        "$i18n.locale": function() {
+            this.refreshMoviePage();
         }
     },
     methods: {
@@ -71,13 +65,12 @@ export default defineComponent({
 
         },
         refreshMoviePage() {
-            console.log(i18n.global.locale.value)
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
             this.loading = true;
-           this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
+            this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
         },
         changePageNumber() {
             this.refreshMoviePage();
@@ -101,7 +94,7 @@ export default defineComponent({
             this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
         },
         loadMoviePage(pageNumber: number, pageSize: number, pageSortField: string, pageSortOrder: string) {
-            let language = (this.$i18n.locale == "ru") ? Language.Russian : Language.English;
+            // let language = (this.$i18n.locale == "ru") ? Language.Russian : Language.English;
 
             client.getMovies(
                 {
@@ -109,7 +102,7 @@ export default defineComponent({
                     size: pageSize,
                     field: pageSortField,
                     order: pageSortOrder
-                }, language
+                }, Language.fromCode(this.$i18n.locale)
             ).then((response: AxiosResponse<Page<Movie>>) => {
 
                 this.currentPage = response.data;
@@ -149,7 +142,7 @@ export default defineComponent({
     </div>
     <div v-else>
 
-        <img src="loading.jpg" width="400">
+        <img src="loading.jpg" width="300">
     </div>
     <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>

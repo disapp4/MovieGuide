@@ -70,10 +70,8 @@ export default defineComponent({
             };
 
             createMovieRequest.imageIds = this.imageIds;
-            console.log(createMovieRequest);
             client.postMovie(createMovieRequest)
                 .then(() => router.push({ name: "mainPage" }));
-
         },
         backToMainPage() {
             router.push({ name: "mainPage" });
