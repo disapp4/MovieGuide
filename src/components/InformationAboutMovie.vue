@@ -11,7 +11,6 @@ type Data = {
     movie: Movie,
     movieIsLoaded: boolean,
     width: number,
-    language : Language
 }
 
 let nullMovie = new Movie();
@@ -23,23 +22,14 @@ export default defineComponent({
             movie: nullMovie,
             movieIsLoaded: false,
             width: 200,
-            language: Language.Russian
-        };
+                    };
     },
     created() {
         this.refreshMovie();
     },
-    watch: {
-        "$root.$i18n.locale": function(newVal, oldVal) {
-            console.log(newVal + " iam " + oldVal);
-            // this.language = (this.$i18n.locale == "ru") ? Language.Russian : Language.English;
-            // this.refreshMovie();
-        }
-    },
-    methods: {
+       methods: {
         refreshMovie() {
-            
-            let movieId: string = (this.$route.params.id as string);
+                        let movieId: string = (this.$route.params.id as string);
             client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
                 this.movie = response.data;
                 this.movieIsLoaded = true;
@@ -54,19 +44,19 @@ export default defineComponent({
     },
     computed: {
         movieTitle(){
-            return this.movie.i18n[this.language]!!.title
+            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title
         },
         movieDescription(){
-            return this.movie.i18n[this.language]?.description
+            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.description
         },
         posterURL:function(){
             if (!this.movieIsLoaded) {
                 return window.location.origin + "/loading.jpg";
             }
-            if (this.movie.i18n[this.language]?.posterId == null) {
+            if (this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId == null) {
                 return window.location.origin + "/no_poster.jpg";
             }
-            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[this.language]?.posterId
+            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId
         },
         movieImageDatas:
             function() {
@@ -86,11 +76,6 @@ export default defineComponent({
     <v-card>
         <v-card-text>
             <v-form><h1> {{ $t("informationAboutMoviePage.title") }} </h1>
-
-
-
-
-
                     <v-col cols="12" sm="6"> {{ $t("placeholders.id") }}
                         <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
                                       type="text" class="text-right"></v-text-field>

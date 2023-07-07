@@ -21,7 +21,8 @@ type Data = {
     deletedRuImageId: string | null,
     deletedEnImageId: string | null,
     deletedImages: Array<String>,
-    restoreImages: Array<String>
+    restoreImages: Array<String>,
+    test: string | null
 
 
 }
@@ -42,13 +43,15 @@ export default defineComponent({
                 deletedRuImageId: "",
                 deletedEnImageId: "",
                 deletedImages: [],
-                restoreImages: []
+                restoreImages: [],
+                test: "asw"
+
 
             };
         },
         components: { DeleteImgComponent },
         created() {
-           this.refreshMovie()
+            this.refreshMovie();
         },
         methods: {
             deleteRuImage() {
@@ -128,8 +131,17 @@ export default defineComponent({
         },
 
         computed: {
-            loadingImg(){
-                return this.movie.i18n.Russian!!.posterId? true : false
+            I18nMovieRu(): I18nMovie {
+                return this.movie.i18n?.Russian || new I18nMovie();
+            },
+            ruTitle() {
+                return this.movie.i18n[Language.fromCode("ru")]!.title;
+            },
+            Language() {
+                return Language;
+            },
+            movieTitle(lang: string) {
+                return this.movie.i18n[Language.fromCode(lang)]!.title;
             },
             imageIds() {
                 let imageIds = [];
@@ -146,19 +158,35 @@ export default defineComponent({
         <v-card-text>
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
-                            <br>
+                <br>
+                <v-text-field v-bind:modelValue="test" v-on:update:modelValue="test=$event"></v-text-field>
+
                 <div class="languages">
 
                     <div class="ru">
                         <h3> Русская версия</h3>
+
+
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-                            <v-text-field v-model="movie.i18n.Russian.title"
-                                          :placeholder="$t('editMoviePage.placeholders.editTitle')"
-                                          prepend-inner-icon="mdi-mail"
-                                          type="text"></v-text-field>
+
                         </v-col>
+                        <v-text-field v-bind:model-value="movie.i18n.Russian?.title"
+                                      v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.Russian) {
+                                              movie.i18n.Russian.title = value
+                                          }
+                                      }"
+                                      :placeholder="$t('editMoviePage.placeholders.editTitle')"
+                                      prepend-inner-icon="mdi-mail"
+                                      type="text"></v-text-field>
+
                         <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                            <v-text-field v-model="movie.i18n.Russian.description"
+                            <v-text-field v-bind:model-value="movie.i18n.Russian?.description"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.Russian) {
+                                              movie.i18n.Russian.description = value
+                                          }
+                                      }"
                                           :placeholder="$t('editMoviePage.placeholders.editDescription')"
                                           prepend-inner-icon="mdi-mail"
                                           type="text"></v-text-field>
@@ -169,7 +197,7 @@ export default defineComponent({
                                           variant="filled" prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
 
-                        <DeleteImgComponent :imageId="movie.i18n.Russian?.posterId" :loadingImg="!!movie.i18n.Russian.posterId"
+                        <DeleteImgComponent :imageId="movie.i18n.Russian?.posterId"
                                             v-on:delete="deleteRuImage"
                                             v-on:restore="restoreRuImage"
                         />
@@ -178,13 +206,23 @@ export default defineComponent({
                     <div class="en">
                         <h3> English version</h3>
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-                            <v-text-field v-model="movie.i18n.English.title"
+                            <v-text-field v-bind:model-value="movie.i18n.English?.title"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.English) {
+                                              movie.i18n.English.title = value
+                                          }
+                                      }"
                                           :placeholder="$t('editMoviePage.placeholders.editTitle')"
                                           prepend-inner-icon="mdi-mail"
                                           type="text"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                            <v-text-field v-model="movie.i18n.English.description"
+                            <v-text-field v-bind:model-value="movie.i18n.English?.description"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.English) {
+                                              movie.i18n.English.description = value
+                                          }
+                                      }"
                                           :placeholder="$t('editMoviePage.placeholders.editDescription')"
                                           prepend-inner-icon="mdi-mail"
                                           type="text"></v-text-field>
@@ -194,7 +232,7 @@ export default defineComponent({
                                           v-on:update:modelValue="putEnMoviePoster"
                                           variant="filled" prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
-                        <DeleteImgComponent :imageId="movie.i18n.English.posterId" :loadingImg="!!movie.i18n.English.posterId"
+                        <DeleteImgComponent :imageId="movie.i18n.English?.posterId"
                                             v-on:delete="deleteEnImage"
                                             v-on:restore="restoreEnImage"
                         />
@@ -218,7 +256,7 @@ export default defineComponent({
                     </div>
 
                 </div>
-                              <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
+                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
 
@@ -238,19 +276,23 @@ export default defineComponent({
 .deleteImage .btn:hover {
     background-color: grey;
 }
+
 .files {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
 }
+
 .languages {
     display: flex;
 }
+
 div.ru {
     float: left;
     width: 50%;
 }
+
 div.en {
     float: right;
     width: 50%;

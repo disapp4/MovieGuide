@@ -15,11 +15,11 @@ type Data = {
     enTitle: string,
     enDescription: string | null,
     imageFiles: Array<File> | null,
-    ruPosterFile: File | null,
-    ruPosterURL: string | null,
+    ruPosterFile: File |  null,
+    ruPosterURL: string,
     imagesURL: string,
     enPosterFile: File | null,
-    enPosterURL: string,
+    enPosterURL: string ,
     ruPosterId: string | null,
     enPosterId: string | null,
     imageIds: Array<String> | null
@@ -81,7 +81,7 @@ export default defineComponent({
             if (this.ruPosterFile != null) {
                 client.postImage(this.ruPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
                     this.ruPosterId = response.data.id;
-                    this.ruPosterURL = this.ruPosterFile ? URL.createObjectURL(this.ruPosterFile) : null;
+                    this.ruPosterURL =  URL.createObjectURL(this.ruPosterFile!!)
                 });
             } else {
                 this.ruPosterURL = "no_poster.jpg";
@@ -90,7 +90,11 @@ export default defineComponent({
         putEnMoviePoster(files: Array<File>) {
             this.enPosterFile = files[0];
             if (this.enPosterFile != null) {
-                this.enPosterURL = URL.createObjectURL(this.enPosterFile);
+                client.postImage(this.enPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
+                    this.enPosterId = response.data.id;
+                this.enPosterURL = URL.createObjectURL(this.enPosterFile!!)
+                });
+
             } else {
                 this.enPosterURL = "no_poster.jpg";
             }

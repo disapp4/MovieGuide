@@ -1,6 +1,6 @@
 <script lang="ts">
 
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 type Data = {
     imageIsDeleted: boolean
@@ -12,9 +12,8 @@ export default defineComponent({
         };
     },
     props: {
-        imageId: { type: String },
-        loadingImg: { type: Boolean }
-    },
+        imageId: { type: Object as PropType<string | null> },
+            },
     computed: {
         imageUrl() {
             if (this.imageId == null) {

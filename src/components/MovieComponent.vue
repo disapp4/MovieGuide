@@ -11,8 +11,10 @@ type Data = {
 }
 export default defineComponent({
     methods: {
-        truncate(text: string, stop: number, clamp: string = "...") {
-            return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
+        truncate(text: string | undefined, stop: number, clamp: string = "...") {
+            if (typeof text === "string"){return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");}
+            else return ""
+
         }
     },
     data(): Data {
@@ -33,7 +35,7 @@ export default defineComponent({
         loading: function(): boolean {
             return true;
         },
-        movieTitle: function() {
+        movieTitle: function(){
             return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.title;
         },
         moviePoster: function() {
