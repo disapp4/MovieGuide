@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { defineComponent } from "vue";
 import { RouterView } from "vue-router";
 import { client } from "./Client";
 import router from "./router";
 import { useI18n } from "vue-i18n";
 // @ts-ignore
 import { defaultLocale, languages } from "./i18n";
+import { watch } from "vue";
 
- const { t, locale } = useI18n({ useScope: "global" });
+const { t, locale } = useI18n({ useScope: "global" });
+
 const logOut = () => {
     client.logOut()
         .then(() => router.push({ name: "authorization" }))
@@ -16,16 +19,18 @@ const mainPage = () => {
     router.push({ name: "mainPage" });
 };
 
-const language = () => {
-    locale.value === "en" ? locale.value="ru" : locale.value="en"
-   }
+const changeLanguage = () => {
+    locale.value === "en" ? locale.value="ru" : locale.value="en";
+
+   };
+
 </script>
 
 <template>
 
     <v-app>
         <v-toolbar color="black">
-            <v-btn prepend-icon="mdi-web" v-on:click="language">
+            <v-btn prepend-icon="mdi-web" v-on:click="changeLanguage">
                 {{ $t("mainPage.toolbar.language") }}
             </v-btn>
             <v-spacer>
@@ -39,7 +44,9 @@ const language = () => {
             </v-btn>
 
         </v-toolbar>
-        <RouterView />
+        <v-main>
+            <RouterView />
+        </v-main>
 
         <v-footer class="d-flex flex-column">
             <v-spacer></v-spacer>

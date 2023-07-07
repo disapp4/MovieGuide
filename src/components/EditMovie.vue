@@ -4,108 +4,151 @@ import { client } from "../Client";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { Movie } from "../models/Movie.js";
+import { Language } from "../models/Language";
+import { I18nMovie } from "../models/I18nMovie";
+import { CreateImageResponse } from "../models/CreateImageResponse";
+import DeleteImgComponent from "./DeleteImgComponent.vue";
 
 type Data = {
     movie: Movie,
-    changedPosterURL: string | null,
-    posterFile: File | null,
+    changedRuPosterURL: string | null,
+    changedEnPosterURL: string | null,
+    ruPosterFile: File | null,
+    enPosterFile: File | null,
     imageFiles: Array<File> | null,
     changedImagesURL: string | null,
     movieIsLoaded: boolean,
-    visible: boolean
+    deletedRuImageId: string | null,
+    deletedEnImageId: string | null,
+    deletedImages: Array<String>,
+    restoreImages: Array<String>,
+    test: string | null
+
+
 }
+let nullMovie = new Movie();
+nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
+
 export default defineComponent({
         data(): Data {
             return {
-                movie: new Movie(),
-                changedPosterURL: "",
-                posterFile: null,
+                movie: nullMovie,
+                changedRuPosterURL: "",
+                changedEnPosterURL: "",
+                ruPosterFile: null,
+                enPosterFile: null,
                 imageFiles: [],
                 changedImagesURL: "",
                 movieIsLoaded: false,
-                visible: true
+                deletedRuImageId: "",
+                deletedEnImageId: "",
+                deletedImages: [],
+                restoreImages: [],
+                test: "asw"
+
+
             };
         },
+        components: { DeleteImgComponent },
         created() {
             this.refreshMovie();
         },
         methods: {
+            deleteRuImage() {
+                this.deletedRuImageId = "delete";
+            },
+            restoreRuImage() {
+                this.deletedRuImageId = "restore";
+            },
+            deleteEnImage() {
+                this.deletedEnImageId = "delete";
+            },
+            restoreEnImage() {
+                this.deletedEnImageId = "restore";
+            },
+            deleteImage(imageId: string) {
+                this.deletedImages.push(imageId),
+                    console.log(this.deletedImages);
+            },
+            restoreImage(imageId: string) {
+                this.restoreImages.push(imageId);
+                console.log(this.restoreImages);
+            },
             refreshMovie() {
                 let movieId: string = (this.$route.params.id as string);
                 client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
                     this.movie = response.data;
                     this.movieIsLoaded = true;
-
                 });
             },
             editMovieThroughForm() {
-                client.putMovie(this.movie)
-                    .then(() => {
-                        let imagePromises = [];
-                        if (this.posterFile) {
-                            imagePromises.push(client.putMoviePoster(this.posterFile, this.movie.id));
-                        }
-                        if (this.imageFiles)
-                            for (let i = 0; i < this.imageFiles.length; i++) {
-                                imagePromises.push(client.postMovieImage(this.imageFiles[i], this.movie.id));
-                            }
-                        Promise.all(imagePromises)
-                            .then(() => router.push({ name: "mainPage" }));
+                if (this.deletedRuImageId == "delete") {
+                    this.movie.i18n.Russian!!.posterId = null;
+                }
+                if (this.deletedEnImageId == "delete") {
+                    this.movie.i18n.English!!.posterId = null;
+                }
+                if (this.deletedImages) {
 
-                    });
+                    let allImageIds = this.movie.imageIds.filter(imgId => !this.deletedImages.includes(imgId));
+                    // todo: research this
+                    // @ts-ignore
+                    this.movie.imageIds = allImageIds.concat(this.restoreImages);
+                }
+
+                client.putMovie(this.movie)
+                    .then(() => router.push({ name: "mainPage" }));
             },
             backToMainPage() {
                 router.push({ name: "mainPage" });
-
             },
-            putMoviePoster(files: Array<File>) {
-                this.visible = false;
-                this.posterFile = files[0];
-                this.changedPosterURL = this.posterFile ? URL.createObjectURL(this.posterFile) : null;
+            putRuMoviePoster(files: Array<File>) {
+                this.ruPosterFile = files[0];
+                client.postImage(this.ruPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
+                    this.movie.i18n.Russian!!.posterId = response.data.id;
+                    this.changedRuPosterURL = this.ruPosterFile ? URL.createObjectURL(this.ruPosterFile) : null;
+                });
+            },
+            putEnMoviePoster(files: Array<File>) {
+
+                this.enPosterFile = files[0];
+                client.postImage(this.enPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
+                    this.movie.i18n.English!!.posterId = response.data.id;
+                    this.changedEnPosterURL = this.enPosterFile ? URL.createObjectURL(this.enPosterFile) : null;
+                });
             },
             putMovieImages(files: Array<File>) {
-                this.visible = false;
                 let uploadedFiles: Array<File> = files;
                 if (this.imageFiles)
                     for (let i = 0; i < uploadedFiles.length; i++) {
-                        this.imageFiles.push(uploadedFiles[i]);
+                        client.postImage(uploadedFiles[i]).then((response: AxiosResponse<CreateImageResponse>) => {
+                            this.movie.imageIds.push(response.data.id);
+                            this.imageFiles!!.push(uploadedFiles[i]);
+                        });
+
                     }
-            },
-            deleteMovieImage() {
-                router.push({ name: "deleteMovieImage", params: { id: this.movie.id } });
             }
         },
+
         computed: {
-            newPosterURL:
-                function(): string {
-                    if (!this.movieIsLoaded) {
-                        return window.location.origin + "/loading.jpg";
-                    }
-                    if (this.changedPosterURL) {
-                        return this.changedPosterURL;
-                    }
-                    if (this.movie.posterId == null) {
-                        return window.location.origin + "/no_poster.jpg";
-                    }
-                    return import.meta.env.VITE_BACKEND_BASE_URL + "movies/" + this.movie.id + "/poster";
-                },
-            movieImageDatas:
-                function() {
-                    if (!this.movieIsLoaded) {
-                        return [window.location.origin + "/loading.jpg"];
-                    }
-                    let imagesUrls = [];
-                    for (let i = 0; i < this.movie.imageIds.length; i++) {
-                        imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.imageIds[i]);
-                    }
-                    return imagesUrls;
-                },
-            addedFilesUrls:
-                function() {
-                    if (this.imageFiles) {
-                        return this.imageFiles.map(item => URL.createObjectURL(item));
-                    }
-                }
+            I18nMovieRu(): I18nMovie {
+                return this.movie.i18n?.Russian || new I18nMovie();
+            },
+            ruTitle() {
+                return this.movie.i18n[Language.fromCode("ru")]!.title;
+            },
+            Language() {
+                return Language;
+            },
+            movieTitle(lang: string) {
+                return this.movie.i18n[Language.fromCode(lang)]!.title;
+            },
+            imageIds() {
+                let imageIds = [];
+                imageIds.push(...(this.movie.imageIds || []));
+                return imageIds;
+            }
+
         }
     }
 );
@@ -115,46 +158,108 @@ export default defineComponent({
         <v-card-text>
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
-
                 <br>
-                <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-                    <v-text-field v-model="movie.title" :placeholder="$t('editMoviePage.placeholders.editTitle')"
-                                  prepend-inner-icon="mdi-mail"
-                                  type="text"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                    <v-text-field v-model="movie.description"
-                                  :placeholder="$t('editMoviePage.placeholders.editDescription')"
-                                  prepend-inner-icon="mdi-mail"
-                                  type="text"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                    <v-file-input :label="$t('placeholders.addPoster')" v-on:update:modelValue="putMoviePoster"
-                                  variant="filled" prepend-icon="mdi-camera"></v-file-input>
-                </v-col>
-                <v-col cols="12" sm="4">
-                    <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages"
-                                  multiple variant="filled" prepend-icon="mdi-camera"></v-file-input>
-                </v-col>
-                <img class="preview" :src="newPosterURL" />
+                <v-text-field v-bind:modelValue="test" v-on:update:modelValue="test=$event"></v-text-field>
 
+                <div class="languages">
+
+                    <div class="ru">
+                        <h3> Русская версия</h3>
+
+
+                        <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+
+                        </v-col>
+                        <v-text-field v-bind:model-value="movie.i18n.Russian?.title"
+                                      v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.Russian) {
+                                              movie.i18n.Russian.title = value
+                                          }
+                                      }"
+                                      :placeholder="$t('editMoviePage.placeholders.editTitle')"
+                                      prepend-inner-icon="mdi-mail"
+                                      type="text"></v-text-field>
+
+                        <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
+                            <v-text-field v-bind:model-value="movie.i18n.Russian?.description"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.Russian) {
+                                              movie.i18n.Russian.description = value
+                                          }
+                                      }"
+                                          :placeholder="$t('editMoviePage.placeholders.editDescription')"
+                                          prepend-inner-icon="mdi-mail"
+                                          type="text"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="4">
+                            <v-file-input :label="$t('placeholders.addPoster')"
+                                          v-on:update:modelValue="putRuMoviePoster"
+                                          variant="filled" prepend-icon="mdi-camera"></v-file-input>
+                        </v-col>
+
+                        <DeleteImgComponent :imageId="movie.i18n.Russian?.posterId"
+                                            v-on:delete="deleteRuImage"
+                                            v-on:restore="restoreRuImage"
+                        />
+                    </div>
+
+                    <div class="en">
+                        <h3> English version</h3>
+                        <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                            <v-text-field v-bind:model-value="movie.i18n.English?.title"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.English) {
+                                              movie.i18n.English.title = value
+                                          }
+                                      }"
+                                          :placeholder="$t('editMoviePage.placeholders.editTitle')"
+                                          prepend-inner-icon="mdi-mail"
+                                          type="text"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
+                            <v-text-field v-bind:model-value="movie.i18n.English?.description"
+                                          v-on:update:modelValue="(value) => {
+                                          if (movie.i18n.English) {
+                                              movie.i18n.English.description = value
+                                          }
+                                      }"
+                                          :placeholder="$t('editMoviePage.placeholders.editDescription')"
+                                          prepend-inner-icon="mdi-mail"
+                                          type="text"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="4">
+                            <v-file-input :label="$t('placeholders.addPoster')"
+                                          v-on:update:modelValue="putEnMoviePoster"
+                                          variant="filled" prepend-icon="mdi-camera"></v-file-input>
+                        </v-col>
+                        <DeleteImgComponent :imageId="movie.i18n.English?.posterId"
+                                            v-on:delete="deleteEnImage"
+                                            v-on:restore="restoreEnImage"
+                        />
+                    </div>
+
+                </div>
+                <div class="add">
+                    <v-col cols="12" sm="4">
+                        <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages"
+                                      multiple variant="filled" prepend-icon="mdi-camera"></v-file-input>
+                    </v-col>
+                </div>
                 <br>
                 <div class="files">
-                    <div v-for="url in movieImageDatas">
-                        <img class="preview" :src="url" />
+                    <div v-for="imageId in imageIds">
+
+                        <DeleteImgComponent :imageId="imageId"
+                                            v-on:delete="deleteImage(imageId)"
+                                            v-on:restore="restoreImage(imageId)"
+                        />
                     </div>
 
-                    <div v-for="url in addedFilesUrls">
-                        <img class="preview" :src="url" />
-                    </div>
                 </div>
-
                 <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
-                <v-btn id="registration" prepend-icon="mdi-delete" v-on:click="deleteMovieImage"
-                       color="black" v-show="visible"> {{ $t("editMoviePage.buttons.delete") }}
-                </v-btn>
+
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
                            color="black"> {{ $t("buttons.back") }}
@@ -163,20 +268,34 @@ export default defineComponent({
             </v-form>
         </v-card-text>
     </v-card>
+
+
 </template>
 
 <style scoped>
+.deleteImage .btn:hover {
+    background-color: grey;
+}
+
 .files {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
 }
-.preview {
-    border-radius: 10px;
-    margin: 10px 20px;
-    width: 200px;
-    height: 250px
+
+.languages {
+    display: flex;
+}
+
+div.ru {
+    float: left;
+    width: 50%;
+}
+
+div.en {
+    float: right;
+    width: 50%;
 }
 </style>
 

@@ -11,7 +11,7 @@ export default defineComponent({
                 value: "id",
                 view: "sortingPage.pageSortField.id"
             }, {
-                value: "title",
+                value: "i18n.title",
                 view: "sortingPage.pageSortField.title"
             }],
             sortOrderValues: [{
@@ -22,7 +22,7 @@ export default defineComponent({
                 view: "sortingPage.pageSortOrder.desc"
             }],
             pageSize: 5,
-            pageSortField: "title",
+            pageSortField: "i18n.title",
             pageSortOrder: "asc"
         };
     },
@@ -40,7 +40,7 @@ export default defineComponent({
             this.$emit("changePageSize", this.pageSize);
         },
         changePageSortField() {
-            this.$emit("changePageSortField", this.pageSortField);
+            this.$emit("changePageSortField",  this.pageSortField);
         },
         changePageSortOrder() {
             this.$emit("changePageSortOrder", this.pageSortOrder);
@@ -53,16 +53,16 @@ export default defineComponent({
     <div class="sorting">
         <v-col class="d-flex" cols="12" sm="7" color="black">
             <v-select :label="$t('sortingPage.pageSize')" :items="sizeValues" v-model="pageSize"
-                      v-on:update:modelValue="changePageSize">
+                      v-on:update:modelValue="changePageSize" variant="outlined">
             </v-select>
             <v-select :label="$t('sortingPage.pageSortField.pageSortField')" :items="sortFieldValues"
                       :item-title="item => $t(item.view)"
                       v-model="pageSortField"
-                      v-on:update:modelValue="changePageSortField">
+                      v-on:update:modelValue="changePageSortField"  variant="outlined">
             </v-select>
             <v-select :label="$t('sortingPage.pageSortOrder.pageSortOrder')" v-model="pageSortOrder"
                       :items="sortOrderValues" :item-title="item => $t(item.view)"
-                      v-on:update:modelValue="changePageSortOrder">
+                      v-on:update:modelValue="changePageSortOrder" variant="outlined">
             </v-select>
         </v-col>
     </div>

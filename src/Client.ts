@@ -8,6 +8,8 @@ import { PageRequest } from "./models/PageRequest";
 import { CreateMovieResponse } from "./models/CreateMovieResponse";
 import { User } from "./models/User";
 import router from "./router";
+import { Language } from "./models/Language";
+import { CreateImageResponse } from "./models/CreateImageResponse";
 
 export class Client {
     private axiosInstance = axios.create({
@@ -19,8 +21,8 @@ export class Client {
         return this.axiosInstance.get<Movie>("movies/" + movieId);
     }
 
-    public async getMovies(pageRequest: PageRequest) {
-        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order);
+    public async getMovies(pageRequest: PageRequest, language: Language ) {
+        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=`  + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
     }
 
     public postMovie(createMovieRequest: CreateMovieRequest) {
@@ -30,10 +32,7 @@ export class Client {
     }
 
     public putMovie(movie: Movie) {
-        return this.axiosInstance.put("movies/" + movie.id, {
-            title: movie.title,
-            description: movie.description
-        });
+        return this.axiosInstance.put("movies/" + movie.id, movie);
     }
 
     public deleteMovie(movieId: string) {
@@ -60,18 +59,18 @@ export class Client {
         );
     }
 
-    public putMoviePoster(imageFile: File, movieId: string) {
+    public putMoviePoster(imageFile: File, movieId: string, language: Language) {
         let formData = new FormData();
         formData.append("imageFile", imageFile);
-        return this.axiosInstance.put("movies/" + movieId + "/poster", formData, {
+        return this.axiosInstance.put("movies/" + movieId + "/poster" + `?lang=` + language, formData, {
             headers: { "Content-Type": "multipart/form-data" }
         });
     }
 
-    public postMovieImage(imageFile: File, movieId: string) {
+    public postImage(imageFile: File) {
         let formData = new FormData();
         formData.append("imageFile", imageFile);
-        return this.axiosInstance.post("movies/" + movieId + "/images", formData, {
+        return this.axiosInstance.post<CreateImageResponse>("images" , formData, {
 
             headers: { "Content-Type": "multipart/form-data" }
         });
@@ -81,8 +80,8 @@ export class Client {
         return this.axiosInstance.get("images/" + movieId);
     }
 
-    public deletePoster(movieId: string) {
-        return this.axiosInstance.delete("movies/" + movieId + "/poster");
+    public deletePoster(movieId: string, language: Language) {
+        return this.axiosInstance.delete("movies/" + movieId + "/poster"+ `?lang=` + language);
     }
 
     public deleteImage(movieId: string, imageId: string) {
