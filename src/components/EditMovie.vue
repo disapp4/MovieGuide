@@ -21,10 +21,7 @@ type Data = {
     deletedRuImageId: string | null,
     deletedEnImageId: string | null,
     deletedImages: Array<String>,
-    restoreImages: Array<String>,
-    test: string | null
-
-
+    restoreImages: Array<String>
 }
 let nullMovie = new Movie();
 nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
@@ -43,10 +40,7 @@ export default defineComponent({
                 deletedRuImageId: "",
                 deletedEnImageId: "",
                 deletedImages: [],
-                restoreImages: [],
-                test: "asw"
-
-
+                restoreImages: []
             };
         },
         components: { DeleteImgComponent },
@@ -67,12 +61,10 @@ export default defineComponent({
                 this.deletedEnImageId = "restore";
             },
             deleteImage(imageId: string) {
-                this.deletedImages.push(imageId),
-                    console.log(this.deletedImages);
+                this.deletedImages.push(imageId);
             },
             restoreImage(imageId: string) {
                 this.restoreImages.push(imageId);
-                console.log(this.restoreImages);
             },
             refreshMovie() {
                 let movieId: string = (this.$route.params.id as string);
