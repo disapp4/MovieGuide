@@ -142,7 +142,7 @@ export default defineComponent({
     </div>
     <div v-else>
 
-        <img src="loading.jpg" width="300">
+        <img src="/loading.jpg" width="300">
     </div>
     <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>
