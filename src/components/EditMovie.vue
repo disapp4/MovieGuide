@@ -131,9 +131,7 @@ export default defineComponent({
         },
 
         computed: {
-            I18nMovieRu(): I18nMovie {
-                return this.movie.i18n?.Russian || new I18nMovie();
-            },
+
             ruTitle() {
                 return this.movie.i18n[Language.fromCode("ru")]!.title;
             },
@@ -159,14 +157,10 @@ export default defineComponent({
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
                 <br>
-                <v-text-field v-bind:modelValue="test" v-on:update:modelValue="test=$event"></v-text-field>
 
                 <div class="languages">
-
                     <div class="ru">
                         <h3> Русская версия</h3>
-
-
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
 
                         </v-col>
