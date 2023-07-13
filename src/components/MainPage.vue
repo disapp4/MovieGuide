@@ -94,8 +94,6 @@ export default defineComponent({
             this.loadMoviePage(0, pageSize, pageSortField, pageSortOrder);
         },
         loadMoviePage(pageNumber: number, pageSize: number, pageSortField: string, pageSortOrder: string) {
-            // let language = (this.$i18n.locale == "ru") ? Language.Russian : Language.English;
-
             client.getMovies(
                 {
                     number: pageNumber,
