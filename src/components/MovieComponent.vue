@@ -75,14 +75,14 @@ export default defineComponent({
                     <v-card-actions>
                         <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="small" icon="mdi-delete"
                                variant="text"
-                               color="black"></v-btn>
+                               color="black" class="buttonDelete"></v-btn>
                         <v-btn v-on:click="() => $emit('editMovie', movie)" size="small" icon="mdi-pencil"
                                variant="text"
-                               color="black"></v-btn>
+                               color="black" class="buttonEdit"></v-btn>
                         <v-btn v-on:click="() => {isFavourite=!isFavourite,$emit('addMovieToFavouriteList', movie)}"
                                size="small"
                                variant="text"
-                               :class={favourite:isFavourite} class="isFavourite" icon="mdi-heart"></v-btn>
+                               :class={favourite:isFavourite} class="isFavourite" icon="mdi-heart" ></v-btn>
                     </v-card-actions>
                 </div>
             </div>
@@ -96,6 +96,15 @@ export default defineComponent({
 .buttonInformation {
     display: flex;
     right: -20px
+}
+.buttonInformation :hover {
+    color:blueviolet;
+}
+.buttonDelete :hover {
+    color: blue
+}
+.buttonEdit :hover {
+    color: green
 }
 
 .container {
@@ -119,6 +128,9 @@ export default defineComponent({
 
 .isFavourite {
     color: black
+}
+.isFavourite:hover {
+    color: red
 }
 
 .favourite {
