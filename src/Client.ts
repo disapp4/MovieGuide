@@ -18,7 +18,7 @@ export class Client {
     });
 
     constructor() {
-        axios.interceptors.response.use(
+        this.axiosInstance.interceptors.response.use(
           response => response,
           error => {
             if (error.response.status === 401) {
@@ -98,15 +98,6 @@ export class Client {
 
     public deleteImage(movieId: string, imageId: string) {
         return this.axiosInstance.delete("movies/" + movieId + "/images/" + imageId);
-    }
-
-    public onRequestError(error: any) {
-        if (error.response.status == 401) {
-            router.push({ name: "authorization" }).then(err => console.error(err));
-        } else {
-            console.error(error);
-            alert("Произошла ошибка вызова, смотри в консоль");
-        }
     }
 }
 
