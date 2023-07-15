@@ -25,6 +25,7 @@ export class Client {
                 if (error.response.status == 401) {
                     router.push({ name: "authorization" }).then();
                 }
+                return Promise.reject(error);
             }
         );
     }
