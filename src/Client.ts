@@ -18,14 +18,14 @@ export class Client {
     });
 
     constructor() {
-        this.axiosInstance.interceptors.response.use((response) => {
-                return response;
-            },
-            (error) => {
-                if (error.response.status == 401) {
-                    router.push({ name: "authorization" }).then();
-                }
+        axios.interceptors.response.use(
+          response => response,
+          error => {
+            if (error.response.status === 401) {
+              router.push({ name: "authorization" });
             }
+            return Promise.reject(error);
+          }
         );
     }
 
