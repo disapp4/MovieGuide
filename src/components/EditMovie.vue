@@ -81,13 +81,11 @@ export default defineComponent({
                     this.movie.i18n.English!!.posterId = null;
                 }
                 if (this.deletedImages) {
-
                     let allImageIds = this.movie.imageIds.filter(imgId => !this.deletedImages.includes(imgId));
                     // todo: research this
                     // @ts-ignore
                     this.movie.imageIds = allImageIds.concat(this.restoreImages);
                 }
-
                 client.putMovie(this.movie)
                     .then(() => router.push({ name: "mainPage" }));
             },
@@ -121,9 +119,7 @@ export default defineComponent({
                     }
             }
         },
-
         computed: {
-
             ruTitle() {
                 return this.movie.i18n[Language.fromCode("ru")]!.title;
             },
@@ -144,17 +140,15 @@ export default defineComponent({
 );
 </script>
 <template>
-    <v-card>
+    <v-card class="edit">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
                 <br>
-
                 <div class="languages">
                     <div class="ru">
                         <h3> Русская версия</h3>
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-
                         </v-col>
                         <v-text-field v-bind:model-value="movie.i18n.Russian?.title"
                                       v-on:update:modelValue="(value) => {
@@ -188,7 +182,6 @@ export default defineComponent({
                                             v-on:restore="restoreRuImage"
                         />
                     </div>
-
                     <div class="en">
                         <h3> English version</h3>
                         <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
@@ -223,7 +216,6 @@ export default defineComponent({
                                             v-on:restore="restoreEnImage"
                         />
                     </div>
-
                 </div>
                 <div class="add">
                     <v-col cols="12" sm="4">
@@ -240,12 +232,10 @@ export default defineComponent({
                                             v-on:restore="restoreImage(imageId)"
                         />
                     </div>
-
                 </div>
                 <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="editMovieThroughForm" color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
-
                 <v-card-actions>
                     <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
                            color="black"> {{ $t("buttons.back") }}
@@ -255,12 +245,12 @@ export default defineComponent({
         </v-card-text>
     </v-card>
 
-
 </template>
 
 <style scoped>
-.deleteImage .btn:hover {
-    background-color: grey;
+
+.edit {
+    background: #F5F5F5;
 }
 
 .files {

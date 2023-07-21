@@ -14,22 +14,22 @@ type Data = {
 }
 
 let nullMovie = new Movie();
-nullMovie.i18n = {[Language.Russian] : new I18nMovie(), [Language.English] : new I18nMovie()}
+nullMovie.i18n = { [Language.Russian]: new I18nMovie(), [Language.English]: new I18nMovie() };
 
 export default defineComponent({
     data(): Data {
         return {
             movie: nullMovie,
             movieIsLoaded: false,
-            width: 200,
-                    };
+            width: 200
+        };
     },
     created() {
         this.refreshMovie();
     },
-       methods: {
+    methods: {
         refreshMovie() {
-                        let movieId: string = (this.$route.params.id as string);
+            let movieId: string = (this.$route.params.id as string);
             client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
                 this.movie = response.data;
                 this.movieIsLoaded = true;
@@ -43,22 +43,22 @@ export default defineComponent({
         }
     },
     computed: {
-        movieTitle(){
-            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title
+        movieTitle() {
+            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title;
         },
-        movieDescription(){
-            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.description
+        movieDescription() {
+            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.description;
         },
-        posterURL:function(){
+        posterURL: function() {
             if (!this.movieIsLoaded) {
                 return window.location.origin + "/loading.jpg";
             }
             if (this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId == null) {
                 return window.location.origin + "/no_poster.jpg";
             }
-            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId
+            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId;
         },
-        movieImageDatas:
+        movieImageData:
             function() {
                 if (!this.movieIsLoaded) {
                     return [window.location.origin + "/loading.jpg"];
@@ -73,27 +73,26 @@ export default defineComponent({
 });
 </script>
 <template>
-    <v-card>
+    <v-card class="information">
         <v-card-text>
             <v-form><h1> {{ $t("informationAboutMoviePage.title") }} </h1>
-                    <v-col cols="12" sm="6"> {{ $t("placeholders.id") }}
-                        <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
-                                      type="text" class="text-right"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-                        <v-text-field v-model="movieTitle" placeholder="title" disabled prepend-inner-icon="mdi-mail"
-                                      type="text"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                        <v-text-field v-model="movieDescription" placeholder="description" disabled
-                                      prepend-inner-icon="mdi-mail" type="text"></v-text-field>
-                    </v-col>
-                    <v-img class="preview" height="200" :src="posterURL" cover>
-                    </v-img>
-
+                <v-col cols="12" sm="6"> {{ $t("placeholders.id") }}
+                    <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
+                                  type="text" class="text-right"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                    <v-text-field v-model="movieTitle" placeholder="title" disabled prepend-inner-icon="mdi-mail"
+                                  type="text"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
+                    <v-text-field v-model="movieDescription" placeholder="description" disabled
+                                  prepend-inner-icon="mdi-mail" type="text"></v-text-field>
+                </v-col>
+                <v-img class="preview" :src="posterURL" cover>
+                </v-img>
                 <div class="files2">
-                    <div v-for="url in movieImageDatas">
-                        <img class="preview" :src="url" />
+                    <div v-for="url in movieImageData">
+                        <img class="preview2" :src="url" alt="imagePreview" />
                     </div>
                 </div>
                 <v-btn id="log_in" prepend-icon="mdi-pencil" v-on:click="editMovieThroughForm" color="black">
@@ -109,6 +108,10 @@ export default defineComponent({
     </v-card>
 </template>
 <style scoped>
+.information {
+    background: #F5F5F5
+}
+
 .files2 {
     display: flex;
     flex-wrap: wrap;
@@ -119,21 +122,20 @@ export default defineComponent({
 .preview {
     border-radius: 10px;
     margin: 10px 20px;
-    width: 200px;
-    height: 250px
-}
-.languages {
-    display: flex;
-}
-
-div.ru {
-    float: left;
-    width: 50%;
+    width: 220px;
+    height: 300px;
+    box-shadow: 0 0 10px #444;
+    border: 1px #ccc solid;
 }
 
-div.en {
-    float: right;
-    width: 50%;
+.preview2 {
+    border-radius: 10px;
+    margin: 10px 20px;
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 0 10px #444;
+    border: 1px #ccc solid;
 }
+
 </style>
 

@@ -9,16 +9,16 @@ export default defineComponent({
     props: {
         movieList: { type: Array as PropType<Movie[]> }
     },
-    emits: ["deleteMovie", "editMovie", "addMovieToFavouriteList", "informationAboutMovie"]
+    emits: ["deleteMovie", "editMovie", "informationAboutMovie"]
 });
 </script>
 
 <template>
-        <MovieComponent
-            v-for="movie in movieList" :movie="movie"
-            v-on:deleteMovie="(movie: Movie) => $emit('deleteMovie', movie)"
-            v-on:editMovie="(movie:Movie) => $emit('editMovie', movie)"
-            v-on:informationAboutMovie="(movie:Movie) => $emit('informationAboutMovie', movie)"
-            v-on:addMovieToFavouriteList="(movie:Movie) => $emit('addMovieToFavouriteList', movie)" />
+    <MovieComponent
+        v-for="movie in movieList" :movie="movie"
+        v-on:deleteMovie="$emit('deleteMovie', movie)"
+        v-on:editMovie="$emit('editMovie', movie)"
+        v-on:informationAboutMovie="$emit('informationAboutMovie', movie)"
+    />
 </template>
 

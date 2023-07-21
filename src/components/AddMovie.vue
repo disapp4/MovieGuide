@@ -8,22 +8,20 @@ import { Language } from "../models/Language.js";
 import { I18nCreateMovieRequest } from "../models/I18nCreateMovieRequest";
 import { CreateImageResponse } from "../models/CreateImageResponse";
 
-
 type Data = {
     ruTitle: string,
     ruDescription: string | null,
     enTitle: string,
     enDescription: string | null,
     imageFiles: Array<File> | null,
-    ruPosterFile: File |  null,
+    ruPosterFile: File | null,
     ruPosterURL: string,
     imagesURL: string,
     enPosterFile: File | null,
-    enPosterURL: string ,
+    enPosterURL: string,
     ruPosterId: string | null,
     enPosterId: string | null,
     imageIds: Array<String> | null
-
 }
 
 export default defineComponent({
@@ -81,7 +79,7 @@ export default defineComponent({
             if (this.ruPosterFile != null) {
                 client.postImage(this.ruPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
                     this.ruPosterId = response.data.id;
-                    this.ruPosterURL =  URL.createObjectURL(this.ruPosterFile!!)
+                    this.ruPosterURL = URL.createObjectURL(this.ruPosterFile!!);
                 });
             } else {
                 this.ruPosterURL = "no_poster.jpg";
@@ -92,7 +90,7 @@ export default defineComponent({
             if (this.enPosterFile != null) {
                 client.postImage(this.enPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
                     this.enPosterId = response.data.id;
-                this.enPosterURL = URL.createObjectURL(this.enPosterFile!!)
+                    this.enPosterURL = URL.createObjectURL(this.enPosterFile!!);
                 });
 
             } else {
@@ -114,10 +112,9 @@ export default defineComponent({
 </script>
 <template>
 
-    <v-card>
+    <v-card class="add">
         <v-card-text>
             <v-form>
-
                 <h1> {{ $t("addMoviePage.title") }} </h1>
                 <div class="languages">
                     <div class="ru">
@@ -139,11 +136,8 @@ export default defineComponent({
                                           variant="filled"
                                           prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
-
-
-                        <img class="preview2" :src="ruPosterURL" />
+                        <img class="preview2" :src="ruPosterURL" alt="ruPreview" />
                         <br>
-
                     </div>
                     <div class="en">
                         <h3> English version</h3>
@@ -164,11 +158,8 @@ export default defineComponent({
                                           variant="filled"
                                           prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
-
-
-                        <img class="preview2" :src="enPosterURL" />
+                        <img class="preview2" :src="enPosterURL" alt="enPreview" />
                         <br>
-
                     </div>
                 </div>
                 <v-col cols="12" sm="4">
@@ -177,7 +168,7 @@ export default defineComponent({
                 </v-col>
                 <div class="files2">
                     <div v-for="url in addedFilesUrls">
-                        <img class="preview" :src="url" />
+                        <img class="preview" :src="url" alt="imagePreview" />
                     </div>
                 </div>
                 <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="addMovieThroughForm" color="black">
@@ -194,6 +185,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.add {
+    background: #F5F5F5
+}
+
 .files2 {
     display: flex;
     flex-wrap: wrap;
@@ -205,14 +200,18 @@ export default defineComponent({
     border-radius: 10px;
     margin: 10px 20px;
     width: 200px;
-    height: 250px
+    height: 250px;
+    box-shadow: 0 0 10px #444;
+    border: 1px #ccc solid;
 }
 
 .preview2 {
     margin: 10px 20px;
     border-radius: 10px;
     width: 200px;
-    height: 250px
+    height: 250px;
+    box-shadow: 0 0 10px #444;
+    border: 1px #ccc solid;
 }
 
 .languages {
@@ -228,4 +227,5 @@ div.en {
     float: right;
     width: 50%;
 }
+
 </style>

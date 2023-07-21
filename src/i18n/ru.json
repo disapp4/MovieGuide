@@ -29,10 +29,14 @@
       "logOut": "Выйти"
     },
     "movieList": {
+      "viewedMoviesTitle": "Просмотренные Фильмы",
+      "willBeViewedMoviesTitle": "Буду Смотреть",
       "title": "Список фильмов",
       "buttons": {
         "addMovie": "Добавить фильм",
-        "favouriteMovies": "Любимые фильмы"
+        "favouriteMovies": "Любимые фильмы",
+        "viewedMovies": "Просмотренные фильмы",
+        "willBeViewedMovies": "Буду смотреть"
       }
     }
   },

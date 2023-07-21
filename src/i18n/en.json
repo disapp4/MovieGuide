@@ -30,9 +30,13 @@
     },
     "movieList": {
       "title": "Movie list",
+      "viewedMoviesTitle": "Viewed Movies",
+      "willBeViewedMoviesTitle": "Will Watch",
       "buttons": {
         "addMovie": "Add Movie",
-        "favouriteMovies": "Favourite Movies"
+        "favouriteMovies": "Favourite Movies",
+        "viewedMovies": "Viewed movies",
+        "willBeViewedMovies": "Will watch"
       }
     }
   },
