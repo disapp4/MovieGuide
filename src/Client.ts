@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { Movie } from "./models/Movie";
 import { Page } from "./models/Page";
 import { CreateMovieRequest } from "./models/CreateMovieRequest";
@@ -33,8 +33,8 @@ export class Client {
         return this.axiosInstance.get<Movie>("movies/" + movieId);
     }
 
-    public async getMovies(pageRequest: PageRequest, language: Language) {
-        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
+    public async getMovies(pageRequest: PageRequest, language: Language ) {
+        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=`  + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
     }
 
     public postMovie(createMovieRequest: CreateMovieRequest) {
@@ -49,10 +49,6 @@ export class Client {
 
     public deleteMovie(movieId: string) {
         return this.axiosInstance.delete("movies/" + movieId);
-    }
-
-    public healthCheck() {
-        return this.axiosInstance.get("health-check");
     }
 
     public logOut() {
@@ -71,42 +67,12 @@ export class Client {
         );
     }
 
-    public putMoviePoster(imageFile: File, movieId: string, language: Language) {
-        let formData = new FormData();
-        formData.append("imageFile", imageFile);
-        return this.axiosInstance.put("movies/" + movieId + "/poster" + `?lang=` + language, formData, {
-            headers: { "Content-Type": "multipart/form-data" }
-        });
-    }
-
     public postImage(imageFile: File) {
         let formData = new FormData();
         formData.append("imageFile", imageFile);
         return this.axiosInstance.post<CreateImageResponse>("images", formData, {
-
             headers: { "Content-Type": "multipart/form-data" }
         });
-    }
-
-    public getImage(movieId: string) {
-        return this.axiosInstance.get("images/" + movieId);
-    }
-
-    public deletePoster(movieId: string, language: Language) {
-        return this.axiosInstance.delete("movies/" + movieId + "/poster" + `?lang=` + language);
-    }
-
-    public deleteImage(movieId: string, imageId: string) {
-        return this.axiosInstance.delete("movies/" + movieId + "/images/" + imageId);
-    }
-
-    public onRequestError(error: any) {
-        if (error.response.status == 401) {
-            router.push({ name: "authorization" }).then(err => console.error(err));
-        } else {
-            console.error(error);
-            alert("Произошла ошибка вызова, смотри в консоль");
-        }
     }
 }
 

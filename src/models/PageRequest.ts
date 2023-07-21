@@ -3,5 +3,4 @@ export class PageRequest {
    size!: number;
    field!: string;
    order!:string;
-
 }

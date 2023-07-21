@@ -18,12 +18,6 @@ type Data = {
     loading: boolean,
 }
 
-export function forceCast<T>(input: any): T {
-    // ... do runtime checks here
-    // @ts-ignore <-- forces TS compiler to compile this as-is
-    return input;
-}
-
 export default defineComponent({
     computed: {
         Movie() {
@@ -37,7 +31,7 @@ export default defineComponent({
             loading: true
         };
     },
-    mounted() {
+    mounted: function() {
         this.refreshMoviePage();
     },
     watch: {
@@ -57,12 +51,6 @@ export default defineComponent({
         },
         informationAboutMovie(movie: Movie) {
             router.push({ name: "informationAboutMovie", params: { id: movie.id } });
-        },
-        favouriteMoviesPage() {
-            router.push({ name: "favouriteMovies" });
-        },
-        addMovieToFavouriteList(movie: Movie) {
-
         },
         refreshMoviePage() {
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
@@ -102,15 +90,12 @@ export default defineComponent({
                     order: pageSortOrder
                 }, Language.fromCode(this.$i18n.locale)
             ).then((response: AxiosResponse<Page<Movie>>) => {
-
                 this.currentPage = response.data;
                 this.loading = false;
-
             }).catch((err) => {
                 {
                     console.log(err);
                 }
-                ;
             });
         }
     }
@@ -119,35 +104,147 @@ export default defineComponent({
 <template>
     <div class="mainPage">
         <h1> {{ $t("mainPage.movieList.title") }} </h1>
-        <v-card class="header-buttons" color="#F5F5F5">
+        <v-card color="#F5F5F5">
             <v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
                 {{ $t("mainPage.movieList.buttons.addMovie") }}
             </v-btn>
-            <v-btn id="log_in" prepend-icon="mdi-book-heart" v-on:click="favouriteMoviesPage" color="black">
-                {{ $t("mainPage.movieList.buttons.favouriteMovies") }}
-            </v-btn>
+
         </v-card>
     </div>
     <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
              v-on:changePageSortOrder="onPageSortOrder"
              v-on:changePageSize="onPageSize" ref="sorting" />
-
     <div v-if="!loading">
         <Movies :movieList="currentPage?.content" v-on:deleteMovie="(movie: Movie) => deleteMovieFromList(movie)"
                 v-on:editMovie="(movie: Movie) => editMovieFromList(movie)"
                 v-on:informationAboutMovie="(movie: Movie) => informationAboutMovie(movie)"
-                v-on:addMovieToFavouriteList="(movie: Movie) => addMovieToFavouriteList(movie)" />
+        />
     </div>
     <div v-else>
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
 
-        <img src="/loading.jpg" width="300">
     </div>
     <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>
 <style>
-.mainPage {
-    background-color: #F5F5F5
+.lds-roller {
+
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+    height: 1000px;
 }
+
+.lds-roller div {
+    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 40px 40px;
+}
+
+.lds-roller div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    margin: -4px 0 0 -4px;
+}
+
+.lds-roller div:nth-child(1) {
+    animation-delay: -0.036s;
+}
+
+.lds-roller div:nth-child(1):after {
+    top: 63px;
+    left: 63px;
+}
+
+.lds-roller div:nth-child(2) {
+    animation-delay: -0.072s;
+}
+
+.lds-roller div:nth-child(2):after {
+    top: 68px;
+    left: 56px;
+}
+
+.lds-roller div:nth-child(3) {
+    animation-delay: -0.108s;
+}
+
+.lds-roller div:nth-child(3):after {
+    top: 71px;
+    left: 48px;
+}
+
+.lds-roller div:nth-child(4) {
+    animation-delay: -0.144s;
+}
+
+.lds-roller div:nth-child(4):after {
+    top: 72px;
+    left: 40px;
+}
+
+.lds-roller div:nth-child(5) {
+    animation-delay: -0.18s;
+}
+
+.lds-roller div:nth-child(5):after {
+    top: 71px;
+    left: 32px;
+}
+
+.lds-roller div:nth-child(6) {
+    animation-delay: -0.216s;
+}
+
+.lds-roller div:nth-child(6):after {
+    top: 68px;
+    left: 24px;
+}
+
+.lds-roller div:nth-child(7) {
+    animation-delay: -0.252s;
+}
+
+.lds-roller div:nth-child(7):after {
+    top: 63px;
+    left: 17px;
+}
+
+.lds-roller div:nth-child(8) {
+    animation-delay: -0.288s;
+}
+
+.lds-roller div:nth-child(8):after {
+    top: 56px;
+    left: 12px;
+}
+
+@keyframes lds-roller {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.mainPage {
+    background: #F5F5F5
+}
+
 </style>
 
 

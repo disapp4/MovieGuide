@@ -4,21 +4,19 @@ import { defineComponent, PropType } from "vue";
 
 import { Movie } from "../models/Movie";
 
-
 export default defineComponent({
     data() {
         return {
             pageNumber: 0,
             pageNumberView: 1,
             totalPagesView: 5
-
         };
     },
     props: {
         page: { type: Object as PropType<Page<Movie>> }
     },
     watch: {
-        page: function(newVal, oldVal) {
+        page: function(newVal) {
             this.pageNumber = newVal.number;
             this.pageNumberView = this.pageNumber + 1;
             this.totalPagesView = newVal.totalPages;

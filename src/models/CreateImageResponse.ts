@@ -1,6 +1,3 @@
-
-
 export class CreateImageResponse {
-
-    id!: string
+    id!: string;
 }

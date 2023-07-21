@@ -12,14 +12,17 @@ export default defineComponent({
         };
     },
     props: {
-        imageId: { type:null as unknown as PropType<string | null>,  required: false },
-            },
+        imageId: { type: null as unknown as PropType<string | null>, required: false }
+    },
     computed: {
         imageUrl() {
             if (this.imageId == null) {
                 return window.location.origin + "/no_poster.jpg";
             }
             return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.imageId;
+        },
+        iconButton() {
+            return this.imageIsDeleted ? "mdi-backup-restore" : "mdi-delete";
         }
     },
     emits: ["delete", "restore"],
@@ -27,16 +30,14 @@ export default defineComponent({
         switchImage(imageId: string) {
             this.imageIsDeleted = !this.imageIsDeleted;
             this.imageIsDeleted ? this.$emit("delete", imageId) : this.$emit("restore", imageId);
-        },
-        iconButton() {
-            return this.imageIsDeleted ? "O" : "X";
         }
+
     }
 });
 </script>
 <template>
     <div class="deleteImage">
-        <img :src="imageUrl" class="previewPoster" :class="{deleted: imageIsDeleted}" />
+        <img :src="imageUrl" class="previewPoster" :class="{deleted: imageIsDeleted}" alt="posterPreview" />
         <v-btn class="button" size="small" variant="text" v-on:click="switchImage" :icon="iconButton"></v-btn>
 
     </div>
@@ -46,8 +47,9 @@ export default defineComponent({
     border-radius: 10px;
     margin: 10px 20px;
     width: 200px;
-    height: 250px
-
+    height: 250px;
+    box-shadow: 0 0 10px #444;
+    border: 1px #ccc solid;
 }
 
 .deleteImage {
@@ -59,9 +61,12 @@ export default defineComponent({
     position: absolute;
     bottom: 80%;
     left: 68%;
-    background-color: white;
     color: black;
     font-size: 14px;
+}
+
+.deleteImage button:hover {
+    color: red
 }
 
 .deleted {

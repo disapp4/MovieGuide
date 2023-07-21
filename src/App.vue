@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { defineComponent } from "vue";
 import { RouterView } from "vue-router";
 import { client } from "./Client";
 import router from "./router";
 import { useI18n } from "vue-i18n";
 // @ts-ignore
 import { defaultLocale, languages } from "./i18n";
-import { watch } from "vue";
 
 const { t, locale } = useI18n({ useScope: "global" });
 
@@ -20,14 +18,12 @@ const mainPage = () => {
 };
 
 const changeLanguage = () => {
-    locale.value === "en" ? locale.value="ru" : locale.value="en";
-
-   };
+    locale.value === "en" ? locale.value = "ru" : locale.value = "en";
+};
 
 </script>
 
 <template>
-
     <v-app>
         <v-toolbar color="black">
             <v-btn prepend-icon="mdi-web" v-on:click="changeLanguage">
@@ -47,8 +43,7 @@ const changeLanguage = () => {
         <v-main>
             <RouterView />
         </v-main>
-
-        <v-footer class="d-flex flex-column">
+        <v-footer>
             <v-spacer></v-spacer>
             <div class="  bg-black text-center w-100">
                 <strong>movie guide</strong>
@@ -56,5 +51,6 @@ const changeLanguage = () => {
         </v-footer>
     </v-app>
 </template>
+
 
 

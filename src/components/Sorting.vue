@@ -30,7 +30,7 @@ export default defineComponent({
         page: { type: Object as PropType<Page<Movie>> }
     },
     watch: {
-        page: function(newVal, oldVal) {
+        page: function(newVal) {
             this.pageSize = newVal.size;
         }
     },
@@ -40,7 +40,7 @@ export default defineComponent({
             this.$emit("changePageSize", this.pageSize);
         },
         changePageSortField() {
-            this.$emit("changePageSortField",  this.pageSortField);
+            this.$emit("changePageSortField", this.pageSortField);
         },
         changePageSortOrder() {
             this.$emit("changePageSortOrder", this.pageSortOrder);
@@ -58,7 +58,7 @@ export default defineComponent({
             <v-select :label="$t('sortingPage.pageSortField.pageSortField')" :items="sortFieldValues"
                       :item-title="item => $t(item.view)"
                       v-model="pageSortField"
-                      v-on:update:modelValue="changePageSortField"  variant="outlined">
+                      v-on:update:modelValue="changePageSortField" variant="outlined">
             </v-select>
             <v-select :label="$t('sortingPage.pageSortOrder.pageSortOrder')" v-model="pageSortOrder"
                       :items="sortOrderValues" :item-title="item => $t(item.view)"
@@ -66,7 +66,6 @@ export default defineComponent({
             </v-select>
         </v-col>
     </div>
-
 </template>
 <style scoped>
 .sorting {

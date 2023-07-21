@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createI18n, useI18n } from "vue-i18n";
+import { createI18n } from "vue-i18n";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
@@ -33,9 +33,7 @@ const i18n = createI18n({
     legacy: false,
     locale: defaultLocale,
     fallbackLocale: "en",
-    
     messages
-
 });
 
 const vuetify = createVuetify({
@@ -57,12 +55,7 @@ const vuetify = createVuetify({
 });
 
 export default i18n;
-createApp(App, {
-    setup() {
-        const { t } = useI18n();
-        return { t };
-    }
-})
+createApp(App, {})
     .use(router)
     .use(vuetify)
     .use(i18n)
