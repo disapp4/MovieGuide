@@ -28,6 +28,9 @@ export default defineComponent({
         this.refreshMovie();
     },
     methods: {
+        changeStateFirst(){
+            client.state = "second"
+        },
         refreshMovie() {
             let movieId: string = (this.$route.params.id as string);
             client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
@@ -43,6 +46,9 @@ export default defineComponent({
         }
     },
     computed: {
+        stateFirst(){
+            return client.state
+        },
         movieTitle() {
             return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title;
         },
@@ -74,19 +80,19 @@ export default defineComponent({
 </script>
 <template>
     <v-card class="information">
+        <v-textarea variant="solo" v-model="stateFirst"  readonly
+                    type="text"> </v-textarea>
+        <v-btn v-on:click="changeStateFirst"> кнопка</v-btn>
         <v-card-text>
             <v-form><h1> {{ $t("informationAboutMoviePage.title") }} </h1>
-                <v-col cols="12" sm="6"> {{ $t("placeholders.id") }}
-                    <v-text-field v-model="movie.id" placeholder="id" disabled prepend-inner-icon="mdi-mail"
-                                  type="text" class="text-right"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
-                    <v-text-field v-model="movieTitle" placeholder="title" disabled prepend-inner-icon="mdi-mail"
+
+                <v-col cols="12" sm="6" class="title"> {{ $t("placeholders.title") }}
+                    <v-text-field variant="solo" v-model="movieTitle"  readonly prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                    <v-text-field v-model="movieDescription" placeholder="description" disabled
-                                  prepend-inner-icon="mdi-mail" type="text"></v-text-field>
+                <v-col cols="12" sm="6" class="title"> {{ $t("placeholders.description") }}
+                    <v-textarea variant="solo" v-model="movieDescription"  readonly
+                                  prepend-inner-icon="mdi-information" type="text"></v-textarea>
                 </v-col>
                 <v-img class="preview" :src="posterURL" cover>
                 </v-img>
@@ -108,6 +114,9 @@ export default defineComponent({
     </v-card>
 </template>
 <style scoped>
+.title{
+    font-size: large;
+}
 .information {
     background: #F5F5F5
 }

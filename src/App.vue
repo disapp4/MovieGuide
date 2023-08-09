@@ -5,8 +5,12 @@ import router from "./router";
 import { useI18n } from "vue-i18n";
 // @ts-ignore
 import { defaultLocale, languages } from "./i18n";
-
+import {userRoleKey, useUserRole  } from "./globalRole";
+import { inject } from "vue";
 const { t, locale } = useI18n({ useScope: "global" });
+
+
+
 
 const logOut = () => {
     client.logOut()
@@ -25,6 +29,8 @@ const changeLanguage = () => {
 
 <template>
     <v-app>
+
+
         <v-toolbar color="black">
             <v-btn prepend-icon="mdi-web" v-on:click="changeLanguage">
                 {{ $t("mainPage.toolbar.language") }}
@@ -34,6 +40,12 @@ const changeLanguage = () => {
                     <strong>{{ $t("mainPage.toolbar.title") }}</strong>
                 </v-btn>
             </v-spacer>
+            <v-btn  prepend-icon="mdi-account-circle"  >
+
+
+                {{ $t("mainPage.toolbar.account") }}
+            </v-btn>
+
 
             <v-btn prepend-icon="mdi-export" v-on:click="logOut">
                 {{ $t("mainPage.toolbar.logOut") }}
@@ -43,14 +55,18 @@ const changeLanguage = () => {
         <v-main>
             <RouterView />
         </v-main>
-        <v-footer>
-            <v-spacer></v-spacer>
-            <div class="  bg-black text-center w-100">
-                <strong>movie guide</strong>
-            </div>
+
+        <v-footer
+            class="bg-black text-center d-flex flex-column w-20"
+        >
+            <p><strong>movie guide</strong> &copy; {{ new Date().getFullYear() }}</p>
         </v-footer>
+
+
     </v-app>
 </template>
 
+<style scooped>
 
+</style>
 

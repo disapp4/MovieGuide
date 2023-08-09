@@ -5,41 +5,60 @@ import Sorting from "./Sorting.vue";
 import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../Client";
 import { Language } from "../models/Language";
+import { userRoleKey, useUserRole } from "../globalRole";
+import { User } from "../models/User";
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
 
+
 type Data = {
     currentPage: Page<Movie>,
     loading: boolean,
+    isAdmin: boolean | undefined
+
+
+
 }
 
 export default defineComponent({
+
     computed: {
         Movie() {
             return Movie;
-        }
+        },
+
+
+
     },
     components: { Movies, Paginator, Sorting },
     data(): Data {
         return {
             currentPage: new Page(),
-            loading: true
+            loading: true,
+            isAdmin:false
+
         };
     },
     mounted: function() {
-        this.refreshMoviePage();
+
+        this.refreshMoviePage()
+
     },
     watch: {
         "$i18n.locale": function() {
             this.refreshMoviePage();
         }
     },
+
     methods: {
+        newComp(){
+            router.push({ name: "newComponent" });
+        },
         deleteMovieFromList(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
         },
@@ -57,6 +76,9 @@ export default defineComponent({
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
+            // this.isAdmin =  user?.hasRole("ROLE_ADMIN");
+            // console.log(this.isAdmin);
+         
             this.loading = true;
             this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
         },
@@ -102,15 +124,15 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div class="mainPage">
-        <h1> {{ $t("mainPage.movieList.title") }} </h1>
-        <v-card color="#F5F5F5">
-            <v-btn id="log_in" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
-                {{ $t("mainPage.movieList.buttons.addMovie") }}
-            </v-btn>
 
-        </v-card>
-    </div>
+    <v-btn @click=" newComp">NewComp</v-btn>
+    <h1> {{ $t("mainPage.movieList.title") }} </h1>
+
+    <v-btn prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
+        {{ $t("mainPage.movieList.buttons.addMovie") }}
+    </v-btn>
+
+
     <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
              v-on:changePageSortOrder="onPageSortOrder"
              v-on:changePageSize="onPageSize" ref="sorting" />
@@ -137,7 +159,6 @@ export default defineComponent({
 </template>
 <style>
 .lds-roller {
-
     display: flex;
     justify-content: center;
     width: 1000px;
@@ -241,9 +262,6 @@ export default defineComponent({
     }
 }
 
-.mainPage {
-    background: #F5F5F5
-}
 
 </style>
 

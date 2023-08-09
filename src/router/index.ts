@@ -6,7 +6,7 @@ import AddMovie from "../components/AddMovie.vue";
 import EditMovie from "../components/EditMovie.vue";
 import InformationAboutMovie from "../components/InformationAboutMovie.vue";
 import Registration from "../components/Registration.vue";
-
+import NewComponent from "../components/NewComponent.vue";
 export default createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -15,7 +15,8 @@ export default createRouter({
         { path: "/edit/:id", component: EditMovie, name: "editMovie" },
         { path: "/information/:id", component: InformationAboutMovie, name: "informationAboutMovie" },
         { path: "/registration", component: Registration, name: "registration" },
-        { path: "/authorization", component: Authorization, name: "authorization" }
+        { path: "/authorization", component: Authorization, name: "authorization" },
+        { path: "/newComponent", component: NewComponent, name: "newComponent" }
 
     ]
 });

@@ -17,13 +17,15 @@ export class Client {
         baseURL: import.meta.env.VITE_BACKEND_BASE_URL
     });
 
+    public state: String = "first";
+
     constructor() {
         this.axiosInstance.interceptors.response.use((response) => {
                 return response;
             },
             (error) => {
                 if (error.response.status == 401) {
-                    router.push({ name: "authorization" }).then();
+                    router.push({ name: "authorization", hash: "#authFail" }).then();
                 }
             }
         );

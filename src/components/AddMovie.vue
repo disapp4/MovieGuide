@@ -21,7 +21,8 @@ type Data = {
     enPosterURL: string,
     ruPosterId: string | null,
     enPosterId: string | null,
-    imageIds: Array<String> | null
+    imageIds: Array<String> | null,
+    loading:boolean
 }
 
 export default defineComponent({
@@ -39,7 +40,8 @@ export default defineComponent({
             enPosterURL: "no_poster.jpg",
             ruPosterId: "",
             enPosterId: "",
-            imageIds: []
+            imageIds: [],
+            loading:false
         };
     },
     computed: {
@@ -50,6 +52,13 @@ export default defineComponent({
         }
     },
     methods: {
+        loadSave(){
+            this.loading = true
+            setTimeout(() => (this.loading = false), 500);
+            setTimeout(this.addMovieThroughForm, 1000);
+
+
+        },
         addMovieThroughForm() {
             let ruCreateMovieRequest = new I18nCreateMovieRequest();
             ruCreateMovieRequest.title = this.ruTitle;
@@ -118,44 +127,45 @@ export default defineComponent({
                 <h1> {{ $t("addMoviePage.title") }} </h1>
                 <div class="languages">
                     <div class="ru">
-                        <h3> Русская версия</h3>
-                        <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                        <p class="version"> <strong> Русская версия </strong></p>
+                        <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.title") }}
                             <v-text-field v-model="ruTitle" :placeholder="$t('addMoviePage.placeholders.enterTitle')"
                                           prepend-inner-icon="mdi-mail"
-                                          type="text"></v-text-field>
+                                          type="text" variant="solo"></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                            <v-text-field v-model="ruDescription"
-                                          :placeholder="$t('addMoviePage.placeholders.enterDescription')"
-                                          prepend-inner-icon="mdi-mail"
-                                          type="text"></v-text-field>
+                        <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.description") }}
+                            <v-textarea v-model="ruDescription"
+                                        :placeholder="$t('addMoviePage.placeholders.enterDescription')"
+                                        prepend-inner-icon="mdi-mail"
+                                        type="text" variant="solo"></v-textarea>
                         </v-col>
                         <v-col cols="12" sm="4">
                             <v-file-input :label="$t('placeholders.addPoster')"
                                           v-on:update:modelValue="putRuMoviePoster"
-                                          variant="filled"
-                                          prepend-icon="mdi-camera"></v-file-input>
+
+                                          prepend-icon="mdi-camera" variant="solo"
+                                          color="deep-purple-accent-2"></v-file-input>
                         </v-col>
                         <img class="preview2" :src="ruPosterURL" alt="ruPreview" />
                         <br>
                     </div>
                     <div class="en">
-                        <h3> English version</h3>
-                        <v-col cols="12" sm="6"> {{ $t("placeholders.title") }}
+                        <p class="version"> <strong> English version</strong></p>
+                        <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.title") }}
                             <v-text-field v-model="enTitle" :placeholder="$t('addMoviePage.placeholders.enterTitle')"
                                           prepend-inner-icon="mdi-mail"
-                                          type="text"></v-text-field>
+                                          type="text" variant="solo"></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6"> {{ $t("placeholders.description") }}
-                            <v-text-field v-model="enDescription"
-                                          :placeholder="$t('addMoviePage.placeholders.enterDescription')"
-                                          prepend-inner-icon="mdi-mail"
-                                          type="text"></v-text-field>
+                        <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.description") }}
+                            <v-textarea v-model="enDescription"
+                                        :placeholder="$t('addMoviePage.placeholders.enterDescription')"
+                                        prepend-inner-icon="mdi-mail"
+                                        type="text" variant="solo"></v-textarea>
                         </v-col>
                         <v-col cols="12" sm="4">
                             <v-file-input :label="$t('placeholders.addPoster')"
                                           v-on:update:modelValue="putEnMoviePoster"
-                                          variant="filled"
+                                          variant="solo" color="deep-purple-accent-2"
                                           prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
                         <img class="preview2" :src="enPosterURL" alt="enPreview" />
@@ -164,14 +174,14 @@ export default defineComponent({
                 </div>
                 <v-col cols="12" sm="4">
                     <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages" multiple
-                                  variant="filled" prepend-icon="mdi-camera"></v-file-input>
+                                  variant="solo" color="deep-purple-accent-2" prepend-icon="mdi-camera"></v-file-input>
                 </v-col>
                 <div class="files2">
                     <div v-for="url in addedFilesUrls">
                         <img class="preview" :src="url" alt="imagePreview" />
                     </div>
                 </div>
-                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="addMovieThroughForm" color="black">
+                <v-btn id="log_in" :loading="loading" prepend-icon="mdi-check-bold" v-on:click="loadSave" color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
                 <v-card-actions>
@@ -185,6 +195,18 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.version{
+    position: relative;
+    font-size: larger;
+   right:120px
+}
+
+
+
+.title {
+    font-size: large
+}
+
 .add {
     background: #F5F5F5
 }
@@ -206,7 +228,7 @@ export default defineComponent({
 }
 
 .preview2 {
-    margin: 10px 20px;
+    margin: 10px;
     border-radius: 10px;
     width: 200px;
     height: 250px;

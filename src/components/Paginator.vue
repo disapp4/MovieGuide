@@ -31,6 +31,10 @@ export default defineComponent({
         goToPreviousPage() {
             this.pageNumber = this.pageNumber - 1;
             this.$emit("changePageNumber", this.pageNumber);
+        },
+        goToPage(value:any) {
+            this.pageNumber = value - 1;
+            this.$emit("changePageNumber", this.pageNumber);
         }
     }
 });
@@ -39,8 +43,10 @@ export default defineComponent({
 <template>
     <div class="text-center">
         <p>
-            <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" :total-visible="4"
-                          v-on:next="goToNextPage" v-on:prev="goToPreviousPage"></v-pagination>
+            <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" total-visible="4"
+                          prev-icon="mdi-menu-left"
+                          next-icon="mdi-menu-right"
+                          color="black"   v-on:update:model-value="goToPage"></v-pagination>
         </p>
     </div>
 </template>
