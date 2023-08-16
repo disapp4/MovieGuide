@@ -7,6 +7,7 @@ import { AxiosResponse } from "axios";
 import { Language } from "../models/Language.js";
 import { I18nCreateMovieRequest } from "../models/I18nCreateMovieRequest";
 import { CreateImageResponse } from "../models/CreateImageResponse";
+import { useUserStore } from "../stores/userStore.js";
 
 type Data = {
     ruTitle: string,
@@ -22,7 +23,8 @@ type Data = {
     ruPosterId: string | null,
     enPosterId: string | null,
     imageIds: Array<String> | null,
-    loading:boolean
+    loading:boolean,
+    store:ReturnType<typeof useUserStore>
 }
 
 export default defineComponent({
@@ -41,7 +43,8 @@ export default defineComponent({
             ruPosterId: "",
             enPosterId: "",
             imageIds: [],
-            loading:false
+            loading:false,
+            store: useUserStore()
         };
     },
     computed: {
@@ -49,6 +52,10 @@ export default defineComponent({
             if (this.imageFiles) {
                 return this.imageFiles.map(item => URL.createObjectURL(item));
             }
+        },
+        userRole(){
+            return this.store.hasRole
+
         }
     },
     methods: {
@@ -121,7 +128,7 @@ export default defineComponent({
 </script>
 <template>
 
-    <v-card class="add">
+    <v-card class="add" v-if="userRole">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("addMoviePage.title") }} </h1>

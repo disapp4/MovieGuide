@@ -8,6 +8,7 @@ import { Language } from "../models/Language";
 import { I18nMovie } from "../models/I18nMovie";
 import { CreateImageResponse } from "../models/CreateImageResponse";
 import DeleteImgComponent from "./DeleteImgComponent.vue";
+import { useUserStore } from "../stores/userStore.js";
 
 type Data = {
     movie: Movie,
@@ -22,7 +23,8 @@ type Data = {
     deletedEnImageId: string | null,
     deletedImages: Array<String>,
     restoreImages: Array<String>,
-    loading:boolean
+    loading:boolean,
+    store: ReturnType<typeof useUserStore>
 }
 let nullMovie = new Movie();
 nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
@@ -42,7 +44,8 @@ export default defineComponent({
                 deletedEnImageId: "",
                 deletedImages: [],
                 restoreImages: [],
-                loading: false
+                loading: false,
+                store: useUserStore()
             };
         },
         components: { DeleteImgComponent },
@@ -127,28 +130,32 @@ export default defineComponent({
                     }
             }
         },
-        computed: {
-            ruTitle() {
-                return this.movie.i18n[Language.fromCode("ru")]!.title;
-            },
-            Language() {
-                return Language;
-            },
-            movieTitle(lang: string) {
-                return this.movie.i18n[Language.fromCode(lang)]!.title;
-            },
-            imageIds() {
-                let imageIds = [];
-                imageIds.push(...(this.movie.imageIds || []));
-                return imageIds;
-            }
+    computed: {
+        ruTitle() {
+            return this.movie.i18n[Language.fromCode("ru")]!.title;
+        },
+        Language() {
+            return Language;
+        },
+        movieTitle(lang: string) {
+            return this.movie.i18n[Language.fromCode(lang)]!.title;
+        },
+        imageIds() {
+            let imageIds = [];
+            imageIds.push(...(this.movie.imageIds || []));
+            return imageIds;
+        },
+        userRole(){
+            return this.store.hasRole
 
         }
+
+    },
     }
 );
 </script>
 <template>
-    <v-card class="edit">
+    <v-card class="edit" v-if="userRole">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>

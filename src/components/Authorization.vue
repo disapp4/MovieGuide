@@ -1,10 +1,10 @@
 <script lang="ts">
 import router from "../router/index.js";
 import { client } from "../Client";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { User } from "../models/User.js";
-import { useUserRole } from "../globalRole";
+import { useUserStore } from "../stores/userStore";
 
 
 type Data = {
@@ -13,10 +13,9 @@ type Data = {
     snackbar1: boolean,
     timeout1: number,
     snackbar2: boolean,
-    timeout2: number
+    timeout2: number,
+    store: ReturnType<typeof useUserStore>
 }
-let globalRole = useUserRole();
-
 
 export default defineComponent({
         data(): Data {
@@ -26,8 +25,8 @@ export default defineComponent({
                 snackbar1: false,
                 timeout1: 3000,
                 snackbar2: false,
-                timeout2: 8000
-
+                timeout2: 8000,
+                store: useUserStore()
             };
         },
         mounted: function() {
@@ -37,15 +36,15 @@ export default defineComponent({
         methods: {
             logIn() {
                 client.logIn(this.username, this.password).then((response: AxiosResponse<User>) => {
-
-
-                    globalRole.user.value = response.data;
-
-                    console.log(globalRole.user.value);
+                    this.store.login(response.data);
 
                     router.push({ name: "mainPage" });
                 }).catch(
-
+                    (error) => {
+                        if (error.response.status === 401) {
+                            this.store.handleInvalidCredentials();
+                        }
+                    }
                 );
 
             },

@@ -5,12 +5,12 @@ import Sorting from "./Sorting.vue";
 import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
-import { defineComponent, inject } from "vue";
+import { defineComponent} from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../Client";
 import { Language } from "../models/Language";
-import { userRoleKey, useUserRole } from "../globalRole";
-import { User } from "../models/User";
+import { useUserStore } from "../stores/userStore";
+
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
@@ -19,7 +19,8 @@ export type SortingRef = InstanceType<typeof Sorting>;
 type Data = {
     currentPage: Page<Movie>,
     loading: boolean,
-    isAdmin: boolean | undefined
+    isAdmin: boolean | undefined,
+    store: ReturnType<typeof useUserStore>
 
 
 
@@ -27,26 +28,31 @@ type Data = {
 
 export default defineComponent({
 
-    computed: {
-        Movie() {
-            return Movie;
-        },
 
-
-
-    },
     components: { Movies, Paginator, Sorting },
     data(): Data {
         return {
             currentPage: new Page(),
             loading: true,
-            isAdmin:false
+            isAdmin:false,
+            store: useUserStore()
 
         };
     },
     mounted: function() {
 
         this.refreshMoviePage()
+
+    },
+    computed: {
+        Movie() {
+            return Movie;
+        },
+        userRole(){
+            return this.store.hasRole
+
+        }
+
 
     },
     watch: {
@@ -56,9 +62,7 @@ export default defineComponent({
     },
 
     methods: {
-        newComp(){
-            router.push({ name: "newComponent" });
-        },
+
         deleteMovieFromList(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
         },
@@ -76,8 +80,7 @@ export default defineComponent({
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-            // this.isAdmin =  user?.hasRole("ROLE_ADMIN");
-            // console.log(this.isAdmin);
+
          
             this.loading = true;
             this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
@@ -125,10 +128,10 @@ export default defineComponent({
 </script>
 <template>
 
-    <v-btn @click=" newComp">NewComp</v-btn>
+
     <h1> {{ $t("mainPage.movieList.title") }} </h1>
 
-    <v-btn prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
+    <v-btn v-if="userRole" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
         {{ $t("mainPage.movieList.buttons.addMovie") }}
     </v-btn>
 

@@ -3,9 +3,11 @@ import { defineComponent } from "vue";
 import { Movie } from "../models/Movie";
 import { PropType } from "vue";
 import { Language } from "../models/Language";
+import { useUserStore } from "../stores/userStore";
 
 type Data = {
     show: boolean,
+    store:ReturnType<typeof useUserStore>
 }
 export default defineComponent({
     methods: {
@@ -18,7 +20,8 @@ export default defineComponent({
     },
     data(): Data {
         return {
-            show: false
+            show: false,
+            store: useUserStore()
         };
     },
     props: {
@@ -26,6 +29,10 @@ export default defineComponent({
     },
     emits: ["deleteMovie", "editMovie", "informationAboutMovie"],
     computed: {
+        userRole(){
+            return this.store.hasRole
+
+        },
         movieTitleLength(){
             return this.movieTitle!.length>=20
         },
@@ -71,14 +78,15 @@ export default defineComponent({
                     </v-card-title>
                 </div>
                 <div class="container1">
-                    <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
+                    <v-btn  v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
                            append-icon="mdi-chevron-triple-right" variant="text" color="black"
                            class="buttonInformation">
                         {{ $t("movieComponentPage.more") }}
                     </v-btn>
+
                 </div>
                 <br>
-                <div class="buttons">
+                <div v-if="userRole" class="buttons">
                     <v-card-actions>
                         <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="medium" icon="mdi-delete"
                                variant="text"

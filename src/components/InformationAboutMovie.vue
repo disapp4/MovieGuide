@@ -6,11 +6,13 @@ import { AxiosResponse } from "axios";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
 import { I18nMovie } from "../models/I18nMovie.js";
+import { useUserStore } from "../stores/userStore.js";
 
 type Data = {
     movie: Movie,
     movieIsLoaded: boolean,
     width: number,
+    store:ReturnType<typeof useUserStore>
 }
 
 let nullMovie = new Movie();
@@ -21,17 +23,15 @@ export default defineComponent({
         return {
             movie: nullMovie,
             movieIsLoaded: false,
-            width: 200
+            width: 200,
+            store:useUserStore()
         };
     },
     created() {
         this.refreshMovie();
     },
     methods: {
-        changeStateFirst(){
-            client.state = "second"
-        },
-        refreshMovie() {
+               refreshMovie() {
             let movieId: string = (this.$route.params.id as string);
             client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
                 this.movie = response.data;
@@ -46,8 +46,9 @@ export default defineComponent({
         }
     },
     computed: {
-        stateFirst(){
-            return client.state
+        userRole(){
+            return this.store.hasRole
+
         },
         movieTitle() {
             return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title;
@@ -79,10 +80,8 @@ export default defineComponent({
 });
 </script>
 <template>
-    <v-card class="information">
-        <v-textarea variant="solo" v-model="stateFirst"  readonly
-                    type="text"> </v-textarea>
-        <v-btn v-on:click="changeStateFirst"> кнопка</v-btn>
+    <v-card class="information" >
+
         <v-card-text>
             <v-form><h1> {{ $t("informationAboutMoviePage.title") }} </h1>
 
@@ -101,7 +100,7 @@ export default defineComponent({
                         <img class="preview2" :src="url" alt="imagePreview" />
                     </div>
                 </div>
-                <v-btn id="log_in" prepend-icon="mdi-pencil" v-on:click="editMovieThroughForm" color="black">
+                <v-btn v-if="userRole" id="log_in" prepend-icon="mdi-pencil" v-on:click="editMovieThroughForm" color="black">
                     {{ $t("informationAboutMoviePage.buttons.edit") }}
                 </v-btn>
                 <v-card-actions>

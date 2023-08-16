@@ -11,13 +11,13 @@ import router from "./router";
 import { Language } from "./models/Language";
 import { CreateImageResponse } from "./models/CreateImageResponse";
 
+
 export class Client {
-    private axiosInstance = axios.create({
+        private axiosInstance = axios.create({
         withCredentials: true,
         baseURL: import.meta.env.VITE_BACKEND_BASE_URL
     });
 
-    public state: String = "first";
 
     constructor() {
         this.axiosInstance.interceptors.response.use((response) => {
@@ -25,7 +25,7 @@ export class Client {
             },
             (error) => {
                 if (error.response.status == 401) {
-                    router.push({ name: "authorization", hash: "#authFail" }).then();
+                    router.push({ name: "authorization" }).then();
                 }
             }
         );
@@ -35,8 +35,8 @@ export class Client {
         return this.axiosInstance.get<Movie>("movies/" + movieId);
     }
 
-    public async getMovies(pageRequest: PageRequest, language: Language ) {
-        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=`  + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
+    public async getMovies(pageRequest: PageRequest, language: Language) {
+        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
     }
 
     public postMovie(createMovieRequest: CreateMovieRequest) {
@@ -61,6 +61,10 @@ export class Client {
 
     public logIn(username: string, password: string) {
         return this.axiosInstance.get<User>("users/me", { headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) } });
+    }
+
+    public getCurrentUser() {
+        return this.axiosInstance.get<User>("users/me");
     }
 
     public postUsers(createUserRequest: CreateUserRequest) {
