@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createI18n } from "vue-i18n";
+import { createI18n, useI18n } from "vue-i18n";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
@@ -11,10 +11,12 @@ import { defaultLocale } from "./i18n";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 
+
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
+import { createPinia } from "pinia";
 
 const customTheme1 = {
     colors: {
@@ -35,7 +37,7 @@ const i18n = createI18n({
     fallbackLocale: "en",
     messages
 });
-
+const pinia = createPinia();
 const vuetify = createVuetify({
     components,
     directives,
@@ -54,9 +56,15 @@ const vuetify = createVuetify({
     }
 });
 
+
 export default i18n;
-createApp(App, {})
-    .use(router)
+let app = createApp(App);
+// app.config.globalProperties.$globalVariables = globalVariables;
+// @ts-ignore
+
+app.use(router)
+    .use(pinia)
     .use(vuetify)
     .use(i18n)
     .mount("#app");
+

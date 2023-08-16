@@ -38,14 +38,16 @@ export default defineComponent({
 <template>
     <div class="deleteImage">
         <img :src="imageUrl" class="previewPoster" :class="{deleted: imageIsDeleted}" alt="posterPreview" />
-        <v-btn class="button" size="small" variant="text" v-on:click="switchImage" :icon="iconButton"></v-btn>
+        <v-btn class="button"  density="comfortable" v-on:click="switchImage" :icon="iconButton"></v-btn>
 
     </div>
 </template>
 <style>
 .previewPoster {
     border-radius: 10px;
-    margin: 10px 20px;
+
+    margin: 5px 5px 5px 5px;
+
     width: 200px;
     height: 250px;
     box-shadow: 0 0 10px #444;
@@ -54,13 +56,14 @@ export default defineComponent({
 
 .deleteImage {
     position: relative;
-    width: 50%;
+    width: 220px;
+    height: 250px;
 }
 
-.deleteImage button {
+.button {
     position: absolute;
-    bottom: 80%;
-    left: 68%;
+    bottom: 100%;
+    left: 32%;
     color: black;
     font-size: 14px;
 }

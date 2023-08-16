@@ -15,7 +15,10 @@
     "addImages": "Добавить изображения"
   },
   "authorizationPage": {
+    "alert": "В демонстрационных целях были созданы аккаунты",
     "authorization": "Авторизация",
+    "snackbarSuccess": "Регистрация прошла успешна ",
+    "snackbarFail": "Неверный логин или пароль",
     "noAccount": "Нет аккаунта?",
     "signUp": "Регистрация",
     "buttons": {
@@ -26,7 +29,8 @@
     "toolbar": {
       "language": "Язык",
       "title": "Movie Guide",
-      "logOut": "Выйти"
+      "logOut": "Выйти",
+      "account": "Профиль"
     },
     "movieList": {
       "viewedMoviesTitle": "Просмотренные Фильмы",
@@ -44,13 +48,13 @@
     "title": "Сортировать:",
     "pageSize": "Размер страницы",
     "pageSortField": {
-      "id": "id",
-      "title": "названию",
-      "pageSortField": "Сортировать по"
+      "id": "по id",
+      "title": "по названию",
+      "pageSortField": "Тип сортировки"
     },
     "pageSortOrder": {
-      "asc": "возрастанию",
-      "desc": "убыванию",
+      "asc": "по возрастанию",
+      "desc": "по убыванию",
       "pageSortOrder": "Порядок сортировки"
     }
   },

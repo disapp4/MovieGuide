@@ -15,7 +15,10 @@
     "enterPassword": "Enter your password"
   },
   "authorizationPage": {
+    "alert": "Accounts have been created for demonstration purposes",
     "authorization": "Authorization",
+    "snackbarSuccess": "Successful registration ",
+    "snackbarFail": "The username or password is incorrect",
     "noAccount": "Don't have an account?",
     "signUp": "Sign up",
     "buttons": {
@@ -26,7 +29,8 @@
     "toolbar": {
       "language": "Language",
       "title": "Movie Guide",
-      "logOut": "Log Out"
+      "logOut": "Log Out",
+      "account": "Account"
     },
     "movieList": {
       "title": "Movie list",

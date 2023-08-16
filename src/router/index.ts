@@ -6,7 +6,6 @@ import AddMovie from "../components/AddMovie.vue";
 import EditMovie from "../components/EditMovie.vue";
 import InformationAboutMovie from "../components/InformationAboutMovie.vue";
 import Registration from "../components/Registration.vue";
-
 export default createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [

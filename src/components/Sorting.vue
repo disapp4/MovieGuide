@@ -49,20 +49,20 @@ export default defineComponent({
 });
 </script>
 <template>
-    <h4> {{ $t("sortingPage.title") }} </h4>
+<!--    <h3> {{ $t("sortingPage.title") }} </h3>-->
     <div class="sorting">
-        <v-col class="d-flex" cols="12" sm="7" color="black">
+        <v-col class="d-flex" cols="3" sm="7" color="black">
             <v-select :label="$t('sortingPage.pageSize')" :items="sizeValues" v-model="pageSize"
-                      v-on:update:modelValue="changePageSize" variant="outlined">
+                      v-on:update:modelValue="changePageSize" variant="solo" >
             </v-select>
             <v-select :label="$t('sortingPage.pageSortField.pageSortField')" :items="sortFieldValues"
                       :item-title="item => $t(item.view)"
                       v-model="pageSortField"
-                      v-on:update:modelValue="changePageSortField" variant="outlined">
+                      v-on:update:modelValue="changePageSortField" variant="solo">
             </v-select>
             <v-select :label="$t('sortingPage.pageSortOrder.pageSortOrder')" v-model="pageSortOrder"
                       :items="sortOrderValues" :item-title="item => $t(item.view)"
-                      v-on:update:modelValue="changePageSortOrder" variant="outlined">
+                      v-on:update:modelValue="changePageSortOrder" variant="solo">
             </v-select>
         </v-col>
     </div>

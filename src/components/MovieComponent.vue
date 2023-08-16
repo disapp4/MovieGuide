@@ -3,9 +3,11 @@ import { defineComponent } from "vue";
 import { Movie } from "../models/Movie";
 import { PropType } from "vue";
 import { Language } from "../models/Language";
+import { useUserStore } from "../stores/userStore";
 
 type Data = {
     show: boolean,
+    store:ReturnType<typeof useUserStore>
 }
 export default defineComponent({
     methods: {
@@ -18,7 +20,8 @@ export default defineComponent({
     },
     data(): Data {
         return {
-            show: false
+            show: false,
+            store: useUserStore()
         };
     },
     props: {
@@ -26,6 +29,13 @@ export default defineComponent({
     },
     emits: ["deleteMovie", "editMovie", "informationAboutMovie"],
     computed: {
+        userRole(){
+            return this.store.hasRole
+
+        },
+        movieTitleLength(){
+            return this.movieTitle!.length>=20
+        },
         Language() {
             return Language;
         },
@@ -46,36 +56,42 @@ export default defineComponent({
 </script>
 
 <template>
-    <v-card color="#FAFAFA" width="400"
+    <v-card color="#FAFAFA" width="480"
             class="mx-auto" id="movieCard">
         <div class="container">
             <v-avatar
                 class="miniPoster"
-                size="120"
+                size="170"
                 rounded="0"
             >
-                <v-img :src="moviePoster"></v-img>
+                <v-img class="img" :src="moviePoster"></v-img>
             </v-avatar>
             <div>
                 <div class="titleMovie">
                     <v-card-title>
-                        <p class="title"> {{ truncate(movieTitle, 14) }} </p>
+                        <p  text-align="center" class="title"> {{ truncate(movieTitle, 20) }} </p>
+                        <v-tooltip v-if="movieTitleLength"
+                                   activator="parent"
+                                   location="end"
+                        > {{ movieTitle }}
+                        </v-tooltip>
                     </v-card-title>
                 </div>
                 <div class="container1">
-                    <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
+                    <v-btn  v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
                            append-icon="mdi-chevron-triple-right" variant="text" color="black"
                            class="buttonInformation">
                         {{ $t("movieComponentPage.more") }}
                     </v-btn>
+
                 </div>
                 <br>
-                <div class="buttons">
+                <div v-if="userRole" class="buttons">
                     <v-card-actions>
-                        <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="small" icon="mdi-delete"
+                        <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="medium" icon="mdi-delete"
                                variant="text"
                                color="black" class="buttonDelete"></v-btn>
-                        <v-btn v-on:click="() => $emit('editMovie', movie)" size="small" icon="mdi-pencil"
+                        <v-btn v-on:click="() => $emit('editMovie', movie)" size="medium" icon="mdi-pencil"
                                variant="text"
                                color="black" class="buttonEdit"></v-btn>
 
@@ -88,20 +104,24 @@ export default defineComponent({
 
 </template>
 <style scoped>
+.img {
+    width: 90px;
+    height: 280px
+}
+
 .buttons {
-    margin-left: 40px;
-    margin-top: -5px;
+    margin-left: 25px;
+    margin-top: -10px;
 }
 
 .buttonInformation {
     display: flex;
-    right: -20px;
-    font-weight: 500
-
+    right: -10px;
+    font-weight: 600
 }
 
 .container1 {
-    margin-left: 20px;
+    margin-left: 10px;
     margin-bottom: -10px;
 }
 
@@ -127,13 +147,16 @@ export default defineComponent({
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: larger;
+
 }
 
 .titleMovie {
-    display: flex
+    display: flex;    text-align: center;
 }
 
 #movieCard {
+    height: 170px;
     margin: 10px
 }
 
@@ -143,17 +166,4 @@ export default defineComponent({
     transform: scale(1.1);
 }
 
-.miniPoster {
-    height: 100px;
-    width: 80px;
-    margin: 20px;
-}
-
-.miniPoster:hover {
-    height: 100px;
-    width: 80px;
-    margin: 20px;
-    transform: scale(1.4);
-
-}
 </style>
