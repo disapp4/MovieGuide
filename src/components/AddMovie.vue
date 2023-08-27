@@ -22,9 +22,9 @@ type Data = {
     enPosterURL: string,
     ruPosterId: string | null,
     enPosterId: string | null,
-    imageIds: Array<String> | null,
-    loading:boolean,
-    store:ReturnType<typeof useUserStore>
+    imageIds: Array<string> | null,
+    loading: boolean,
+    store: ReturnType<typeof useUserStore>
 }
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
             ruPosterId: "",
             enPosterId: "",
             imageIds: [],
-            loading:false,
+            loading: false,
             store: useUserStore()
         };
     },
@@ -53,18 +53,16 @@ export default defineComponent({
                 return this.imageFiles.map(item => URL.createObjectURL(item));
             }
         },
-        userRole(){
-            return this.store.hasRole
+        userRole() {
+            return this.store.hasRole;
 
         }
     },
     methods: {
-        loadSave(){
-            this.loading = true
+        loadSave() {
+            this.loading = true;
             setTimeout(() => (this.loading = false), 500);
             setTimeout(this.addMovieThroughForm, 1000);
-
-
         },
         addMovieThroughForm() {
             let ruCreateMovieRequest = new I18nCreateMovieRequest();
@@ -82,7 +80,6 @@ export default defineComponent({
                 [Language.Russian]: ruCreateMovieRequest,
                 [Language.English]: enCreateMovieRequest
             };
-
             createMovieRequest.imageIds = this.imageIds;
             client.postMovie(createMovieRequest)
                 .then(() => router.push({ name: "mainPage" }));
@@ -116,10 +113,10 @@ export default defineComponent({
         putMovieImages(files: Array<File>) {
             let uploadedFiles: Array<File> = files;
             if (this.imageFiles)
-                for (let i = 0; i < uploadedFiles.length; i++) {
-                    client.postImage(uploadedFiles[i]).then((response: AxiosResponse<CreateImageResponse>) => {
+                for (let uploadedFile of uploadedFiles) {
+                    client.postImage(uploadedFile).then((response: AxiosResponse<CreateImageResponse>) => {
                         this.imageIds!!.push(response.data.id);
-                        this.imageFiles!!.push(uploadedFiles[i]);
+                        this.imageFiles!!.push(uploadedFile);
                     });
                 }
         }
@@ -127,14 +124,13 @@ export default defineComponent({
 });
 </script>
 <template>
-
     <v-card class="add" v-if="userRole">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("addMoviePage.title") }} </h1>
                 <div class="languages">
                     <div class="ru">
-                        <p class="version"> <strong> Русская версия </strong></p>
+                        <p class="version"><strong> Русская версия </strong></p>
                         <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.title") }}
                             <v-text-field v-model="ruTitle" :placeholder="$t('addMoviePage.placeholders.enterTitle')"
                                           prepend-inner-icon="mdi-mail"
@@ -153,11 +149,11 @@ export default defineComponent({
                                           prepend-icon="mdi-camera" variant="solo"
                                           color="deep-purple-accent-2"></v-file-input>
                         </v-col>
-                        <img class="preview2" :src="ruPosterURL" alt="ruPreview" />
+                        <img class="previewPoster" :src="ruPosterURL" alt="ruPreview" />
                         <br>
                     </div>
                     <div class="en">
-                        <p class="version"> <strong> English version</strong></p>
+                        <p class="version"><strong> English version</strong></p>
                         <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.title") }}
                             <v-text-field v-model="enTitle" :placeholder="$t('addMoviePage.placeholders.enterTitle')"
                                           prepend-inner-icon="mdi-mail"
@@ -175,7 +171,7 @@ export default defineComponent({
                                           variant="solo" color="deep-purple-accent-2"
                                           prepend-icon="mdi-camera"></v-file-input>
                         </v-col>
-                        <img class="preview2" :src="enPosterURL" alt="enPreview" />
+                        <img class="previewPoster" :src="enPosterURL" alt="enPreview" />
                         <br>
                     </div>
                 </div>
@@ -183,9 +179,9 @@ export default defineComponent({
                     <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages" multiple
                                   variant="solo" color="deep-purple-accent-2" prepend-icon="mdi-camera"></v-file-input>
                 </v-col>
-                <div class="files2">
+                <div class="files">
                     <div v-for="url in addedFilesUrls">
-                        <img class="preview" :src="url" alt="imagePreview" />
+                        <img class="previewImages" :src="url" alt="imagePreview" />
                     </div>
                 </div>
                 <v-btn id="log_in" :loading="loading" prepend-icon="mdi-check-bold" v-on:click="loadSave" color="black">
@@ -202,13 +198,11 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.version{
+.version {
     position: relative;
     font-size: larger;
-   right:120px
+    right: 120px
 }
-
-
 
 .title {
     font-size: large
@@ -218,14 +212,14 @@ export default defineComponent({
     background: #F5F5F5
 }
 
-.files2 {
+.files {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.preview {
+.previewImages {
     border-radius: 10px;
     margin: 10px 20px;
     width: 200px;
@@ -234,7 +228,7 @@ export default defineComponent({
     border: 1px #ccc solid;
 }
 
-.preview2 {
+.previewPoster {
     margin: 10px;
     border-radius: 10px;
     width: 200px;

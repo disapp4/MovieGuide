@@ -13,19 +13,19 @@ import { CreateImageResponse } from "./models/CreateImageResponse";
 
 
 export class Client {
-        private axiosInstance = axios.create({
+    private axiosInstance = axios.create({
         withCredentials: true,
         baseURL: import.meta.env.VITE_BACKEND_BASE_URL
     });
-
-
     constructor() {
         this.axiosInstance.interceptors.response.use((response) => {
                 return response;
             },
             (error) => {
-                if (error.response.status == 401) {
+                if (error.response.status == 401 && !(error.config.url === "login" && error.config.method === "get")) {
                     router.push({ name: "authorization" }).then();
+                } else {
+                    return Promise.reject(error);
                 }
             }
         );
@@ -61,6 +61,10 @@ export class Client {
 
     public logIn(username: string, password: string) {
         return this.axiosInstance.get<User>("users/me", { headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) } });
+    }
+
+    public authController(username: string, password: string) {
+        return this.axiosInstance.get<User>("login", { headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) } });
     }
 
     public getCurrentUser() {
