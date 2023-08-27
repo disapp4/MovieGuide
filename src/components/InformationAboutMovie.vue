@@ -48,7 +48,6 @@ export default defineComponent({
     computed: {
         userRole(){
             return this.store.hasRole
-
         },
         movieTitle() {
             return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title;
@@ -71,8 +70,8 @@ export default defineComponent({
                     return [window.location.origin + "/loading.jpg"];
                 }
                 let imagesUrls = [];
-                for (let i = 0; i < this.movie.imageIds.length; i++) {
-                    imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.imageIds[i]);
+                for (let movieImageId of this.movie.imageIds) {
+                    imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + movieImageId);
                 }
                 return imagesUrls;
             }
@@ -81,10 +80,8 @@ export default defineComponent({
 </script>
 <template>
     <v-card class="information" >
-
         <v-card-text>
             <v-form><h1> {{ $t("informationAboutMoviePage.title") }} </h1>
-
                 <v-col cols="12" sm="6" class="title"> {{ $t("placeholders.title") }}
                     <v-text-field variant="solo" v-model="movieTitle"  readonly prepend-inner-icon="mdi-mail"
                                   type="text"></v-text-field>
@@ -93,11 +90,11 @@ export default defineComponent({
                     <v-textarea variant="solo" v-model="movieDescription"  readonly
                                   prepend-inner-icon="mdi-information" type="text"></v-textarea>
                 </v-col>
-                <v-img class="preview" :src="posterURL" cover>
+                <v-img class="previewPoster" :src="posterURL" cover>
                 </v-img>
-                <div class="files2">
+                <div class="files">
                     <div v-for="url in movieImageData">
-                        <img class="preview2" :src="url" alt="imagePreview" />
+                        <img class="previewImages" :src="url" alt="imagePreview" />
                     </div>
                 </div>
                 <v-btn v-if="userRole" id="log_in" prepend-icon="mdi-pencil" v-on:click="editMovieThroughForm" color="black">
@@ -120,14 +117,14 @@ export default defineComponent({
     background: #F5F5F5
 }
 
-.files2 {
+.files {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.preview {
+.previewPoster {
     border-radius: 10px;
     margin: 10px 20px;
     width: 220px;
@@ -136,7 +133,7 @@ export default defineComponent({
     border: 1px #ccc solid;
 }
 
-.preview2 {
+.previewImages {
     border-radius: 10px;
     margin: 10px 20px;
     width: 300px;
@@ -144,6 +141,5 @@ export default defineComponent({
     box-shadow: 0 0 10px #444;
     border: 1px #ccc solid;
 }
-
 </style>
 

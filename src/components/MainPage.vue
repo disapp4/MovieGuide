@@ -5,64 +5,49 @@ import Sorting from "./Sorting.vue";
 import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
-import { defineComponent} from "vue";
+import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../Client";
 import { Language } from "../models/Language";
 import { useUserStore } from "../stores/userStore";
 
-
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
-
 
 type Data = {
     currentPage: Page<Movie>,
     loading: boolean,
     isAdmin: boolean | undefined,
     store: ReturnType<typeof useUserStore>
-
-
-
 }
 
 export default defineComponent({
-
-
     components: { Movies, Paginator, Sorting },
     data(): Data {
         return {
             currentPage: new Page(),
             loading: true,
-            isAdmin:false,
+            isAdmin: false,
             store: useUserStore()
-
         };
     },
     mounted: function() {
-
-        this.refreshMoviePage()
-
+        this.refreshMoviePage();
     },
     computed: {
         Movie() {
             return Movie;
         },
-        userRole(){
-            return this.store.hasRole
-
+        userRole() {
+            return this.store.hasRole;
         }
-
-
     },
     watch: {
         "$i18n.locale": function() {
             this.refreshMoviePage();
         }
     },
-
     methods: {
-
         deleteMovieFromList(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
         },
@@ -80,8 +65,6 @@ export default defineComponent({
             let pageSize = (this.$refs.sorting as SortingRef).pageSize;
             let pageSortField = (this.$refs.sorting as SortingRef).pageSortField;
             let pageSortOrder = (this.$refs.sorting as SortingRef).pageSortOrder;
-
-         
             this.loading = true;
             this.loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
         },
@@ -115,32 +98,25 @@ export default defineComponent({
                     order: pageSortOrder
                 }, Language.fromCode(this.$i18n.locale)
             ).then((response: AxiosResponse<Page<Movie>>) => {
-                this.currentPage = response.data;
+                this.currentPage = response?.data;
                 this.loading = false;
-            }).catch((err) => {
-                {
-                    console.log(err);
-                }
-            });
+            }).catch();
         }
     }
 });
 </script>
 <template>
-
-
     <h1> {{ $t("mainPage.movieList.title") }} </h1>
-
     <v-btn v-if="userRole" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
         {{ $t("mainPage.movieList.buttons.addMovie") }}
     </v-btn>
-
-
-    <Sorting :page="currentPage" v-on:changePageSortField="onPageSortField"
+    <Sorting :page="currentPage"
+             v-on:changePageSortField="onPageSortField"
              v-on:changePageSortOrder="onPageSortOrder"
              v-on:changePageSize="onPageSize" ref="sorting" />
     <div v-if="!loading">
-        <Movies :movieList="currentPage?.content" v-on:deleteMovie="(movie: Movie) => deleteMovieFromList(movie)"
+        <Movies :movieList="currentPage?.content"
+                v-on:deleteMovie="(movie: Movie) => deleteMovieFromList(movie)"
                 v-on:editMovie="(movie: Movie) => editMovieFromList(movie)"
                 v-on:informationAboutMovie="(movie: Movie) => informationAboutMovie(movie)"
         />
@@ -156,7 +132,6 @@ export default defineComponent({
             <div></div>
             <div></div>
         </div>
-
     </div>
     <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>
@@ -264,8 +239,6 @@ export default defineComponent({
         transform: rotate(360deg);
     }
 }
-
-
 </style>
 
 

@@ -21,9 +21,9 @@ type Data = {
     movieIsLoaded: boolean,
     deletedRuImageId: string | null,
     deletedEnImageId: string | null,
-    deletedImages: Array<String>,
-    restoreImages: Array<String>,
-    loading:boolean,
+    deletedImages: string[],
+    restoreImages: string[],
+    loading: boolean,
     store: ReturnType<typeof useUserStore>
 }
 let nullMovie = new Movie();
@@ -53,11 +53,10 @@ export default defineComponent({
             this.refreshMovie();
         },
         methods: {
-            loadSave () {
-                this.loading = true
+            loadSave() {
+                this.loading = true;
                 setTimeout(() => (this.loading = false), 500);
                 setTimeout(this.editMovieThroughForm, 1000);
-
             },
             deleteRuImage() {
                 this.deletedRuImageId = "delete";
@@ -93,7 +92,6 @@ export default defineComponent({
                 }
                 if (this.deletedImages) {
                     let allImageIds = this.movie.imageIds.filter(imgId => !this.deletedImages.includes(imgId));
-                    // todo: research this
                     // @ts-ignore
                     this.movie.imageIds = allImageIds.concat(this.restoreImages);
                 }
@@ -111,7 +109,6 @@ export default defineComponent({
                 });
             },
             putEnMoviePoster(files: Array<File>) {
-
                 this.enPosterFile = files[0];
                 client.postImage(this.enPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
                     this.movie.i18n.English!!.posterId = response.data.id;
@@ -121,36 +118,33 @@ export default defineComponent({
             putMovieImages(files: Array<File>) {
                 let uploadedFiles: Array<File> = files;
                 if (this.imageFiles)
-                    for (let i = 0; i < uploadedFiles.length; i++) {
-                        client.postImage(uploadedFiles[i]).then((response: AxiosResponse<CreateImageResponse>) => {
+                    for (let uploadedFile of uploadedFiles) {
+                        client.postImage(uploadedFile).then((response: AxiosResponse<CreateImageResponse>) => {
                             this.movie.imageIds.push(response.data.id);
-                            this.imageFiles!!.push(uploadedFiles[i]);
+                            this.imageFiles!!.push(uploadedFile);
                         });
-
                     }
             }
         },
-    computed: {
-        ruTitle() {
-            return this.movie.i18n[Language.fromCode("ru")]!.title;
-        },
-        Language() {
-            return Language;
-        },
-        movieTitle(lang: string) {
-            return this.movie.i18n[Language.fromCode(lang)]!.title;
-        },
-        imageIds() {
-            let imageIds = [];
-            imageIds.push(...(this.movie.imageIds || []));
-            return imageIds;
-        },
-        userRole(){
-            return this.store.hasRole
-
+        computed: {
+            ruTitle() {
+                return this.movie.i18n[Language.fromCode("ru")]!.title;
+            },
+            Language() {
+                return Language;
+            },
+            movieTitle(lang: string) {
+                return this.movie.i18n[Language.fromCode(lang)]!.title;
+            },
+            imageIds() {
+                let imageIds = [];
+                imageIds.push(...(this.movie.imageIds || []));
+                return imageIds;
+            },
+            userRole() {
+                return this.store.hasRole;
+            }
         }
-
-    },
     }
 );
 </script>
@@ -162,43 +156,43 @@ export default defineComponent({
                 <br>
                 <div class="languages">
                     <div class="ru">
-                        <p class="version"> <strong> Русская версия</strong></p>
+                        <p class="version"><strong> Русская версия</strong></p>
                         <v-col cols="10" sm="8" class="title"> {{ $t("placeholders.title") }}
 
-                        <v-text-field v-bind:model-value="movie.i18n.Russian?.title"
-                                      v-on:update:modelValue="(value) => {
+                            <v-text-field v-bind:model-value="movie.i18n.Russian?.title"
+                                          v-on:update:modelValue="(value) => {
                                           if (movie.i18n.Russian) {
                                               movie.i18n.Russian.title = value
                                           }
                                       }"
-                                      :placeholder="$t('editMoviePage.placeholders.editTitle')"
-                                      prepend-inner-icon="mdi-mail"
-                                      type="text" variant="solo"></v-text-field>
+                                          :placeholder="$t('editMoviePage.placeholders.editTitle')"
+                                          prepend-inner-icon="mdi-mail"
+                                          type="text" variant="solo"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.description") }}
                             <v-textarea v-bind:model-value="movie.i18n.Russian?.description"
-                                          v-on:update:modelValue="(value) => {
+                                        v-on:update:modelValue="(value) => {
                                           if (movie.i18n.Russian) {
                                               movie.i18n.Russian.description = value
                                           }
                                       }"
-                                          :placeholder="$t('editMoviePage.placeholders.editDescription')"
-                                          prepend-inner-icon="mdi-information"
-                                          type="text" variant="solo"></v-textarea>
+                                        :placeholder="$t('editMoviePage.placeholders.editDescription')"
+                                        prepend-inner-icon="mdi-information"
+                                        type="text" variant="solo"></v-textarea>
                         </v-col>
                         <v-col cols="12" sm="4">
                             <v-file-input :label="$t('placeholders.addPoster')"
                                           v-on:update:modelValue="putRuMoviePoster"
-                                           prepend-icon="mdi-camera" variant="solo" color="deep-purple-accent-2" ></v-file-input>
+                                          prepend-icon="mdi-camera" variant="solo"
+                                          color="deep-purple-accent-2"></v-file-input>
                         </v-col>
-
                         <DeleteImgComponent :imageId="movie.i18n.Russian?.posterId"
                                             v-on:delete="deleteRuImage"
                                             v-on:restore="restoreRuImage"
                         />
                     </div>
                     <div class="en">
-                        <p class="version"> <strong> English version</strong></p>
+                        <p class="version"><strong> English version</strong></p>
                         <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.title") }}
                             <v-text-field v-bind:model-value="movie.i18n.English?.title"
                                           v-on:update:modelValue="(value) => {
@@ -211,20 +205,21 @@ export default defineComponent({
                                           type="text" variant="solo"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" class="title"> {{ $t("placeholders.description") }}
-                            <v-textarea  v-bind:model-value="movie.i18n.English?.description"
-                                          v-on:update:modelValue="(value) => {
+                            <v-textarea v-bind:model-value="movie.i18n.English?.description"
+                                        v-on:update:modelValue="(value) => {
                                           if (movie.i18n.English) {
                                               movie.i18n.English.description = value
                                           }
                                       }"
-                                          :placeholder="$t('editMoviePage.placeholders.editDescription')"
-                                          prepend-inner-icon="mdi-information"
-                                          type="text" variant="solo"></v-textarea>
+                                        :placeholder="$t('editMoviePage.placeholders.editDescription')"
+                                        prepend-inner-icon="mdi-information"
+                                        type="text" variant="solo"></v-textarea>
                         </v-col>
                         <v-col cols="12" sm="4">
                             <v-file-input :label="$t('placeholders.addPoster')"
                                           v-on:update:modelValue="putEnMoviePoster"
-                                           prepend-icon="mdi-camera" variant="solo" color="deep-purple-accent-2"  ></v-file-input>
+                                          prepend-icon="mdi-camera" variant="solo"
+                                          color="deep-purple-accent-2"></v-file-input>
 
                         </v-col>
                         <DeleteImgComponent :imageId="movie.i18n.English?.posterId"
@@ -236,14 +231,14 @@ export default defineComponent({
                 <br>
                 <div class="add">
                     <v-col cols="12" sm="3">
-                        <v-file-input  :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages"
-                                      multiple variant="solo" prepend-icon="mdi-camera" color="deep-purple-accent-2"></v-file-input>
+                        <v-file-input :label="$t('placeholders.addImages')" v-on:update:modelValue="putMovieImages"
+                                      multiple variant="solo" prepend-icon="mdi-camera"
+                                      color="deep-purple-accent-2"></v-file-input>
                     </v-col>
                 </div>
                 <br>
                 <div class="files">
                     <div v-for="imageId in imageIds">
-
                         <DeleteImgComponent :imageId="imageId"
                                             v-on:delete="deleteImage(imageId)"
                                             v-on:restore="restoreImage(imageId)"
@@ -266,15 +261,16 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.version{
+.version {
     position: relative;
     font-size: larger;
-    right:120px
+    right: 120px
 }
 
-.title{
+.title {
     font-size: large;
 }
+
 .edit {
     background: #F5F5F5;
 }

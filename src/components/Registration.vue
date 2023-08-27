@@ -3,19 +3,19 @@ import router from "../router/index.js";
 import { client } from "../Client";
 import { defineComponent } from "vue";
 import { CreateUserRequest } from "../models/CreateUserRequest";
+import { useUserStore } from "../stores/userStore";
 
 type Data = {
     username: string,
     password: string,
-    snackbar: boolean
+    store: ReturnType<typeof useUserStore>
 }
 export default defineComponent({
-
     data(): Data {
         return {
             username: "",
             password: "",
-            snackbar: false
+            store: useUserStore()
         };
     },
     methods: {
@@ -27,8 +27,8 @@ export default defineComponent({
             createUserRequest.username = this.username;
             createUserRequest.password = this.password;
             client.postUsers(createUserRequest).then(() => {
-                router.push({ name: "authorization", hash: "#reg-success" });
-
+                this.store.setRegistrationSuccess(true);
+                router.push({ name: "authorization" });
             }).catch();
         }
     }
@@ -36,8 +36,6 @@ export default defineComponent({
 </script>
 <template>
     <h1> {{ $t("registrationPage.registration") }} </h1>
-
-
     <div class="form">
         <v-form>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.username") }}
@@ -50,21 +48,15 @@ export default defineComponent({
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
                               variant="solo"></v-text-field>
             </v-col>
-
-
             <v-card-actions>
                 {{ $t("registrationPage.account") }}
                 <v-btn id="registration" v-on:click="logIn" color="black"> {{ $t("registrationPage.logIn") }}
                 </v-btn>
-
             </v-card-actions>
             <v-btn class="logIn" v-on:click="postUsers" color="black"> {{ $t("registrationPage.buttons.signUp") }}
             </v-btn>
         </v-form>
-
     </div>
-
-
 </template>
 
 <style scooped>

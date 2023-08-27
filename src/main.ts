@@ -1,17 +1,13 @@
 import { createApp } from "vue";
-import { createI18n, useI18n } from "vue-i18n";
+import { createI18n} from "vue-i18n";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
 import "./assets/main.css";
 // @ts-ignore
-import { languages } from "./i18n";
-// @ts-ignore
-import { defaultLocale } from "./i18n";
+import { defaultLocale, languages } from "./i18n";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
-
-
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
@@ -59,9 +55,6 @@ const vuetify = createVuetify({
 
 export default i18n;
 let app = createApp(App);
-// app.config.globalProperties.$globalVariables = globalVariables;
-// @ts-ignore
-
 app.use(router)
     .use(pinia)
     .use(vuetify)

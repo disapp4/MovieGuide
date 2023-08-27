@@ -1,13 +1,12 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { Movie } from "../models/Movie";
-import { PropType } from "vue";
 import { Language } from "../models/Language";
 import { useUserStore } from "../stores/userStore";
 
 type Data = {
     show: boolean,
-    store:ReturnType<typeof useUserStore>
+    store: ReturnType<typeof useUserStore>
 }
 export default defineComponent({
     methods: {
@@ -15,7 +14,6 @@ export default defineComponent({
             if (typeof text === "string") {
                 return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
             } else return "";
-
         }
     },
     data(): Data {
@@ -29,12 +27,11 @@ export default defineComponent({
     },
     emits: ["deleteMovie", "editMovie", "informationAboutMovie"],
     computed: {
-        userRole(){
-            return this.store.hasRole
-
+        userRole() {
+            return this.store.hasRole;
         },
-        movieTitleLength(){
-            return this.movieTitle!.length>=20
+        movieTitleLength() {
+            return this.movieTitle!.length >= 20;
         },
         Language() {
             return Language;
@@ -58,7 +55,7 @@ export default defineComponent({
 <template>
     <v-card color="#FAFAFA" width="480"
             class="mx-auto" id="movieCard">
-        <div class="container">
+        <div class="containerAvatar">
             <v-avatar
                 class="miniPoster"
                 size="170"
@@ -69,7 +66,7 @@ export default defineComponent({
             <div>
                 <div class="titleMovie">
                     <v-card-title>
-                        <p  text-align="center" class="title"> {{ truncate(movieTitle, 20) }} </p>
+                        <p text-align="center" class="title"> {{ truncate(movieTitle, 20) }} </p>
                         <v-tooltip v-if="movieTitleLength"
                                    activator="parent"
                                    location="end"
@@ -77,8 +74,8 @@ export default defineComponent({
                         </v-tooltip>
                     </v-card-title>
                 </div>
-                <div class="container1">
-                    <v-btn  v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
+                <div class="containerInformation">
+                    <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
                            append-icon="mdi-chevron-triple-right" variant="text" color="black"
                            class="buttonInformation">
                         {{ $t("movieComponentPage.more") }}
@@ -120,7 +117,7 @@ export default defineComponent({
     font-weight: 600
 }
 
-.container1 {
+.containerInformation {
     margin-left: 10px;
     margin-bottom: -10px;
 }
@@ -137,8 +134,8 @@ export default defineComponent({
     color: green
 }
 
-.container {
-    display: flex; /* or inline-flex */
+.containerAvatar{
+    display: flex;
     flex-wrap: nowrap;
 }
 
@@ -148,11 +145,11 @@ export default defineComponent({
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: larger;
-
 }
 
 .titleMovie {
-    display: flex;    text-align: center;
+    display: flex;
+    text-align: center;
 }
 
 #movieCard {

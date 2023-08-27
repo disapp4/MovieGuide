@@ -6,14 +6,13 @@ import { AxiosResponse } from "axios";
 import { User } from "../models/User.js";
 import { useUserStore } from "../stores/userStore";
 
-
 type Data = {
     username: string,
     password: string,
-    snackbar1: boolean,
-    timeout1: number,
-    snackbar2: boolean,
-    timeout2: number,
+    successRegistration: boolean,
+    timeoutSuccessRegistration: number,
+    failAuth: boolean,
+    timeoutFailAuth: number,
     store: ReturnType<typeof useUserStore>
 }
 
@@ -22,31 +21,26 @@ export default defineComponent({
             return {
                 username: "",
                 password: "",
-                snackbar1: false,
-                timeout1: 3000,
-                snackbar2: false,
-                timeout2: 8000,
+                successRegistration: false,
+                timeoutSuccessRegistration: 3000,
+                failAuth: false,
+                timeoutFailAuth: 3000,
                 store: useUserStore()
             };
         },
         mounted: function() {
-            this.snackbar1 = this.$route.hash == "#reg-success";
-            this.snackbar2 = this.$route.hash == "#authFail";
+            this.successRegistration = this.store.pullRegistrationSuccess();
         },
         methods: {
             logIn() {
-                client.logIn(this.username, this.password).then((response: AxiosResponse<User>) => {
-                    this.store.login(response.data);
-
-                    router.push({ name: "mainPage" });
-                }).catch(
-                    (error) => {
-                        if (error.response.status === 401) {
-                            this.store.handleInvalidCredentials();
-                        }
+                client.authController(this.username, this.password).then((response: AxiosResponse<User>) => {
+                    if (response?.data) {
+                        this.store.login(response.data);
+                        router.push({ name: "mainPage" });
                     }
-                );
-
+                }).catch(() => {
+                    this.failAuth = true;
+                });
             },
             goToRegistration() {
                 router.push({ name: "registration" });
@@ -57,7 +51,6 @@ export default defineComponent({
 </script>
 <template>
     <h1> {{ $t("authorizationPage.authorization") }} </h1>
-
     <br>
     <v-alert class="alert"
              border="start"
@@ -66,14 +59,9 @@ export default defineComponent({
              width="700"
     >
         {{ $t("authorizationPage.alert") }}
-
         <strong>admin:admin </strong> и <strong> user:user</strong>
-
-
     </v-alert>
     <br>
-
-
     <div class="form">
         <v-form>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.username") }}
@@ -86,7 +74,6 @@ export default defineComponent({
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
                               variant="solo"></v-text-field>
             </v-col>
-
             <v-card-actions>
                 {{ $t("authorizationPage.noAccount") }}
                 <v-btn id="registration" v-on:click="goToRegistration" color="black">
@@ -97,38 +84,33 @@ export default defineComponent({
         </v-form>
         <div class="text-center">
             <v-snackbar color="green"
-                        v-model="snackbar1"
-                        :timeout="timeout1"
+                        v-model=" successRegistration"
+                        :timeout="timeoutSuccessRegistration"
             >
                 {{ $t("authorizationPage.snackbarSuccess") }}
-
                 <template v-slot:actions>
                     <v-btn
                         color="white"
                         size="large"
-                        @click="snackbar1 = false"
+                        @click=" successRegistration = false"
                         prepend-icon="mdi-close-circle"
                     >
                     </v-btn>
                 </template>
             </v-snackbar>
         </div>
-
         <div class="text-center">
             <v-snackbar color="red"
-                        v-model="snackbar2"
-                        :timeout="timeout2"
-
+                        v-model="failAuth"
+                        :timeout="timeoutFailAuth"
             >
                 {{ $t("authorizationPage.snackbarFail") }}
-
                 <template v-slot:actions>
                     <v-btn
                         color="white"
                         size="large"
-                        @click="snackbar2 = false"
+                        @click="failAuth = false"
                         prepend-icon="mdi-close-circle"
-
                     >
                     </v-btn>
                 </template>
@@ -136,7 +118,7 @@ export default defineComponent({
         </div>
     </div>
 </template>
-<style scooped>
+<style scoped>
 .alert {
     display: block;
     margin-left: auto;
@@ -150,7 +132,6 @@ export default defineComponent({
 .form {
     position: relative;
     left: 33%;
-
 }
 
 .logIn {

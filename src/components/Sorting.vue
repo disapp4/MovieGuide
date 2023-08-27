@@ -49,7 +49,6 @@ export default defineComponent({
 });
 </script>
 <template>
-<!--    <h3> {{ $t("sortingPage.title") }} </h3>-->
     <div class="sorting">
         <v-col class="d-flex" cols="3" sm="7" color="black">
             <v-select :label="$t('sortingPage.pageSize')" :items="sizeValues" v-model="pageSize"
