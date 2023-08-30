@@ -2,33 +2,39 @@
 import { defineComponent, PropType } from "vue";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
-import { useUserStore } from "../stores/userStore";
+import { appStore } from "../stores/appStore";
+import router from "../router";
 
 type Data = {
-    show: boolean,
-    store: ReturnType<typeof useUserStore>
+    store: ReturnType<typeof appStore>
 }
 export default defineComponent({
+    data(): Data {
+        return {
+            store: appStore()
+        };
+    },
     methods: {
         truncate(text: string | undefined, stop: number, clamp: string = "...") {
             if (typeof text === "string") {
                 return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
             } else return "";
+        },
+        goToInformationMoviePage(movie: Movie) {
+            router.push({ name: "informationAboutMovie", params: { id: movie.id } });
+        },
+        goToEditMoviePage(movie: Movie) {
+            router.push({ name: "editMovie", params: { id: movie.id } });
         }
     },
-    data(): Data {
-        return {
-            show: false,
-            store: useUserStore()
-        };
-    },
+
     props: {
         movie: { type: Object as PropType<Movie>, default: new Movie() }
     },
-    emits: ["deleteMovie", "editMovie", "informationAboutMovie"],
+    emits: ["deleteMovie"],
     computed: {
-        userRole() {
-            return this.store.hasRole;
+        isAdmin() {
+            return this.store.isAdmin;
         },
         movieTitleLength() {
             return this.movieTitle!.length >= 20;
@@ -36,13 +42,10 @@ export default defineComponent({
         Language() {
             return Language;
         },
-        loading: function(): boolean {
-            return true;
-        },
         movieTitle: function() {
             return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.title;
         },
-        moviePoster: function() {
+        moviePosterUrl: function() {
             if (this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId == null) {
                 return window.location.origin + "/no_poster.jpg";
             }
@@ -61,7 +64,7 @@ export default defineComponent({
                 size="170"
                 rounded="0"
             >
-                <v-img class="img" :src="moviePoster"></v-img>
+                <v-img class="img" :src="moviePosterUrl"></v-img>
             </v-avatar>
             <div>
                 <div class="titleMovie">
@@ -75,30 +78,26 @@ export default defineComponent({
                     </v-card-title>
                 </div>
                 <div class="containerInformation">
-                    <v-btn v-on:click="() => $emit('informationAboutMovie', movie )" size="small"
+                    <v-btn v-on:click="goToInformationMoviePage(movie)" size="small"
                            append-icon="mdi-chevron-triple-right" variant="text" color="black"
                            class="buttonInformation">
                         {{ $t("movieComponentPage.more") }}
                     </v-btn>
-
                 </div>
                 <br>
-                <div v-if="userRole" class="buttons">
+                <div v-if="isAdmin" class="buttons">
                     <v-card-actions>
                         <v-btn v-on:click="() => $emit('deleteMovie', movie)" size="medium" icon="mdi-delete"
                                variant="text"
                                color="black" class="buttonDelete"></v-btn>
-                        <v-btn v-on:click="() => $emit('editMovie', movie)" size="medium" icon="mdi-pencil"
+                        <v-btn v-on:click="goToEditMoviePage(movie)" size="medium" icon="mdi-pencil"
                                variant="text"
                                color="black" class="buttonEdit"></v-btn>
-
                     </v-card-actions>
                 </div>
             </div>
         </div>
     </v-card>
-
-
 </template>
 <style scoped>
 .img {
@@ -134,7 +133,7 @@ export default defineComponent({
     color: green
 }
 
-.containerAvatar{
+.containerAvatar {
     display: flex;
     flex-wrap: nowrap;
 }
@@ -162,5 +161,4 @@ export default defineComponent({
     border: 1px #646B63 solid;
     transform: scale(1.1);
 }
-
 </style>

@@ -1,13 +1,13 @@
 <script lang="ts">
-import router from "../router/index.js";
-import { client } from "../Client";
+import router from "../router";
+import { client } from "../clients/Client";
 import { defineComponent } from "vue";
 import { CreateMovieRequest } from "../models/CreateMovieRequest";
 import { AxiosResponse } from "axios";
-import { Language } from "../models/Language.js";
+import { Language } from "../models/Language";
 import { I18nCreateMovieRequest } from "../models/I18nCreateMovieRequest";
 import { CreateImageResponse } from "../models/CreateImageResponse";
-import { useUserStore } from "../stores/userStore.js";
+import { appStore } from "../stores/appStore";
 
 type Data = {
     ruTitle: string,
@@ -17,14 +17,12 @@ type Data = {
     imageFiles: Array<File> | null,
     ruPosterFile: File | null,
     ruPosterURL: string,
-    imagesURL: string,
     enPosterFile: File | null,
     enPosterURL: string,
     ruPosterId: string | null,
     enPosterId: string | null,
     imageIds: Array<string> | null,
-    loading: boolean,
-    store: ReturnType<typeof useUserStore>
+    store: ReturnType<typeof appStore>
 }
 
 export default defineComponent({
@@ -37,14 +35,12 @@ export default defineComponent({
             imageFiles: [],
             ruPosterFile: null,
             ruPosterURL: "no_poster.jpg",
-            imagesURL: "",
             enPosterFile: null,
             enPosterURL: "no_poster.jpg",
             ruPosterId: "",
             enPosterId: "",
             imageIds: [],
-            loading: false,
-            store: useUserStore()
+            store: appStore()
         };
     },
     computed: {
@@ -53,17 +49,11 @@ export default defineComponent({
                 return this.imageFiles.map(item => URL.createObjectURL(item));
             }
         },
-        userRole() {
-            return this.store.hasRole;
-
+        isAdmin() {
+            return this.store.isAdmin;
         }
     },
     methods: {
-        loadSave() {
-            this.loading = true;
-            setTimeout(() => (this.loading = false), 500);
-            setTimeout(this.addMovieThroughForm, 1000);
-        },
         addMovieThroughForm() {
             let ruCreateMovieRequest = new I18nCreateMovieRequest();
             ruCreateMovieRequest.title = this.ruTitle;
@@ -84,7 +74,7 @@ export default defineComponent({
             client.postMovie(createMovieRequest)
                 .then(() => router.push({ name: "mainPage" }));
         },
-        backToMainPage() {
+        goToMainPage() {
             router.push({ name: "mainPage" });
         },
         putRuMoviePoster(files: Array<File>) {
@@ -124,7 +114,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <v-card class="add" v-if="userRole">
+    <v-card class="add" v-if="isAdmin">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("addMoviePage.title") }} </h1>
@@ -184,11 +174,11 @@ export default defineComponent({
                         <img class="previewImages" :src="url" alt="imagePreview" />
                     </div>
                 </div>
-                <v-btn id="log_in" :loading="loading" prepend-icon="mdi-check-bold" v-on:click="loadSave" color="black">
+                <v-btn id="log_in" prepend-icon="mdi-check-bold" v-on:click="addMovieThroughForm" color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
                 <v-card-actions>
-                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
+                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="goToMainPage"
                            color="black"> {{ $t("buttons.back") }}
                     </v-btn>
                 </v-card-actions>
@@ -229,7 +219,7 @@ export default defineComponent({
 }
 
 .previewPoster {
-    margin: 10px;
+    margin: 5px;
     border-radius: 10px;
     width: 200px;
     height: 250px;
@@ -242,13 +232,10 @@ export default defineComponent({
 }
 
 div.ru {
-    float: left;
     width: 50%;
 }
 
 div.en {
-    float: right;
     width: 50%;
 }
-
 </style>

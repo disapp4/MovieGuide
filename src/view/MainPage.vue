@@ -1,15 +1,16 @@
 <script lang="ts">
-import Movies from "./Movies.vue";
-import Paginator from "./Paginator.vue";
-import Sorting from "./Sorting.vue";
+import Movies from "../components/Movies.vue";
+import Paginator from "../components/Paginator.vue";
+import Sorting from "../components/Sorting.vue";
 import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
-import { client } from "../Client";
+import { client } from "../clients/Client";
 import { Language } from "../models/Language";
-import { useUserStore } from "../stores/userStore";
+import { appStore } from "../stores/appStore";
+import SpinnerComponent from "../components/SpinnerComponent.vue";
 
 export type PaginatorRef = InstanceType<typeof Paginator>;
 export type SortingRef = InstanceType<typeof Sorting>;
@@ -17,18 +18,16 @@ export type SortingRef = InstanceType<typeof Sorting>;
 type Data = {
     currentPage: Page<Movie>,
     loading: boolean,
-    isAdmin: boolean | undefined,
-    store: ReturnType<typeof useUserStore>
+    store: ReturnType<typeof appStore>
 }
 
 export default defineComponent({
-    components: { Movies, Paginator, Sorting },
+    components: { Movies, Paginator, Sorting, SpinnerComponent },
     data(): Data {
         return {
             currentPage: new Page(),
             loading: true,
-            isAdmin: false,
-            store: useUserStore()
+            store: appStore()
         };
     },
     mounted: function() {
@@ -38,8 +37,8 @@ export default defineComponent({
         Movie() {
             return Movie;
         },
-        userRole() {
-            return this.store.hasRole;
+        isAdmin() {
+            return this.store.isAdmin;
         }
     },
     watch: {
@@ -48,17 +47,11 @@ export default defineComponent({
         }
     },
     methods: {
-        deleteMovieFromList(movie: Movie) {
+        deleteMovie(movie: Movie) {
             client.deleteMovie(movie.id).then(() => this.refreshMoviePage());
         },
-        editMovieFromList(movie: Movie) {
-            router.push({ name: "editMovie", params: { id: movie.id } });
-        },
-        addMovieOnPage() {
+        goToAddMoviePage() {
             router.push({ name: "addMovie" });
-        },
-        informationAboutMovie(movie: Movie) {
-            router.push({ name: "informationAboutMovie", params: { id: movie.id } });
         },
         refreshMoviePage() {
             let pageNumber = (this.$refs.paginator as PaginatorRef).pageNumber;
@@ -100,14 +93,14 @@ export default defineComponent({
             ).then((response: AxiosResponse<Page<Movie>>) => {
                 this.currentPage = response?.data;
                 this.loading = false;
-            }).catch();
+            });
         }
     }
 });
 </script>
 <template>
     <h1> {{ $t("mainPage.movieList.title") }} </h1>
-    <v-btn v-if="userRole" prepend-icon="mdi-plus" v-on:click="addMovieOnPage" color="black">
+    <v-btn v-if="isAdmin" prepend-icon="mdi-plus" v-on:click="goToAddMoviePage" color="black">
         {{ $t("mainPage.movieList.buttons.addMovie") }}
     </v-btn>
     <Sorting :page="currentPage"
@@ -116,132 +109,10 @@ export default defineComponent({
              v-on:changePageSize="onPageSize" ref="sorting" />
     <div v-if="!loading">
         <Movies :movieList="currentPage?.content"
-                v-on:deleteMovie="(movie: Movie) => deleteMovieFromList(movie)"
-                v-on:editMovie="(movie: Movie) => editMovieFromList(movie)"
-                v-on:informationAboutMovie="(movie: Movie) => informationAboutMovie(movie)"
-        />
+                v-on:deleteMovie="(movie: Movie) => deleteMovie(movie)" />
     </div>
     <div v-else>
-        <div class="lds-roller">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+        <SpinnerComponent />
     </div>
     <Paginator class="paginator" :page="currentPage" v-on:changePageNumber="changePageNumber" ref="paginator" />
 </template>
-<style>
-.lds-roller {
-    display: flex;
-    justify-content: center;
-    width: 1000px;
-    height: 1000px;
-}
-
-.lds-roller div {
-    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    transform-origin: 40px 40px;
-}
-
-.lds-roller div:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #0a0a0a;
-    margin: -4px 0 0 -4px;
-}
-
-.lds-roller div:nth-child(1) {
-    animation-delay: -0.036s;
-}
-
-.lds-roller div:nth-child(1):after {
-    top: 63px;
-    left: 63px;
-}
-
-.lds-roller div:nth-child(2) {
-    animation-delay: -0.072s;
-}
-
-.lds-roller div:nth-child(2):after {
-    top: 68px;
-    left: 56px;
-}
-
-.lds-roller div:nth-child(3) {
-    animation-delay: -0.108s;
-}
-
-.lds-roller div:nth-child(3):after {
-    top: 71px;
-    left: 48px;
-}
-
-.lds-roller div:nth-child(4) {
-    animation-delay: -0.144s;
-}
-
-.lds-roller div:nth-child(4):after {
-    top: 72px;
-    left: 40px;
-}
-
-.lds-roller div:nth-child(5) {
-    animation-delay: -0.18s;
-}
-
-.lds-roller div:nth-child(5):after {
-    top: 71px;
-    left: 32px;
-}
-
-.lds-roller div:nth-child(6) {
-    animation-delay: -0.216s;
-}
-
-.lds-roller div:nth-child(6):after {
-    top: 68px;
-    left: 24px;
-}
-
-.lds-roller div:nth-child(7) {
-    animation-delay: -0.252s;
-}
-
-.lds-roller div:nth-child(7):after {
-    top: 63px;
-    left: 17px;
-}
-
-.lds-roller div:nth-child(8) {
-    animation-delay: -0.288s;
-}
-
-.lds-roller div:nth-child(8):after {
-    top: 56px;
-    left: 12px;
-}
-
-@keyframes lds-roller {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-</style>
-
-
-      
-
- 

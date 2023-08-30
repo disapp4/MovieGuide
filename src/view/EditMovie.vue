@@ -1,14 +1,14 @@
 <script lang="ts">
-import router from "../router/index.js";
-import { client } from "../Client";
+import router from "../router";
+import { client } from "../clients/Client";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
-import { Movie } from "../models/Movie.js";
+import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
 import { I18nMovie } from "../models/I18nMovie";
 import { CreateImageResponse } from "../models/CreateImageResponse";
-import DeleteImgComponent from "./DeleteImgComponent.vue";
-import { useUserStore } from "../stores/userStore.js";
+import DeleteImgComponent from "../components/DeleteImgComponent.vue";
+import { appStore } from "../stores/appStore";
 
 type Data = {
     movie: Movie,
@@ -18,13 +18,12 @@ type Data = {
     enPosterFile: File | null,
     imageFiles: Array<File> | null,
     changedImagesURL: string | null,
-    movieIsLoaded: boolean,
-    deletedRuImageId: string | null,
-    deletedEnImageId: string | null,
+    deletedRuImage: boolean | null,
+    deletedEnImage: boolean | null,
     deletedImages: string[],
     restoreImages: string[],
     loading: boolean,
-    store: ReturnType<typeof useUserStore>
+    store: ReturnType<typeof appStore>
 }
 let nullMovie = new Movie();
 nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
@@ -39,13 +38,12 @@ export default defineComponent({
                 enPosterFile: null,
                 imageFiles: [],
                 changedImagesURL: "",
-                movieIsLoaded: false,
-                deletedRuImageId: "",
-                deletedEnImageId: "",
+                deletedRuImage: false,
+                deletedEnImage: false,
                 deletedImages: [],
                 restoreImages: [],
                 loading: false,
-                store: useUserStore()
+                store: appStore()
             };
         },
         components: { DeleteImgComponent },
@@ -53,22 +51,17 @@ export default defineComponent({
             this.refreshMovie();
         },
         methods: {
-            loadSave() {
-                this.loading = true;
-                setTimeout(() => (this.loading = false), 500);
-                setTimeout(this.editMovieThroughForm, 1000);
-            },
             deleteRuImage() {
-                this.deletedRuImageId = "delete";
+                this.deletedRuImage = true;
             },
             restoreRuImage() {
-                this.deletedRuImageId = "restore";
+                this.deletedRuImage = false;
             },
             deleteEnImage() {
-                this.deletedEnImageId = "delete";
+                this.deletedEnImage = true;
             },
             restoreEnImage() {
-                this.deletedEnImageId = "restore";
+                this.deletedEnImage = false;
             },
             deleteImage(imageId: string) {
                 this.deletedImages.push(imageId);
@@ -80,25 +73,25 @@ export default defineComponent({
                 let movieId: string = (this.$route.params.id as string);
                 client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
                     this.movie = response.data;
-                    this.movieIsLoaded = true;
+
                 });
             },
-            editMovieThroughForm() {
-                if (this.deletedRuImageId == "delete") {
+            makeEditMovieRequest() {
+                if (this.deletedRuImage) {
                     this.movie.i18n.Russian!!.posterId = null;
                 }
-                if (this.deletedEnImageId == "delete") {
+                if (this.deletedEnImage) {
                     this.movie.i18n.English!!.posterId = null;
                 }
                 if (this.deletedImages) {
                     let allImageIds = this.movie.imageIds.filter(imgId => !this.deletedImages.includes(imgId));
-                    // @ts-ignore
+
                     this.movie.imageIds = allImageIds.concat(this.restoreImages);
                 }
                 client.putMovie(this.movie)
                     .then(() => router.push({ name: "mainPage" }));
             },
-            backToMainPage() {
+            goToMainPage() {
                 router.push({ name: "mainPage" });
             },
             putRuMoviePoster(files: Array<File>) {
@@ -116,7 +109,7 @@ export default defineComponent({
                 });
             },
             putMovieImages(files: Array<File>) {
-                let uploadedFiles: Array<File> = files;
+                let uploadedFiles: File[] = files;
                 if (this.imageFiles)
                     for (let uploadedFile of uploadedFiles) {
                         client.postImage(uploadedFile).then((response: AxiosResponse<CreateImageResponse>) => {
@@ -141,15 +134,15 @@ export default defineComponent({
                 imageIds.push(...(this.movie.imageIds || []));
                 return imageIds;
             },
-            userRole() {
-                return this.store.hasRole;
+            isAdmin() {
+                return this.store.isAdmin;
             }
         }
     }
 );
 </script>
 <template>
-    <v-card class="edit" v-if="userRole">
+    <v-card class="edit" v-if="isAdmin">
         <v-card-text>
             <v-form>
                 <h1> {{ $t("editMoviePage.title") }} </h1>
@@ -246,18 +239,18 @@ export default defineComponent({
                     </div>
                 </div>
                 <br>
-                <v-btn id="log_in" :loading="loading" prepend-icon="mdi-check-bold" v-on:click="loadSave" color="black">
+                <v-btn id="log_in" :loading="loading" prepend-icon="mdi-check-bold" v-on:click="makeEditMovieRequest"
+                       color="black">
                     {{ $t("buttons.save") }}
                 </v-btn>
                 <v-card-actions>
-                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="backToMainPage"
+                    <v-btn id="registration" prepend-icon="mdi-arrow-left-bottom-bold" v-on:click="goToMainPage"
                            color="black"> {{ $t("buttons.back") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
         </v-card-text>
     </v-card>
-
 </template>
 
 <style scoped>
@@ -280,23 +273,17 @@ export default defineComponent({
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
-
 }
 
 .languages {
     display: flex;
 }
 
-div.ru {
-    float: left;
+.ru {
     width: 50%;
 }
 
-div.en {
-    float: right;
+.en {
     width: 50%;
 }
 </style>
-
-
- 

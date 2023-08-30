@@ -30,19 +30,19 @@ export default defineComponent({
             this.imageIsDeleted = !this.imageIsDeleted;
             this.imageIsDeleted ? this.$emit("delete", imageId) : this.$emit("restore", imageId);
         }
-
-    }});
+    }
+});
 </script>
 <template>
     <div class="deleteImage">
         <img :src="imageUrl" class="previewPoster" :class="{deleted: imageIsDeleted}" alt="posterPreview" />
-        <v-btn class="button"  density="comfortable" v-on:click="switchImage" :icon="iconButton"></v-btn>
+        <v-btn class="button" density="comfortable" v-on:click="switchImage" :icon="iconButton"></v-btn>
     </div>
 </template>
 <style>
 .previewPoster {
     border-radius: 10px;
-    margin: 5px 5px 5px 5px;
+    margin: 5px ;
     width: 200px;
     height: 250px;
     box-shadow: 0 0 10px #444;
@@ -70,5 +70,4 @@ export default defineComponent({
 .deleted {
     opacity: 0.5
 }
-
 </style>

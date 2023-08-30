@@ -8,7 +8,7 @@ export default defineComponent({
         return {
             pageNumber: 0,
             pageNumberView: 1,
-            totalPagesView: 5
+            totalPages: 5
         };
     },
     props: {
@@ -18,7 +18,7 @@ export default defineComponent({
         page: function(newVal) {
             this.pageNumber = newVal.number;
             this.pageNumberView = this.pageNumber + 1;
-            this.totalPagesView = newVal.totalPages;
+            this.totalPages = newVal.totalPages;
         }
     },
     emits: ["changePageNumber"],
@@ -33,7 +33,7 @@ export default defineComponent({
 
 <template>
     <div class="text-center">
-        <v-pagination v-model="pageNumberView" :length="totalPagesView" rounded="circle" total-visible="4"
+        <v-pagination v-model="pageNumberView" :length="totalPages" rounded="circle" total-visible="4"
                       prev-icon="mdi-menu-left"
                       next-icon="mdi-menu-right"
                       color="black" v-on:update:model-value="goToPage"></v-pagination>
