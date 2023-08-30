@@ -15,8 +15,10 @@
     "paths": {}
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue",
-    "src/Client.ts",
-    "src/Client.ts"
+    "src/clients/Client.ts",
+    "src/clients/Client.ts"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json",
+//    "path": "./stores/appStore.ts"
+  }]
 }

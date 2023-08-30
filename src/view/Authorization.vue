@@ -1,19 +1,17 @@
 <script lang="ts">
-import router from "../router/index.js";
-import { client } from "../Client";
+import router from "../router";
+import { client } from "../clients/Client";
 import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
-import { User } from "../models/User.js";
-import { useUserStore } from "../stores/userStore";
+import { User } from "../models/User";
+import { appStore } from "../stores/appStore";
 
 type Data = {
     username: string,
     password: string,
     successRegistration: boolean,
-    timeoutSuccessRegistration: number,
     failAuth: boolean,
-    timeoutFailAuth: number,
-    store: ReturnType<typeof useUserStore>
+    store: ReturnType<typeof appStore>
 }
 
 export default defineComponent({
@@ -22,10 +20,8 @@ export default defineComponent({
                 username: "",
                 password: "",
                 successRegistration: false,
-                timeoutSuccessRegistration: 3000,
                 failAuth: false,
-                timeoutFailAuth: 3000,
-                store: useUserStore()
+                store: appStore()
             };
         },
         mounted: function() {
@@ -33,17 +29,21 @@ export default defineComponent({
         },
         methods: {
             logIn() {
-                client.authController(this.username, this.password).then((response: AxiosResponse<User>) => {
-                    if (response?.data) {
-                        this.store.login(response.data);
-                        router.push({ name: "mainPage" });
-                    }
+                client.logIn(this.username, this.password).then((response: AxiosResponse<User>) => {
+                    this.store.login(response.data);
+                    router.push({ name: "mainPage" });
                 }).catch(() => {
                     this.failAuth = true;
                 });
             },
-            goToRegistration() {
+            goToRegistrationPage() {
                 router.push({ name: "registration" });
+            },
+            focusPasswordInput() {
+                let passwordInput = this.$refs.passwordInput as HTMLInputElement | undefined;
+                if (passwordInput) {
+                    passwordInput.focus();
+                }
             }
         }
     }
@@ -67,25 +67,28 @@ export default defineComponent({
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.username") }}
                 <v-text-field :label="$t('placeholders.enterUsername')" v-model="username" name="username"
                               prepend-inner-icon="mdi-mail" type="string" variant="solo" clearable
-                              filled></v-text-field>
+                              filled @keydown.enter="focusPasswordInput"></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.password") }}
-                <v-text-field :label="$t('placeholders.enterPassword')" v-model="password" name="password"
+                <v-text-field ref="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password"
+                              name="password"
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
-                              variant="solo"></v-text-field>
+                              variant="solo" @keydown.enter="logIn"></v-text-field>
             </v-col>
             <v-card-actions>
                 {{ $t("authorizationPage.noAccount") }}
-                <v-btn id="registration" v-on:click="goToRegistration" color="black">
+                <v-btn id="registration" v-on:click="goToRegistrationPage" color="black">
                     {{ $t("authorizationPage.signUp") }}
                 </v-btn>
             </v-card-actions>
-            <v-btn class="logIn" v-on:click="logIn" color="black"> {{ $t("authorizationPage.buttons.logIn") }}</v-btn>
+            <v-btn class="logIn" v-on:click="logIn" color="black" >
+                {{ $t("authorizationPage.buttons.logIn") }}
+            </v-btn>
         </v-form>
         <div class="text-center">
             <v-snackbar color="green"
                         v-model=" successRegistration"
-                        :timeout="timeoutSuccessRegistration"
+                        :timeout="3000"
             >
                 {{ $t("authorizationPage.snackbarSuccess") }}
                 <template v-slot:actions>
@@ -102,7 +105,7 @@ export default defineComponent({
         <div class="text-center">
             <v-snackbar color="red"
                         v-model="failAuth"
-                        :timeout="timeoutFailAuth"
+                        :timeout="3000"
             >
                 {{ $t("authorizationPage.snackbarFail") }}
                 <template v-slot:actions>

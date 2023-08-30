@@ -1,15 +1,15 @@
 import axios from "axios";
-import { Movie } from "./models/Movie";
-import { Page } from "./models/Page";
-import { CreateMovieRequest } from "./models/CreateMovieRequest";
-import { CreateUserRequest } from "./models/CreateUserRequest";
-import { CreateUserResponse } from "./models/CreateUserResponse";
-import { PageRequest } from "./models/PageRequest";
-import { CreateMovieResponse } from "./models/CreateMovieResponse";
-import { User } from "./models/User";
-import router from "./router";
-import { Language } from "./models/Language";
-import { CreateImageResponse } from "./models/CreateImageResponse";
+import { Movie } from "../models/Movie";
+import { Page } from "../models/Page";
+import { CreateMovieRequest } from "../models/CreateMovieRequest";
+import { CreateUserRequest } from "../models/CreateUserRequest";
+import { CreateUserResponse } from "../models/CreateUserResponse";
+import { PageRequest } from "../models/PageRequest";
+import { CreateMovieResponse } from "../models/CreateMovieResponse";
+import { User } from "../models/User";
+import router from "../router";
+import { Language } from "../models/Language";
+import { CreateImageResponse } from "../models/CreateImageResponse";
 
 
 export class Client {
@@ -17,6 +17,7 @@ export class Client {
         withCredentials: true,
         baseURL: import.meta.env.VITE_BACKEND_BASE_URL
     });
+
     constructor() {
         this.axiosInstance.interceptors.response.use((response) => {
                 return response;
@@ -36,7 +37,9 @@ export class Client {
     }
 
     public async getMovies(pageRequest: PageRequest, language: Language) {
-        return this.axiosInstance.get<Page<Movie>>("movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size + `&sort=` + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
+        return this.axiosInstance.get<Page<Movie>>(
+            "movies" + `?page=` + pageRequest.number + `&size=` + pageRequest.size +
+            `&sort=` + pageRequest.field + `,` + pageRequest.order + `&lang=` + language);
     }
 
     public postMovie(createMovieRequest: CreateMovieRequest) {
@@ -59,11 +62,8 @@ export class Client {
         });
     }
 
-    public logIn(username: string, password: string) {
-        return this.axiosInstance.get<User>("users/me", { headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) } });
-    }
 
-    public authController(username: string, password: string) {
+    public logIn(username: string, password: string) {
         return this.axiosInstance.get<User>("login", { headers: { "Authorization": "Basic " + window.btoa(username + ":" + password) } });
     }
 

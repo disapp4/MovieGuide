@@ -1,7 +1,7 @@
 export class User {
-   id!: string;
-   username!: string;
-   roles!: Array<string>;
-   }
+    id!: string;
+    username!: string;
+    roles!: Array<string>;
+}
 
 

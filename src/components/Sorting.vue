@@ -52,7 +52,7 @@ export default defineComponent({
     <div class="sorting">
         <v-col class="d-flex" cols="3" sm="7" color="black">
             <v-select :label="$t('sortingPage.pageSize')" :items="sizeValues" v-model="pageSize"
-                      v-on:update:modelValue="changePageSize" variant="solo" >
+                      v-on:update:modelValue="changePageSize" variant="solo">
             </v-select>
             <v-select :label="$t('sortingPage.pageSortField.pageSortField')" :items="sortFieldValues"
                       :item-title="item => $t(item.view)"
