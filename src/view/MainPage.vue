@@ -1,3 +1,93 @@
+<!--<script setup  lang="ts">-->
+<!--import Movies from "../components/Movies.vue";-->
+<!--import Paginator from "../components/Paginator.vue";-->
+<!--import Sorting from "../components/Sorting.vue";-->
+<!--import { Movie } from "../models/Movie";-->
+<!--import { Page } from "../models/Page";-->
+<!--import router from "../router";-->
+<!--import { computed, defineComponent, ref, watch } from "vue";-->
+<!--import { AxiosResponse } from "axios";-->
+<!--import { client } from "../clients/Client";-->
+<!--import { Language } from "../models/Language";-->
+<!--import { appStore } from "../stores/appStore";-->
+<!--import SpinnerComponent from "../components/SpinnerComponent.vue";-->
+<!--import i18n from "../main";-->
+
+<!--const currentPage = ref(new Page());-->
+<!--const loading = ref(true);-->
+<!--const store = appStore();-->
+
+<!--const isAdmin = computed(() => {-->
+<!--    return store.isAdmin;-->
+<!--});-->
+
+<!--const paginatorRef = ref<InstanceType<typeof Paginator> | null>(null);-->
+<!--const sortingRef = ref<InstanceType<typeof Sorting> | null>(null);-->
+
+<!--watch(i18n.global.locale, () => {-->
+<!--    refreshMoviePage();-->
+<!--});-->
+<!--const deleteMovie = (movie: Movie) => {client.deleteMovie(movie.id).then(() => refreshMoviePage())};-->
+<!--const goToAddMoviePage = () => {-->
+<!--    router.push({ name: "addMovie" });-->
+<!--};-->
+
+<!--const refreshMoviePage = () => {-->
+<!--    const pageNumber = paginatorRef.value?.pageNumber || 0;-->
+<!--    const pageSize = sortingRef.value?.pageSize;-->
+<!--    const pageSortField = sortingRef.value?.pageSortField ;-->
+<!--    const pageSortOrder = sortingRef.value?.pageSortOrder;-->
+<!--    loading.value = true;-->
+<!--    loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);-->
+<!--};-->
+
+<!--const changePageNumber = () => {-->
+<!--    refreshMoviePage();-->
+<!--};-->
+
+<!--const onPageSortField = () => {-->
+<!--    const pageSortField = sortingRef.value?.pageSortField ;-->
+<!--    const pageSize = sortingRef.value?.pageSize ;-->
+<!--    const pageSortOrder = sortingRef.value?.pageSortOrder ;-->
+<!--    loadMoviePage(0, pageSize, pageSortField, pageSortOrder);-->
+<!--};-->
+
+<!--const onPageSortOrder = () => {-->
+<!--    const pageSortField = sortingRef.value?.pageSortField ;-->
+<!--    const pageSize = sortingRef.value?.pageSize ;-->
+<!--    const pageSortOrder = sortingRef.value?.pageSortOrder ;-->
+<!--    loadMoviePage(0, pageSize, pageSortField, pageSortOrder);-->
+<!--};-->
+
+<!--const onPageSize = () => {-->
+<!--    const pageSortField = sortingRef.value?.pageSortField;-->
+<!--    const pageSize = sortingRef.value?.pageSize ;-->
+<!--    const pageSortOrder = sortingRef.value?.pageSortOrder ;-->
+<!--    loadMoviePage(0, pageSize, pageSortField, pageSortOrder);-->
+<!--};-->
+
+<!--const loadMoviePage = (-->
+<!--    pageNumber: number,-->
+<!--    pageSize: number,-->
+<!--    pageSortField: string,-->
+<!--    pageSortOrder: string-->
+<!--) => {-->
+<!--    client-->
+<!--        .getMovies(-->
+<!--            {-->
+<!--                number: pageNumber,-->
+<!--                size: pageSize,-->
+<!--                field: pageSortField,-->
+<!--                order: pageSortOrder-->
+<!--            },-->
+<!--            Language.fromCode(i18n.global.locale.value)-->
+<!--        )-->
+<!--        .then((response: AxiosResponse<Page<Movie>>) => {-->
+<!--            currentPage.value = response?.data;-->
+<!--            loading.value = false;-->
+<!--        });-->
+<!--};-->
+<!--</script>-->
 <script lang="ts">
 import Movies from "../components/Movies.vue";
 import Paginator from "../components/Paginator.vue";

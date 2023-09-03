@@ -8,6 +8,11 @@ import { User } from "../models/User";
 
 const { t, locale } = useI18n({ useScope: "global" });
 const store = appStore();
+
+const accountType = computed(() => store.isAdmin ? "Admin" : "User");
+
+const account = computed(() => store.user);
+
 const logOut = () => {
     client.logOut()
         .then(() => {
@@ -22,10 +27,6 @@ const goToMainPage = () => {
 const changeLanguage = () => {
     locale.value = locale.value === "en" ? "ru" : "en";
 };
-
-const accountType = computed(() => store.isAdmin ? "Admin" : "User");
-
-const account = computed(() => store.user);
 </script>
 <template>
     <v-toolbar color="black">
@@ -61,6 +62,3 @@ const account = computed(() => store.user);
         </v-menu>
     </v-toolbar>
 </template>
-<style scoped>
-
-</style>

@@ -1,80 +1,69 @@
-<script lang="ts">
+<script setup lang="ts">
 import router from "../router";
 import { client } from "../clients/Client";
-import { defineComponent } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { AxiosResponse } from "axios";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
 import { I18nMovie } from "../models/I18nMovie";
 import { appStore } from "../stores/appStore";
+import i18n from "../main";
 
-type Data = {
-    movie: Movie,
-    movieIsLoaded: boolean,
-    store: ReturnType<typeof appStore>
-}
+const currentLocale = computed(() => i18n.global.locale.value);
 
-let nullMovie = new Movie();
-nullMovie.i18n = { [Language.Russian]: new I18nMovie(), [Language.English]: new I18nMovie() };
-
-export default defineComponent({
-    data(): Data {
-        return {
-            movie: nullMovie,
-            movieIsLoaded: false,
-            store: appStore()
-        };
-    },
-    created() {
-        this.refreshMovie();
-    },
-    methods: {
-        refreshMovie() {
-            let movieId: string = (this.$route.params.id as string);
-            client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
-                this.movie = response.data;
-                this.movieIsLoaded = true;
-            });
-        },
-        goToEditPage() {
-            router.push({ name: "editMovie" });
-        },
-        goToMainPage() {
-            router.push({ name: "mainPage" });
-        }
-    },
-    computed: {
-        isAdmin() {
-            return this.store.isAdmin;
-        },
-        movieTitle() {
-            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]!!.title;
-        },
-        movieDescription() {
-            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.description;
-        },
-        posterURL: function() {
-            if (!this.movieIsLoaded) {
-                return window.location.origin + "/loading.jpg";
-            }
-            if (this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId == null) {
-                return window.location.origin + "/no_poster.jpg";
-            }
-            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId;
-        },
-        movieImageData:
-            function() {
-                if (!this.movieIsLoaded) {
-                    return [window.location.origin + "/loading.jpg"];
-                }
-                let imagesUrls = [];
-                for (let movieImageId of this.movie.imageIds) {
-                    imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + movieImageId);
-                }
-                return imagesUrls;
-            }
-    }
+onMounted(() => {
+    refreshMovie();
 });
+
+watch(() => i18n.global.locale.value, (newVal) => {
+    console.log(newVal);
+});
+const nullMovie = ref(new Movie());
+nullMovie.value.i18n = { [Language.Russian]: new I18nMovie(), [Language.English]: new I18nMovie() };
+
+const movie = ref(nullMovie);
+const movieIsLoaded = ref(false);
+const store = appStore();
+
+const isAdmin = computed(() => store.isAdmin);
+const movieTitle = computed(() => movie.value.i18n[Language.fromCode(currentLocale.value)]?.title);
+const movieDescription = computed(() => movie.value.i18n[Language.fromCode(currentLocale.value)]?.description);
+
+const posterURL = computed(() => {
+    if (!movieIsLoaded.value) {
+        return window.location.origin + "/loading.jpg";
+    }
+    if (movie.value.i18n[Language.fromCode(currentLocale.value)]?.posterId == null) {
+        return window.location.origin + "/no_poster.jpg";
+    }
+    return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + movie.value.i18n[Language.fromCode(currentLocale.value)]?.posterId;
+});
+
+const movieImageData = computed(() => {
+    if (!movieIsLoaded.value) {
+        return [window.location.origin + "/loading.jpg"];
+    }
+    let imagesUrls = [];
+    for (let movieImageId of movie.value.imageIds) {
+        imagesUrls.push(import.meta.env.VITE_BACKEND_BASE_URL + "images/" + movieImageId);
+    }
+    return imagesUrls;
+});
+
+const goToEditPage = () => {
+    router.push({ name: "editMovie" });
+};
+const goToMainPage = () => {
+    router.push({ name: "mainPage" });
+};
+
+const refreshMovie = () => {
+    const movieId: string = (router.currentRoute.value.params.id as string);
+    client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
+        movie.value = response.data;
+        movieIsLoaded.value = true;
+    });
+};
 </script>
 <template>
     <v-card class="information">
@@ -88,11 +77,11 @@ export default defineComponent({
                     <v-textarea variant="solo" v-model="movieDescription" readonly
                                 prepend-inner-icon="mdi-information" type="text"></v-textarea>
                 </v-col>
-                <v-img class="previewPoster" :src="posterURL" cover>
+                <v-img class="previewImage" :src="posterURL" cover>
                 </v-img>
                 <div class="files">
                     <div v-for="url in movieImageData">
-                        <img class="previewImages" :src="url" alt="imagePreview" />
+                        <img class="previewImage" :src="url" alt="imagePreview" />
                     </div>
                 </div>
                 <v-btn v-if="isAdmin" id="log_in" prepend-icon="mdi-pencil" v-on:click="goToEditPage"
@@ -124,7 +113,7 @@ export default defineComponent({
     justify-content: flex-start;
 }
 
-.previewPoster {
+.previewImage {
     border-radius: 10px;
     margin: 10px 20px;
     width: 220px;
@@ -132,14 +121,4 @@ export default defineComponent({
     box-shadow: 0 0 10px #444;
     border: 1px #ccc solid;
 }
-
-.previewImages {
-    border-radius: 10px;
-    margin: 10px 20px;
-    width: 300px;
-    height: 300px;
-    box-shadow: 0 0 10px #444;
-    border: 1px #ccc solid;
-}
 </style>
-

@@ -1,43 +1,35 @@
-<script lang="ts">
+<script setup lang="ts">
 import router from "../router";
 import { client } from "../clients/Client";
-import { defineComponent } from "vue";
+import { ref } from "vue";
 import { CreateUserRequest } from "../models/CreateUserRequest";
 import { appStore } from "../stores/appStore";
 
-type Data = {
-    username: string,
-    password: string,
-    store: ReturnType<typeof appStore>
-}
-export default defineComponent({
-    data(): Data {
-        return {
-            username: "",
-            password: "",
-            store: appStore()
-        };
-    },
-    methods: {
-        goToLogInPage() {
+const username = ref("");
+const password = ref("");
+const store = appStore();
+
+const goToLogInPage = () => {
+    router.push({ name: "authorization" });
+};
+
+const postUsers = () => {
+    const request = new CreateUserRequest();
+    request.username = username.value;
+    request.password = password.value;
+    client.postUsers(request)
+        .then(() => {
+            store.setRegistrationSuccess(true);
             router.push({ name: "authorization" });
-        },
-        postUsers() {
-            let request = new CreateUserRequest();
-            request.username = this.username;
-            request.password = this.password;
-            client.postUsers(request).then(() => {
-                this.store.setRegistrationSuccess(true);
-                router.push({ name: "authorization" });
-            });
-        },
-        focusPasswordInput() {
-            let passwordInput = this.$refs.passwordInput as HTMLInputElement | undefined;
-            if (passwordInput) {
-                passwordInput.focus();
-            }
-    }}
-});
+        });
+};
+
+const focusPasswordInput = () => {
+    const passwordInput = document.querySelector("#passwordInput") as HTMLInputElement | null;
+    if (passwordInput) {
+        passwordInput.focus();
+    }
+};
 </script>
 <template>
     <h1> {{ $t("registrationPage.registration") }} </h1>
@@ -49,13 +41,14 @@ export default defineComponent({
                               variant="solo" @keydown.enter="focusPasswordInput"></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.password") }}
-                <v-text-field ref="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password" name="password"
+                <v-text-field id="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password"
+                              name="password"
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
                               variant="solo" @keydown.enter="postUsers"></v-text-field>
             </v-col>
             <v-card-actions>
                 {{ $t("registrationPage.account") }}
-                <v-btn id="registration" v-on:click="goToLogInPage"  color="black"> {{ $t("registrationPage.logIn") }}
+                <v-btn id="registration" v-on:click="goToLogInPage" color="black"> {{ $t("registrationPage.logIn") }}
                 </v-btn>
             </v-card-actions>
             <v-btn class="logIn" v-on:click="postUsers" color="black"> {{ $t("registrationPage.buttons.signUp") }}
@@ -63,7 +56,6 @@ export default defineComponent({
         </v-form>
     </div>
 </template>
-
 <style scoped>
 .title {
     font-size: larger

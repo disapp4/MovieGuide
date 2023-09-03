@@ -1,7 +1,7 @@
-<script lang="ts">
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import router from "../router";
 import { client } from "../clients/Client";
-import { defineComponent } from "vue";
 import { AxiosResponse } from "axios";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
@@ -10,136 +10,106 @@ import { CreateImageResponse } from "../models/CreateImageResponse";
 import DeleteImgComponent from "../components/DeleteImgComponent.vue";
 import { appStore } from "../stores/appStore";
 
-type Data = {
-    movie: Movie,
-    changedRuPosterURL: string | null,
-    changedEnPosterURL: string | null,
-    ruPosterFile: File | null,
-    enPosterFile: File | null,
-    imageFiles: Array<File> | null,
-    changedImagesURL: string | null,
-    deletedRuImage: boolean | null,
-    deletedEnImage: boolean | null,
-    deletedImages: string[],
-    restoreImages: string[],
-    loading: boolean,
-    store: ReturnType<typeof appStore>
-}
-let nullMovie = new Movie();
-nullMovie.i18n = { [Language.English]: new I18nMovie(), [Language.Russian]: new I18nMovie() };
+const nullMovie = ref(new Movie());
+nullMovie.value.i18n = { [Language.Russian]: new I18nMovie(), [Language.English]: new I18nMovie() };
 
-export default defineComponent({
-        data(): Data {
-            return {
-                movie: nullMovie,
-                changedRuPosterURL: "",
-                changedEnPosterURL: "",
-                ruPosterFile: null,
-                enPosterFile: null,
-                imageFiles: [],
-                changedImagesURL: "",
-                deletedRuImage: false,
-                deletedEnImage: false,
-                deletedImages: [],
-                restoreImages: [],
-                loading: false,
-                store: appStore()
-            };
-        },
-        components: { DeleteImgComponent },
-        created() {
-            this.refreshMovie();
-        },
-        methods: {
-            deleteRuImage() {
-                this.deletedRuImage = true;
-            },
-            restoreRuImage() {
-                this.deletedRuImage = false;
-            },
-            deleteEnImage() {
-                this.deletedEnImage = true;
-            },
-            restoreEnImage() {
-                this.deletedEnImage = false;
-            },
-            deleteImage(imageId: string) {
-                this.deletedImages.push(imageId);
-            },
-            restoreImage(imageId: string) {
-                this.restoreImages.push(imageId);
-            },
-            refreshMovie() {
-                let movieId: string = (this.$route.params.id as string);
-                client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
-                    this.movie = response.data;
+const movie = ref(nullMovie);
+const changedRuPosterURL = ref<string | null>("");
+const changedEnPosterURL = ref<string | null>("");
+const ruPosterFile = ref<File | null>(null);
+const enPosterFile = ref<File | null>(null);
+const imageFiles = ref<Array<File> | null>([]);
+const deletedRuImage = ref<boolean | null>(false);
+const deletedEnImage = ref<boolean | null>(false);
+const deletedImages = ref<string[]>([]);
+const restoreImages = ref<string[]>([]);
+const loading = ref<boolean>(false);
+const store = appStore();
 
-                });
-            },
-            makeEditMovieRequest() {
-                if (this.deletedRuImage) {
-                    this.movie.i18n.Russian!!.posterId = null;
-                }
-                if (this.deletedEnImage) {
-                    this.movie.i18n.English!!.posterId = null;
-                }
-                if (this.deletedImages) {
-                    let allImageIds = this.movie.imageIds.filter(imgId => !this.deletedImages.includes(imgId));
+onMounted(() => {
+    refreshMovie();
+});
 
-                    this.movie.imageIds = allImageIds.concat(this.restoreImages);
-                }
-                client.putMovie(this.movie)
-                    .then(() => router.push({ name: "mainPage" }));
-            },
-            goToMainPage() {
-                router.push({ name: "mainPage" });
-            },
-            putRuMoviePoster(files: Array<File>) {
-                this.ruPosterFile = files[0];
-                client.postImage(this.ruPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
-                    this.movie.i18n.Russian!!.posterId = response.data.id;
-                    this.changedRuPosterURL = this.ruPosterFile ? URL.createObjectURL(this.ruPosterFile) : null;
-                });
-            },
-            putEnMoviePoster(files: Array<File>) {
-                this.enPosterFile = files[0];
-                client.postImage(this.enPosterFile).then((response: AxiosResponse<CreateImageResponse>) => {
-                    this.movie.i18n.English!!.posterId = response.data.id;
-                    this.changedEnPosterURL = this.enPosterFile ? URL.createObjectURL(this.enPosterFile) : null;
-                });
-            },
-            putMovieImages(files: Array<File>) {
-                let uploadedFiles: File[] = files;
-                if (this.imageFiles)
-                    for (let uploadedFile of uploadedFiles) {
-                        client.postImage(uploadedFile).then((response: AxiosResponse<CreateImageResponse>) => {
-                            this.movie.imageIds.push(response.data.id);
-                            this.imageFiles!!.push(uploadedFile);
-                        });
-                    }
-            }
-        },
-        computed: {
-            ruTitle() {
-                return this.movie.i18n[Language.fromCode("ru")]!.title;
-            },
-            Language() {
-                return Language;
-            },
-            movieTitle(lang: string) {
-                return this.movie.i18n[Language.fromCode(lang)]!.title;
-            },
-            imageIds() {
-                let imageIds = [];
-                imageIds.push(...(this.movie.imageIds || []));
-                return imageIds;
-            },
-            isAdmin() {
-                return this.store.isAdmin;
-            }
+const isAdmin = computed(() => {
+    return store.isAdmin;
+});
+
+const imageIds = computed(() => {
+    const imageIds = [];
+    imageIds.push(...(movie.value.imageIds || []));
+    return imageIds;
+});
+
+const deleteRuImage = () => {
+    deletedRuImage.value = true;
+};
+const restoreRuImage = () => {
+    deletedRuImage.value = false;
+};
+const deleteEnImage = () => {
+    deletedRuImage.value = true;
+};
+const restoreEnImage = () => {
+    deletedRuImage.value = false;
+};
+
+const deleteImage = (imageId: string) => {
+    deletedImages.value.push(imageId);
+};
+const restoreImage = (imageId: string) => {
+    restoreImages.value.push(imageId);
+};
+const goToMainPage = () => {
+    router.push({ name: "mainPage" });
+};
+
+const refreshMovie = () => {
+    const movieId: string = router.currentRoute.value.params.id as string;
+    client.getMovie(movieId).then((response: AxiosResponse<Movie>) => {
+        movie.value = response.data;
+    });
+};
+
+const makeEditMovieRequest = () => {
+        if (deletedRuImage.value) {
+            movie.value.i18n.Russian!!.posterId = null;
         }
+        if (deletedEnImage.value) {
+            movie.value.i18n.English!!.posterId = null;
+        }
+        if (deletedImages.value.length) {
+            const allImageIds = movie.value.imageIds.filter(imgId => !deletedImages.value.includes(imgId));
+            movie.value.imageIds = allImageIds.concat(restoreImages.value);
+        }
+        client.putMovie(movie.value).then(() => router.push({ name: "mainPage" }));
     }
-);
+;
+
+const putRuMoviePoster = (files: Array<File>) => {
+    ruPosterFile.value = files[0];
+    client.postImage(ruPosterFile.value).then((response: AxiosResponse<CreateImageResponse>) => {
+        movie.value.i18n.Russian!!.posterId = response.data.id;
+        changedRuPosterURL.value = ruPosterFile.value ? URL.createObjectURL(ruPosterFile.value) : null;
+    });
+};
+
+const putEnMoviePoster = (files: Array<File>) => {
+    enPosterFile.value = files[0];
+    client.postImage(enPosterFile.value).then((response: AxiosResponse<CreateImageResponse>) => {
+        movie.value.i18n.English!!.posterId = response.data.id;
+        changedEnPosterURL.value = enPosterFile.value ? URL.createObjectURL(enPosterFile.value) : null;
+    });
+};
+const putMovieImages = (files: Array<File>) => {
+    const uploadedFiles: File[] = files;
+    if (imageFiles.value)
+        for (const uploadedFile of uploadedFiles) {
+            client.postImage(uploadedFile).then((response: AxiosResponse<CreateImageResponse>) => {
+                movie.value.imageIds.push(response.data.id);
+                imageFiles.value!!.push(uploadedFile);
+            });
+        }
+};
 </script>
 <template>
     <v-card class="edit" v-if="isAdmin">
@@ -252,7 +222,6 @@ export default defineComponent({
         </v-card-text>
     </v-card>
 </template>
-
 <style scoped>
 .version {
     position: relative;
