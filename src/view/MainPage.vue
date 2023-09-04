@@ -21,8 +21,8 @@ const isAdmin = computed(() => {
     return store.isAdmin;
 });
 
-const paginatorRef = ref<Paginator>();
-const sortingRef = ref<Sorting>();
+const paginatorRef = ref<typeof Paginator>();
+const sortingRef = ref<typeof Sorting>();
 
 onMounted(() => {
     refreshMoviePage();
