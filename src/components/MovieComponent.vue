@@ -1,60 +1,56 @@
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { computed, PropType, watch } from "vue";
+import { appStore } from "../stores/appStore";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
-import { appStore } from "../stores/appStore";
 import router from "../router";
+import i18n from "../main";
 
-type Data = {
-    store: ReturnType<typeof appStore>
-}
-export default defineComponent({
-    data(): Data {
-        return {
-            store: appStore()
-        };
-    },
-    methods: {
-        truncate(text: string | undefined, stop: number, clamp: string = "...") {
-            if (typeof text === "string") {
-                return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
-            } else return "";
-        },
-        goToInformationMoviePage(movie: Movie) {
-            router.push({ name: "informationAboutMovie", params: { id: movie.id } });
-        },
-        goToEditMoviePage(movie: Movie) {
-            router.push({ name: "editMovie", params: { id: movie.id } });
-        }
-    },
+const store = appStore();
+const currentLocale = computed(() => i18n.global.locale.value);
 
-    props: {
-        movie: { type: Object as PropType<Movie>, default: new Movie() }
-    },
-    emits: ["deleteMovie"],
-    computed: {
-        isAdmin() {
-            return this.store.isAdmin;
-        },
-        movieTitleLength() {
-            return this.movieTitle!.length >= 20;
-        },
-        Language() {
-            return Language;
-        },
-        movieTitle: function() {
-            return this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.title;
-        },
-        moviePosterUrl: function() {
-            if (this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId == null) {
-                return window.location.origin + "/no_poster.jpg";
-            }
-            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.movie.i18n[Language.fromCode(this.$i18n.locale)]?.posterId;
-        }
+watch(() => i18n.global.locale.value, (newVal) => {
+    console.log(newVal);
+});
+const props = defineProps({
+    movie: {
+        type: Object as PropType<Movie>,
+        default: () => new Movie()
     }
 });
-</script>
 
+const isAdmin = computed(() => store.isAdmin);
+
+const movieTitle = computed(() => {
+    return props.movie.i18n[Language.fromCode(currentLocale.value)]?.title;
+});
+
+const titleIsTooLong = computed(() => {
+    const title = movieTitle.value;
+    return title ? title.length >= 20 : false;
+});
+
+const moviePosterUrl = computed(() => {
+    const posterId = props.movie.i18n[Language.fromCode(currentLocale.value)]?.posterId;
+    if (posterId == null) {
+        return window.location.origin + "/no_poster.jpg";
+    }
+    return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + posterId;
+});
+
+const truncate = (text: string | undefined, stop: number, clamp: string = "...") => {
+    if (typeof text === "string") {
+        return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
+    } else return "";
+};
+
+const goToInformationMoviePage = (movie: Movie) => {
+    router.push({ name: "informationAboutMovie", params: { id: movie.id } });
+};
+const goToEditMoviePage = (movie: Movie) => {
+    router.push({ name: "editMovie", params: { id: movie.id } });
+};
+</script>
 <template>
     <v-card color="#FAFAFA" width="480"
             class="mx-auto" id="movieCard">
@@ -70,7 +66,7 @@ export default defineComponent({
                 <div class="titleMovie">
                     <v-card-title>
                         <p text-align="center" class="title"> {{ truncate(movieTitle, 20) }} </p>
-                        <v-tooltip v-if="movieTitleLength"
+                        <v-tooltip v-if="titleIsTooLong"
                                    activator="parent"
                                    location="end"
                         > {{ movieTitle }}

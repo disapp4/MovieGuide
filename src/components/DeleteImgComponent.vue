@@ -1,37 +1,30 @@
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { ref, computed, PropType } from "vue";
 
-type Data = {
-    imageIsDeleted: boolean
-}
-export default defineComponent({
-    data(): Data {
-        return {
-            imageIsDeleted: false
-        };
-    },
-    props: {
-        imageId: { type: null as unknown as PropType<string | null>, required: false }
-    },
-    computed: {
-        imageUrl() {
-            if (this.imageId == null) {
-                return window.location.origin + "/no_poster.jpg";
-            }
-            return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + this.imageId;
-        },
-        iconButton() {
-            return this.imageIsDeleted ? "mdi-backup-restore" : "mdi-delete";
-        }
-    },
-    emits: ["delete", "restore"],
-    methods: {
-        switchImage(imageId: string) {
-            this.imageIsDeleted = !this.imageIsDeleted;
-            this.imageIsDeleted ? this.$emit("delete", imageId) : this.$emit("restore", imageId);
-        }
-    }
+const imageIsDeleted = ref(false);
+
+const props = defineProps({
+    imageId: { type: null as unknown as PropType<string | null>, required: false }
 });
+
+const emits = defineEmits(["delete", "restore"]);
+
+const imageUrl = computed(() => {
+    if (props.imageId == null) {
+        return window.location.origin + "/no_poster.jpg";
+    }
+    return import.meta.env.VITE_BACKEND_BASE_URL + "images/" + props.imageId;
+});
+
+const iconButton = computed(() => {
+    return imageIsDeleted.value ? "mdi-backup-restore" : "mdi-delete";
+});
+
+const switchImage = () => {
+    imageIsDeleted.value = !imageIsDeleted.value;
+    const event = imageIsDeleted.value ? "delete" : "restore";
+    emits(event, props.imageId);
+};
 </script>
 <template>
     <div class="deleteImage">
@@ -42,7 +35,7 @@ export default defineComponent({
 <style>
 .previewPoster {
     border-radius: 10px;
-    margin: 5px ;
+    margin: 5px;
     width: 200px;
     height: 250px;
     box-shadow: 0 0 10px #444;

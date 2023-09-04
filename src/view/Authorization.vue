@@ -1,53 +1,38 @@
-<script lang="ts">
+<script setup lang="ts">
 import router from "../router";
 import { client } from "../clients/Client";
-import { defineComponent } from "vue";
+import { ref, onMounted, inject } from "vue";
 import { AxiosResponse } from "axios";
 import { User } from "../models/User";
 import { appStore } from "../stores/appStore";
 
-type Data = {
-    username: string,
-    password: string,
-    successRegistration: boolean,
-    failAuth: boolean,
-    store: ReturnType<typeof appStore>
-}
+const username = ref("");
+const password = ref("");
+const successRegistration = ref(false);
+const failAuth = ref(false);
+const store = appStore();
 
-export default defineComponent({
-        data(): Data {
-            return {
-                username: "",
-                password: "",
-                successRegistration: false,
-                failAuth: false,
-                store: appStore()
-            };
-        },
-        mounted: function() {
-            this.successRegistration = this.store.pullRegistrationSuccess();
-        },
-        methods: {
-            logIn() {
-                client.logIn(this.username, this.password).then((response: AxiosResponse<User>) => {
-                    this.store.login(response.data);
-                    router.push({ name: "mainPage" });
-                }).catch(() => {
-                    this.failAuth = true;
-                });
-            },
-            goToRegistrationPage() {
-                router.push({ name: "registration" });
-            },
-            focusPasswordInput() {
-                let passwordInput = this.$refs.passwordInput as HTMLInputElement | undefined;
-                if (passwordInput) {
-                    passwordInput.focus();
-                }
-            }
-        }
+onMounted(() => {
+    successRegistration.value = store.pullRegistrationSuccess();
+});
+
+const logIn = () => {
+    client.logIn(username.value, password.value).then((response: AxiosResponse<User>) => {
+        store.login(response.data);
+        router.push({ name: "mainPage" });
+    }).catch(() => {
+        failAuth.value = true;
+    });
+};
+const goToRegistrationPage = () => {
+    router.push({ name: "registration" });
+};
+const focusPasswordInput = () => {
+    const passwordInput = document.querySelector("#passwordInput") as HTMLInputElement | null;
+    if (passwordInput) {
+        passwordInput.focus();
     }
-);
+};
 </script>
 <template>
     <h1> {{ $t("authorizationPage.authorization") }} </h1>
@@ -70,7 +55,7 @@ export default defineComponent({
                               filled @keydown.enter="focusPasswordInput"></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.password") }}
-                <v-text-field ref="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password"
+                <v-text-field id="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password"
                               name="password"
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
                               variant="solo" @keydown.enter="logIn"></v-text-field>
@@ -81,7 +66,7 @@ export default defineComponent({
                     {{ $t("authorizationPage.signUp") }}
                 </v-btn>
             </v-card-actions>
-            <v-btn class="logIn" v-on:click="logIn" color="black" >
+            <v-btn class="logIn" v-on:click="logIn" color="black">
                 {{ $t("authorizationPage.buttons.logIn") }}
             </v-btn>
         </v-form>
