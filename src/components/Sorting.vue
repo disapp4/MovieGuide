@@ -1,104 +1,110 @@
-<!--<script setup lang="ts">-->
-<!--import { Page } from "../models/Page";-->
-<!--import { ref, watch, PropType } from "vue";-->
-<!--import { Movie } from "../models/Movie";-->
-
-<!--const pageSize = ref(5);-->
-<!--const pageSortField = ref("i18n.title");-->
-<!--const pageSortOrder = ref("asc");-->
-<!--const sizeValues = [2, 5, 10];-->
-
-<!--const sortFieldValues = [{-->
-<!--   value: "id",-->
-<!--    view: "sortingPage.pageSortField.id"-->
-<!--}, {-->
-<!--    value: "i18n.title",-->
-<!--   view: "sortingPage.pageSortField.title"-->
-<!--}];-->
-
-<!--const sortOrderValues = [{-->
-<!--   value: "id",-->
-<!--    view: "sortingPage.pageSortField.id"-->
-<!--}, {-->
-<!--    value: "i18n.title",-->
-<!--   view: "sortingPage.pageSortField.title"-->
-<!--}];-->
-
-<!--const props = defineProps({ page: {-->
-<!--    type: Object as PropType<Page<Movie>>,-->
-<!--    required: true,-->
-<!--  } });-->
-
-<!--const emits = defineEmits(["changePageSortField", "changePageSortOrder", "changePageSize"]);-->
-
-<!--watch( props.page, (newVal) => {-->
-<!--   if (newVal) {-->
-<!--      pageSize.value = newVal.size;-->
-<!--   }-->
-<!--});-->
-
-<!--const changePageSize = () => {-->
-<!--   emits("changePageSize", pageSize.value);-->
-<!--};-->
-
-<!--const changePageSortField = () => {-->
-<!--   emits("changePageSortField", pageSortField.value);-->
-<!--};-->
-
-<!--const changePageSortOrder = () => {-->
-<!--    emits("changePageSortOrder", pageSortOrder.value);-->
-<!--};-->
-<!--</script>-->
-<script lang="ts">
+<script setup lang="ts">
 import { Page } from "../models/Page";
-import { defineComponent, PropType } from "vue";
+import { ref, watch, PropType } from "vue";
 import { Movie } from "../models/Movie";
 
-export default defineComponent({
-    data() {
-        return {
-            sizeValues: [2, 5, 10],
-            sortFieldValues: [{
-                value: "id",
-                view: "sortingPage.pageSortField.id"
-            }, {
-                value: "i18n.title",
-                view: "sortingPage.pageSortField.title"
-            }],
-            sortOrderValues: [{
-                value: "asc",
-                view: "sortingPage.pageSortOrder.asc"
-            }, {
-                value: "desc",
-                view: "sortingPage.pageSortOrder.desc"
-            }],
-            pageSize: 5,
-            pageSortField: "i18n.title",
-            pageSortOrder: "asc"
-        };
-    },
-    props: {
-        page: { type: Object as PropType<Page<Movie>> }
-    },
-    watch: {
-        page: function(newVal) {
-            this.pageSize = newVal.size;
-        }
-    },
-    emits: ["changePageSortField", "changePageSortOrder", "changePageSize"],
-    methods: {
-        changePageSize() {
-            this.$emit("changePageSize", this.pageSize);
-        },
-        changePageSortField() {
-            this.$emit("changePageSortField", this.pageSortField);
-        },
-        changePageSortOrder() {
-            this.$emit("changePageSortOrder", this.pageSortOrder);
-        }
-    }
+const pageSize = ref(5);
+const pageSortField = ref("i18n.title");
+const pageSortOrder = ref("asc");
+const sizeValues = [2, 5, 10];
+
+defineExpose({
+    pageSize,
+    pageSortField,
+    pageSortOrder
+
+})
+const sortFieldValues = [{
+   value: "id",
+    view: "sortingPage.pageSortField.id"
+}, {
+    value: "i18n.title",
+   view: "sortingPage.pageSortField.title"
+}];
+
+const sortOrderValues = [{
+   value: "asc",
+    view: "sortingPage.pageSortOrder.asc"
+}, {
+    value: "desc",
+   view: "sortingPage.pageSortOrder.desc"
+}];
+
+const props = defineProps({ page: {
+    type: Object as PropType<Page<Movie>>,
+    required: true,
+  } });
+
+const emits = defineEmits(["changePageSortField", "changePageSortOrder", "changePageSize"]);
+
+watch( props.page, (newVal) => {
+   if (newVal) {
+      pageSize.value = newVal.size;
+   }
 });
+
+const changePageSize = () => {
+   emits("changePageSize", pageSize.value);
+};
+
+const changePageSortField = () => {
+   emits("changePageSortField", pageSortField.value);
+};
+
+const changePageSortOrder = () => {
+    emits("changePageSortOrder", pageSortOrder.value);
+};
 </script>
+<!--<script lang="ts">-->
+<!--import { Page } from "../models/Page";-->
+<!--import { defineComponent, PropType } from "vue";-->
+<!--import { Movie } from "../models/Movie";-->
+
+<!--export default defineComponent({-->
+<!--    data() {-->
+<!--        return {-->
+<!--            sizeValues: [2, 5, 10],-->
+<!--            sortFieldValues: [{-->
+<!--                value: "id",-->
+<!--                view: "sortingPage.pageSortField.id"-->
+<!--            }, {-->
+<!--                value: "i18n.title",-->
+<!--                view: "sortingPage.pageSortField.title"-->
+<!--            }],-->
+<!--            sortOrderValues: [{-->
+<!--                value: "asc",-->
+<!--                view: "sortingPage.pageSortOrder.asc"-->
+<!--            }, {-->
+<!--                value: "desc",-->
+<!--                view: "sortingPage.pageSortOrder.desc"-->
+<!--            }],-->
+<!--            pageSize: 5,-->
+<!--            pageSortField: "i18n.title",-->
+<!--            pageSortOrder: "asc"-->
+<!--        };-->
+<!--    },-->
+<!--    props: {-->
+<!--        page: { type: Object as PropType<Page<Movie>> }-->
+<!--    },-->
+<!--    watch: {-->
+<!--        page: function(newVal) {-->
+<!--            this.pageSize = newVal.size;-->
+<!--        }-->
+<!--    },-->
+<!--    emits: ["changePageSortField", "changePageSortOrder", "changePageSize"],-->
+<!--    methods: {-->
+<!--        changePageSize() {-->
+<!--            this.$emit("changePageSize", this.pageSize);-->
+<!--        },-->
+<!--        changePageSortField() {-->
+<!--            this.$emit("changePageSortField", this.pageSortField);-->
+<!--        },-->
+<!--        changePageSortOrder() {-->
+<!--            this.$emit("changePageSortOrder", this.pageSortOrder);-->
+<!--        }-->
+<!--    }-->
+<!--});-->
+<!--</script>-->
 <template>
     <div class="sorting">
         <v-col class="d-flex" cols="3" sm="7" color="black">

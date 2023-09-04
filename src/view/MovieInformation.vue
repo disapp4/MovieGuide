@@ -15,9 +15,6 @@ onMounted(() => {
     refreshMovie();
 });
 
-watch(() => i18n.global.locale.value, (newVal) => {
-    console.log(newVal);
-});
 const nullMovie = ref(new Movie());
 nullMovie.value.i18n = { [Language.Russian]: new I18nMovie(), [Language.English]: new I18nMovie() };
 
