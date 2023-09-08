@@ -19,6 +19,5 @@
     "src/clients/Client.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json",
-//    "path": "./stores/appStore.ts"
   }]
 }
