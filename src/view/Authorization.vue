@@ -11,6 +11,7 @@ const password = ref("");
 const successRegistration = ref(false);
 const failAuth = ref(false);
 const store = appStore();
+const passwordInputRef = ref();
 
 onMounted(() => {
     successRegistration.value = store.pullRegistrationSuccess();
@@ -28,10 +29,7 @@ const goToRegistrationPage = () => {
     router.push({ name: "registration" });
 };
 const focusPasswordInput = () => {
-    const passwordInput = document.querySelector("#passwordInput") as HTMLInputElement | null;
-    if (passwordInput) {
-        passwordInput.focus();
-    }
+   passwordInputRef.value.focus();
 };
 </script>
 <template>
@@ -52,13 +50,13 @@ const focusPasswordInput = () => {
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.username") }}
                 <v-text-field :label="$t('placeholders.enterUsername')" v-model="username" name="username"
                               prepend-inner-icon="mdi-mail" type="string" variant="solo" clearable
-                              filled @keydown.enter="focusPasswordInput"></v-text-field>
+                              filled v-on:keydown.enter="focusPasswordInput"></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" class="title"> {{ $t("placeholders.password") }}
-                <v-text-field id="passwordInput" :label="$t('placeholders.enterPassword')" v-model="password"
+                <v-text-field ref="passwordInputRef" :label="$t('placeholders.enterPassword')" v-model="password"
                               name="password"
                               prepend-inner-icon="mdi-lock" type="password" clearable filled
-                              variant="solo" @keydown.enter="logIn"></v-text-field>
+                              variant="solo" v-on:keydown.enter="logIn"></v-text-field>
             </v-col>
             <v-card-actions>
                 {{ $t("authorizationPage.noAccount") }}
