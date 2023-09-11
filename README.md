@@ -21,7 +21,7 @@
 
 ## Демо
 
-Демо-версия с тестовыми данными доступна на [movie-guide.vercel.app](movie-guide.vercel.app)
+Демо-версия с тестовыми данными (admin:admin и user:user) доступна на [movie-guide.vercel.app](https://movie-guide.vercel.app)
 
 ## Запуск
 
