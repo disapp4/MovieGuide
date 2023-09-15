@@ -5,7 +5,7 @@ import Sorting from "../components/Sorting.vue";
 import { Movie } from "../models/Movie";
 import { Page } from "../models/Page";
 import router from "../router";
-import { computed, onMounted, Ref, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { AxiosResponse } from "axios";
 import { client } from "../clients/Client";
 import { Language } from "../models/Language";
@@ -46,7 +46,12 @@ const refreshMoviePage = () => {  const pageNumber = paginatorRef.value?.pageNum
 };
 
 const changePageNumber = () => {
-    refreshMoviePage();
+    const pageNumber = paginatorRef.value?.pageNumber
+    const pageSize = sortingRef.value?.pageSize;
+    const pageSortField = sortingRef.value?.pageSortField;
+    const pageSortOrder = sortingRef.value?.pageSortOrder;
+    loading.value = true;
+    loadMoviePage(pageNumber, pageSize, pageSortField, pageSortOrder);
 };
 
 const onPaginationOrSortingChange = () => {

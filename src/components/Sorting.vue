@@ -55,56 +55,6 @@ const changePageSortOrder = () => {
     emits("changePageSortOrder", pageSortOrder.value);
 };
 </script>
-<!--<script lang="ts">-->
-<!--import { Page } from "../models/Page";-->
-<!--import { defineComponent, PropType } from "vue";-->
-<!--import { Movie } from "../models/Movie";-->
-
-<!--export default defineComponent({-->
-<!--    data() {-->
-<!--        return {-->
-<!--            sizeValues: [2, 5, 10],-->
-<!--            sortFieldValues: [{-->
-<!--                value: "id",-->
-<!--                view: "sortingPage.pageSortField.id"-->
-<!--            }, {-->
-<!--                value: "i18n.title",-->
-<!--                view: "sortingPage.pageSortField.title"-->
-<!--            }],-->
-<!--            sortOrderValues: [{-->
-<!--                value: "asc",-->
-<!--                view: "sortingPage.pageSortOrder.asc"-->
-<!--            }, {-->
-<!--                value: "desc",-->
-<!--                view: "sortingPage.pageSortOrder.desc"-->
-<!--            }],-->
-<!--            pageSize: 5,-->
-<!--            pageSortField: "i18n.title",-->
-<!--            pageSortOrder: "asc"-->
-<!--        };-->
-<!--    },-->
-<!--    props: {-->
-<!--        page: { type: Object as PropType<Page<Movie>> }-->
-<!--    },-->
-<!--    watch: {-->
-<!--        page: function(newVal) {-->
-<!--            this.pageSize = newVal.size;-->
-<!--        }-->
-<!--    },-->
-<!--    emits: ["changePageSortField", "changePageSortOrder", "changePageSize"],-->
-<!--    methods: {-->
-<!--        changePageSize() {-->
-<!--            this.$emit("changePageSize", this.pageSize);-->
-<!--        },-->
-<!--        changePageSortField() {-->
-<!--            this.$emit("changePageSortField", this.pageSortField);-->
-<!--        },-->
-<!--        changePageSortOrder() {-->
-<!--            this.$emit("changePageSortOrder", this.pageSortOrder);-->
-<!--        }-->
-<!--    }-->
-<!--});-->
-<!--</script>-->
 <template>
     <div class="sorting">
         <v-col class="d-flex" cols="3" sm="7" color="black">

@@ -21,9 +21,9 @@ defineExpose({
 const emits = defineEmits(["changePageNumber"]);
 
 watch(() => props.page, (newVal) => {
-    pageNumber.value = newVal.number;
+    pageNumber.value = newVal?.number;
     pageNumberView.value = pageNumber.value + 1;
-    totalPages.value = newVal.totalPages;
+    totalPages.value = newVal?.totalPages;
 });
 
 const goToPage = (value: any) => {
