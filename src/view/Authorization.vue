@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from "../router";
 import { client } from "../clients/Client";
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted } from "vue";
 import { AxiosResponse } from "axios";
 import { User } from "../models/User";
 import { appStore } from "../stores/appStore";

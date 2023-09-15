@@ -21,7 +21,9 @@ const logOut = () => {
         });
 };
 const goToMainPage = () => {
-    router.push({ name: "mainPage" });
+    if (store.user) {
+        router.push({ name: "mainPage" });
+    }
 };
 
 const changeLanguage = () => {
@@ -29,7 +31,7 @@ const changeLanguage = () => {
 };
 </script>
 <template>
-    <v-toolbar color="black" >
+    <v-toolbar color="black">
         <v-btn class="btn" prepend-icon="mdi-web" v-on:click="changeLanguage">
             {{ $t("mainPage.toolbar.language") }}
         </v-btn>
@@ -38,7 +40,7 @@ const changeLanguage = () => {
                 <strong>{{ $t("mainPage.toolbar.title") }}</strong>
             </v-btn>
         </v-spacer>
-        <v-menu v-if="account" transition="scale-transition" >
+        <v-menu v-if="account" transition="scale-transition">
             <template v-slot:activator="{ props }">
                 <v-btn
                     prepend-icon="mdi-account-circle" v-bind="props">
@@ -60,15 +62,18 @@ const changeLanguage = () => {
                 </v-list-item>
             </v-list>
         </v-menu>
-
-                <v-btn v-else class="menu"
-                    prepend-icon="mdi-account-circle" >
-                    {{ $t("mainPage.toolbar.account") }}
-                </v-btn>
-
+        <v-btn v-else class="menu"
+               prepend-icon="mdi-account-circle">
+            {{ $t("mainPage.toolbar.account") }}
+        </v-btn>
     </v-toolbar>
 </template>
 <style scoped>
-.btn{width:120px}
-.menu{ visibility: hidden;}
+.btn {
+    width: 120px
+}
+
+.menu {
+    visibility: hidden;
+}
 </style>

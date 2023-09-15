@@ -65,7 +65,7 @@ const goToEditMoviePage = (movie: Movie) => {
             <div>
                 <div class="titleMovie">
                     <v-card-title>
-                        <p text-align="center" class="title"> {{ truncate(movieTitle, 20) }} </p>
+                        <p  class="title"> {{ truncate(movieTitle, 20) }} </p>
                         <v-tooltip v-if="titleIsTooLong"
                                    activator="parent"
                                    location="end"

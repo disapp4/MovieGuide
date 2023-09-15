@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from "../router";
 import { client } from "../clients/Client";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref} from "vue";
 import { AxiosResponse } from "axios";
 import { Movie } from "../models/Movie";
 import { Language } from "../models/Language";
