@@ -37,3 +37,7 @@ npm install
 npm run dev
 ```
 5. Откройте веб-браузер и перейдите по предложенной ссылке. По умолчанию http://localhost:5173/
+
+## Прочее
+
+[Swagger](https://movie-guide-backend.ntrubkin.ru/swagger-ui/index.html#/)
